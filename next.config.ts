@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
   experimental: {
     // @ts-ignore
     outputFileTracingIncludes: {
-      '/**/*': ['./node_modules/payload/**/*'],
+      '/**/*': ['./node_modules/payload/**/*', './node_modules/tsx/**/*'],
     },
   },
   reactStrictMode: true,
