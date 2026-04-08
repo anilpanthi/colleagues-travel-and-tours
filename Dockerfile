@@ -68,4 +68,5 @@ ENV PORT=3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js
+# Run migrations before starting the server
+CMD node ./node_modules/payload/dist/bin/index.js migrate && node server.js
