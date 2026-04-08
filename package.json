@@ -5,17 +5,17 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
-    "dev": "NODE_OPTIONS=--no-deprecation next dev --no-server-fast-refresh",
-    "devsafe": "rm -rf .next && NODE_OPTIONS=--no-deprecation next dev",
-    "generate:importmap": "NODE_OPTIONS=--no-deprecation node node_modules/payload/bin.js generate:importmap",
-    "generate:types": "NODE_OPTIONS=--no-deprecation node node_modules/payload/bin.js generate:types",
-    "lint": "NODE_OPTIONS=--no-deprecation eslint .",
-    "payload": "NODE_OPTIONS=--no-deprecation node node_modules/payload/bin.js",
-    "start": "NODE_OPTIONS=--no-deprecation next start",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --no-server-fast-refresh",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
-    "test:e2e": "NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
-    "test:int": "NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
     "@payloadcms/next": "3.81.0",
@@ -29,8 +29,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sharp": "0.34.2",
-    "@payloadcms/db-postgres": "3.81.0",
-    "tsx": "4.21.0"
+    "@payloadcms/db-postgres": "3.81.0"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
@@ -43,6 +42,7 @@
     "eslint-config-next": "16.2.1",
     "jsdom": "28.0.0",
     "prettier": "^3.4.2",
+    "tsx": "4.21.0",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.18"
