@@ -41,6 +41,9 @@ RUN \
 FROM base AS runner
 WORKDIR /app
 
+# Install su-exec to fix permissions at runtime
+RUN apk add --no-cache su-exec
+
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -48,21 +51,23 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Remove this line if you do not have this folder
-COPY --from=builder /app/public ./public
-
 # Set the correct permission for prerender cache and media uploads
 RUN mkdir .next
 RUN mkdir media
 RUN chown nextjs:nodejs .next
 RUN chown nextjs:nodejs media
 
+# Copy the entrypoint script
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
+
+# Remove this line if you do not have this folder
+COPY --from=builder /app/public ./public
+
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
 
 EXPOSE 3000
 
@@ -70,4 +75,5 @@ ENV PORT=3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["node", "server.js"]
