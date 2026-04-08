@@ -32,5 +32,15 @@ export default buildConfig({
     prodMigrations: migrations,
   }),
   sharp,
+  onInit: async (payload) => {
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        await payload.db.migrate()
+        console.log('Migrations completed successfully.')
+      } catch (error) {
+        console.error('Error during migrations:', error)
+      }
+    }
+  },
   plugins: [],
 })
