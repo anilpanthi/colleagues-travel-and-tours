@@ -46,6 +46,12 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  experimental: {
+    // @ts-ignore
+    outputFileTracingIncludes: {
+      '/**/*': ['./node_modules/payload/**/*'],
+    },
+  },
   reactStrictMode: true,
   serverExternalPackages: ['@payloadcms/db-postgres', 'drizzle-kit'],
   transpilePackages: ['react-image-crop', '@payloadcms/next', '@payloadcms/ui'],
