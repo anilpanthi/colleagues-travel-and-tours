@@ -1,0 +1,127 @@
+.testimonialCard {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	background: transparent;
+	border: none;
+	box-shadow: none;
+
+	&__bubble {
+		background: var(--color-white, #ffffff);
+		border-radius: 12px;
+		padding: 40px 30px;
+		position: relative;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+		margin-bottom: 24px;
+		min-height: 220px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: -24px;
+			left: 60px;
+			border-width: 25px 25px 0 0;
+			border-style: solid;
+			border-color: var(--color-white, #ffffff) transparent transparent transparent;
+			filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.02));
+		}
+	}
+
+	&__quote {
+		font-size: 16px;
+		line-height: 1.8;
+		color: #555;
+		text-align: center;
+		font-weight: 500;
+		margin-bottom: 30px;
+		position: relative;
+		z-index: 2;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	&__footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		position: relative;
+	}
+
+	&__stars {
+		display: flex;
+		gap: 4px;
+	}
+
+	&__starIcon {
+		color: #ffc107;
+		font-size: 16px;
+	}
+
+	&__bgQuote {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -40px;
+		font-size: 140px;
+		color: #f6f6f6;
+		font-family: serif;
+		line-height: 1;
+		z-index: 1;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	&__dateTime {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		font-size: 13px;
+		color: #888;
+		font-weight: 500;
+		z-index: 2;
+	}
+
+	&__authorInfo {
+		display: flex;
+		align-items: center;
+		padding-left: 30px;
+		gap: 16px;
+	}
+
+	&__avatar {
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		object-fit: cover;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__authorDetails {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__authorName {
+		margin: 0;
+		font-size: 18px;
+		font-weight: 700;
+		color: #111;
+	}
+
+	&__authorLocation {
+		margin: 4px 0 0 0;
+		font-size: 14px;
+		color: #888;
+	}
+}

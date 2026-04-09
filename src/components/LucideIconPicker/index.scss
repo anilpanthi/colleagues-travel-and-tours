@@ -1,0 +1,118 @@
+.lucide-icon-picker-field {
+	margin-bottom: 25px;
+	position: relative;
+
+	.lucide-icon-picker__controls {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 5px;
+	}
+
+	.lucide-icon-picker__selected-display {
+		border: 1px solid var(--theme-elevation-150);
+		background: var(--theme-elevation-50);
+		border-radius: 4px;
+		padding: 10px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 50px;
+		min-height: 50px;
+		transition: all 0.2s;
+
+		&:hover {
+			border-color: var(--theme-elevation-400);
+			background: var(--theme-elevation-100);
+		}
+
+		.placeholder {
+			color: var(--theme-elevation-400);
+			font-style: italic;
+		}
+	}
+
+	.lucide-icon-picker__clear-btn {
+		border: none;
+		background: none;
+		color: var(--theme-error-500);
+		cursor: pointer;
+		font-size: 0.85rem;
+		padding: 5px 10px;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.lucide-icon-picker__dropdown {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 100;
+		width: 100%;
+		max-width: 400px;
+		background: var(--theme-bg);
+		border: 1px solid var(--theme-elevation-200);
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		padding: 10px;
+		margin-top: 5px;
+	}
+
+	.lucide-icon-picker__search {
+		width: 100%;
+		padding: 8px 12px;
+		border: 1px solid var(--theme-elevation-200);
+		border-radius: 4px;
+		margin-bottom: 10px;
+		background: var(--theme-input-bg);
+		color: var(--theme-text);
+
+		&:focus {
+			outline: none;
+			border-color: var(--theme-primary-500);
+		}
+	}
+
+	.lucide-icon-picker__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+		gap: 5px;
+		max-height: 250px;
+		overflow-y: auto;
+	}
+
+	.lucide-icon-picker__option {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		background: transparent;
+		cursor: pointer;
+		color: var(--theme-text);
+		transition: all 0.1s;
+
+		&:hover {
+			background: var(--theme-elevation-100);
+			border-color: var(--theme-elevation-200);
+		}
+
+		&.selected {
+			background: var(--theme-primary-100);
+			border-color: var(--theme-primary-500);
+			color: var(--theme-primary-700);
+		}
+	}
+
+	.lucide-icon-picker__more {
+		grid-column: 1 / -1;
+		text-align: center;
+		padding: 10px;
+		color: var(--theme-elevation-400);
+		font-size: 0.85rem;
+	}
+}

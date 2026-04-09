@@ -1,0 +1,124 @@
+.select {
+  &__trigger {
+    display: flex;
+    height: 4rem;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color-gray-300);
+    background-color: var(--color-background);
+    padding: 0.8rem 1.2rem;
+    font-size: 1.6rem;
+    color: inherit;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-primary-30);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  &__icon {
+      height: 1.6rem;
+      width: 1.6rem;
+      opacity: 0.5;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 50;
+    max-height: 24rem;
+    min-width: 12rem;
+    overflow: hidden;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color-gray-300);
+    background-color: var(--color-white);
+    color: var(--color-foreground);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    
+    &[data-state='open'] {
+        animation: fadeIn 0.1s ease-out;
+    }
+  }
+
+  &__viewport {
+    padding: 0.4rem;
+    
+    &--popper {
+        height: var(--radix-select-trigger-height);
+        width: 100%;
+        min-width: var(--radix-select-trigger-width);
+    }
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    width: 100%;
+    cursor: default;
+    user-select: none;
+    align-items: center;
+    border-radius: 0.2rem;
+    padding: 0.6rem 0.8rem 0.6rem 3.2rem;
+    font-size: 1.6rem;
+    outline: none;
+
+    &:focus {
+      background-color: var(--color-gray-100);
+      color: var(--color-foreground);
+    }
+
+    &[data-disabled] {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+
+  &__itemIndicator {
+    position: absolute;
+    left: 0.8rem;
+    display: flex;
+    height: 1.4rem;
+    width: 1.4rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__scrollButton {
+    display: flex;
+    cursor: default;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0;
+  }
+
+  &__label {
+    padding: 0.6rem 0.8rem 0.6rem 3.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  &__separator {
+    margin: 0.4rem -0.4rem;
+    height: 1px;
+    background-color: var(--color-gray-100);
+  }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}

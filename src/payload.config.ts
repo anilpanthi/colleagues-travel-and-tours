@@ -10,6 +10,20 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { migrations } from './migrations'
 
+// Custom Collections
+import { Activities } from './collections/Activities'
+import { Packages } from './collections/Packages'
+import { Posts } from './collections/Posts'
+import { Categories } from './collections/Categories'
+import { Pages } from './collections/Pages'
+import { Testimonials } from './collections/Testimonials'
+import { Navigation } from './collections/Navigation'
+
+//Globals
+
+//plugins
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -20,7 +34,18 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Activities,
+    Packages,
+    Posts,
+    Pages,
+    Testimonials,
+    Navigation,
+    Categories,
+  ],
+
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -55,5 +80,9 @@ export default buildConfig({
       },
     },
   }),
-  plugins: [],
+  plugins: [
+    formBuilderPlugin({
+      // see below for a list of available options
+    }),
+  ],
 })

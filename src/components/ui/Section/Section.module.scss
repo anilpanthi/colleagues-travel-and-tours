@@ -1,0 +1,11 @@
+.sectionBlock {
+	// position: relative;
+	&__header {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 2rem;
+		justify-content: center;
+	}
+}

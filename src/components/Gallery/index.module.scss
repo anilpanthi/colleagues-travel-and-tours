@@ -1,0 +1,127 @@
+.galleryContainer {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0; // Prevent flex/grid expansion
+	// margin: 2rem 0;
+	border-radius: 1rem;
+	overflow: hidden;
+	background: #fdfdfd;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+}
+
+.mainSwiper {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	height: 500px;
+	overflow: hidden;
+
+	@media (max-width: 768px) {
+		height: 300px;
+	}
+}
+
+.mainSlide {
+	min-width: 0;
+	width: 100%;
+}
+
+.imageWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #eee; // Placeholder color
+}
+
+.image {
+	object-fit: cover;
+	transition: transform 0.5s ease;
+}
+
+.thumbSwiper {
+	height: 10rem;
+	margin-top: 1rem;
+	padding: 1rem 1rem;
+	// background: rgba(201, 201, 201, 0.05);
+
+	@media (max-width: 768px) {
+		height: 80px;
+	}
+
+	:global(.swiper-slide) {
+		opacity: 0.5;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		width: 150px;
+		min-width: 0; // Prevent expansion
+		max-width: 100%;
+
+		@media (max-width: 768px) {
+			width: 100px;
+		}
+
+		&:global(.swiper-slide-thumb-active) {
+			opacity: 1;
+			transform: scale(1.05);
+			border: 3px solid var(--color-primary, #f59e0b);
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+	}
+}
+
+.thumbSlide {
+	min-width: 0;
+}
+
+.thumbWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.thumbImage {
+	object-fit: cover;
+}
+
+.navButton {
+	position: absolute;
+	top: calc(50% - 100px); // Above thumbs
+	z-index: 10;
+	background: rgba(255, 255, 255, 0.8);
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #333;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+	&:hover {
+		background: #fff;
+		transform: scale(1.1);
+	}
+
+	&.prev {
+		left: 20px;
+	}
+
+	&.next {
+		right: 20px;
+	}
+
+	@media (max-width: 768px) {
+		width: 30px;
+		height: 30px;
+		top: calc(50% - 70px);
+	}
+}

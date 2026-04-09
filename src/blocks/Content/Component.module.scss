@@ -1,0 +1,55 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem 1.5rem;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem 4rem;
+  }
+}
+
+.column {
+  grid-column: span 4; // Default to full width on mobile (4/4)
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-column: span 2; // Default to half width on tablet
+  }
+
+  &.full {
+    @media (min-width: 1024px) {
+      grid-column: span 12;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      grid-column: span 4;
+    }
+  }
+
+  &.half {
+    @media (min-width: 1024px) {
+      grid-column: span 6;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+        grid-column: span 2;
+    }
+  }
+
+  &.oneThird {
+    @media (min-width: 1024px) {
+      grid-column: span 4;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+        grid-column: span 2;
+    }
+  }
+
+  &.twoThirds {
+    @media (min-width: 1024px) {
+      grid-column: span 8;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+        grid-column: span 4; // Full width on tablet if it's two thirds?
+    }
+  }
+}

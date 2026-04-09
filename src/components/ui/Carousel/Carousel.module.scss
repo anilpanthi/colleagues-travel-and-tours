@@ -1,0 +1,60 @@
+.carouselContainer {
+	width: 100%;
+	position: relative;
+	.navButton {
+		position: absolute;
+		top: 35%;
+		transform: translateY(-35%);
+		width: 4.5rem;
+		height: 4.5rem;
+		border-radius: 50%;
+		background: transparent;
+		border: 1px solid #d1d5db;
+		color: #374151;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 10;
+		transition: 0.2s ease;
+
+		&:hover {
+			background: var(--color-primary);
+			color: #fff;
+		}
+
+		&.prev {
+			left: 10px;
+			@media (min-width: 1400px) {
+				left: -60px;
+			}
+		}
+
+		&.next {
+			right: 10px;
+			@media (min-width: 1400px) {
+				right: -60px;
+			}
+		}
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+}
+
+.placeholderCard {
+	background: var(--theme-elevation-100);
+	padding: 2rem;
+	border-radius: 1rem;
+	text-align: center;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.mySwiper {
+	padding: 1rem 0 !important;
+}

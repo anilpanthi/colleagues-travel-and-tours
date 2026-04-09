@@ -1,0 +1,210 @@
+@keyframes animatedGradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.packageCard {
+	width: 100%;
+	background: #ffffff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	transition:
+		transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+		box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+	border: 1px solid #eaeaea;
+	padding: 1.6rem;
+
+	&:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+
+		.packageCard__image,
+		.packageCard__placeholder_icon {
+			transform: scale(1.08); /* Restore zoom effect */
+		}
+
+		// .packageCard__image_wrapper::after {
+		// 	opacity: 0;
+		// }
+
+		// .packageCard__image_wrapper::before {
+		// 	opacity: 1;
+		// 	animation: animatedGradient 3s ease infinite;
+		// }
+	}
+
+	&__image_wrapper {
+		position: relative;
+		height: 240px;
+		width: 100%;
+		overflow: hidden;
+		border-radius: 10px; /* Place border-radius on wrapper */
+		transform: translateZ(
+			0
+		); /* Fix for Safari rendering rounded corners over transformed children */
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%);
+			z-index: 1;
+			transition: opacity 0.4s ease;
+			pointer-events: none;
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(
+				45deg,
+				rgba(59, 130, 246, 0.3),
+				rgba(16, 185, 129, 0.3),
+				rgba(139, 92, 246, 0.3)
+			);
+			background-size: 200% 200%;
+			z-index: 2;
+			opacity: 0;
+			transition: opacity 0.4s ease;
+			pointer-events: none;
+		}
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+	}
+	&__placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f3f4f6;
+		color: #9ca3af;
+		transition: background-color 0.3s ease;
+	}
+
+	&__placeholder_icon {
+		opacity: 0.5;
+		transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+	}
+
+	&__content_top {
+		padding: 24px 24px 16px;
+		flex-grow: 1;
+	}
+
+	&__title {
+		font-size: 1.8rem;
+		font-weight: 600;
+		color: #111827;
+		text-decoration: none;
+		line-height: 1.4;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: var(--color-primary); 
+		}
+	}
+
+	&__description {
+		font-family: var(--font-jost);
+		font-size: 1.6rem;
+		font-weight: 400;
+		color: #6b7280;
+		line-height: 1.2;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		transition: color 0.2s ease;
+		padding-top: 1rem;
+	}
+
+	&__content_bottom {
+		padding: 16px 24px 24px;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 16px;
+		border-top: 1px solid #f3f4f6;
+	}
+
+	&__price_details {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	&__price_description {
+		font-size: 1rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: #6b7280;
+		letter-spacing: 0.05em;
+		margin-bottom: 2px;
+	}
+
+	&__price {
+		font-size: 1.6rem;
+		font-weight: 800;
+		color: var(--color-primary-dark);
+		line-height: 1;
+	}
+
+	&__price_tax {
+		font-size: 0.65rem;
+		color: #9ca3af;
+		margin-top: 4px;
+	}
+
+	&__button {
+		flex-shrink: 0;
+
+		button {
+			padding: 0.5rem 1rem;
+			border-radius: 8px;
+			font-weight: 600;
+			transition: all 0.2s ease;
+			text-decoration: none;
+			&:hover {
+				.iconPlane {
+					transform: translateX(4px) translateY(-4px);
+				}
+			}
+		}
+	}
+}
+
+.linkContainer {
+	display: flex;
+	justify-content: center;
+	padding-top: 4rem;
+	padding-bottom: 2rem;
+}
+
+.iconPlane {
+	width: 16px;
+	height: 16px;
+	transition: transform 0.3s ease;
+}

@@ -1,0 +1,20 @@
+.mediaBlock {
+	width: 100%;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+
+	&_image {
+		border: 1px solid var(--color-gray-300);
+		border-radius: 0.8rem;
+		overflow: hidden;
+		width: 100%;
+	}
+
+	&_caption {
+		margin-top: 1.5rem;
+		color: var(--text-color);
+		font-family: var(--font-jost);
+		font-size: 1.4rem;
+		line-height: 1.4;
+	}
+}
