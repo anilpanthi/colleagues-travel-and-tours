@@ -23,6 +23,8 @@ import { Navigation } from './collections/Navigation'
 
 //plugins
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -84,5 +86,14 @@ export default buildConfig({
     formBuilderPlugin({
       // see below for a list of available options
     }),
+    redirectsPlugin({
+      collections: ['pages', 'posts', 'activities', 'packages', 'testimonials', 'categories'],
+      overrides: {
+        admin: {
+          group: 'Plugins',
+        },
+      },
+    }),
+
   ],
 })

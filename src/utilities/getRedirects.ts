@@ -1,8 +1,9 @@
+import type { Redirect } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 
-export async function getRedirects(depth = 1) {
+export async function getRedirects(depth = 1): Promise<Redirect[]> {
   const payload = await getPayload({ config: configPromise })
 
   const { docs: redirects } = await payload.find({
