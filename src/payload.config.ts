@@ -61,7 +61,7 @@ export default buildConfig({
   globals: [SiteSettings],
 
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || 'TEMP_SECRET_DO_NOT_USE_IN_PRODUCTION',
+  secret: process.env.PAYLOAD_SECRET || '', // Explicitly empty to trigger error if missing
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -70,6 +70,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
     prodMigrations: migrations,
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
   onInit: async (payload) => {
