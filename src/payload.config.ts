@@ -29,6 +29,16 @@ import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Check for required environment variables in production
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.PAYLOAD_SECRET) {
+    console.warn('WARNING: PAYLOAD_SECRET is not set in production. This will cause authentication failures.')
+  }
+  if (!process.env.DATABASE_URL) {
+    console.warn('WARNING: DATABASE_URL is not set in production. Connection will fail.')
+  }
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -36,6 +46,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
   collections: [
     Users,
     Media,
@@ -50,7 +61,7 @@ export default buildConfig({
   globals: [SiteSettings],
 
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'TEMP_SECRET_DO_NOT_USE_IN_PRODUCTION',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
@@ -63,11 +74,12 @@ export default buildConfig({
   sharp,
   onInit: async (payload) => {
     if (process.env.NODE_ENV === 'production') {
+      console.log('Production mode detected. Checking for pending migrations...')
       try {
         await payload.db.migrate()
         console.log('Migrations completed successfully.')
       } catch (error) {
-        console.error('Error during migrations:', error)
+        console.error('CRITICAL ERROR during migrations:', error)
       }
     }
   },

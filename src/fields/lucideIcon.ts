@@ -5,7 +5,7 @@ export const lucideIcon: Field = {
 	type: 'text',
 	admin: {
 		components: {
-			Field: '/components/LucideIconPicker/index.tsx#default',
+			Field: '@/components/LucideIconPicker/index#default',
 		},
 	},
 }
