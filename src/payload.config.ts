@@ -20,11 +20,11 @@ import { Testimonials } from './collections/Testimonials'
 import { Navigation } from './collections/Navigation'
 
 //Globals
+import { SiteSettings } from '@/globals/SiteSettings/config'
 
 //plugins
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
-
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -47,6 +47,7 @@ export default buildConfig({
     Navigation,
     Categories,
   ],
+  globals: [SiteSettings],
 
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -88,12 +89,12 @@ export default buildConfig({
     }),
     redirectsPlugin({
       collections: ['pages', 'posts', 'activities', 'packages', 'testimonials', 'categories'],
+
       overrides: {
         admin: {
           group: 'Plugins',
         },
       },
     }),
-
   ],
 })

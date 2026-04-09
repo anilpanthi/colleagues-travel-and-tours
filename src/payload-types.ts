@@ -135,8 +135,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -2577,6 +2581,242 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  address?: string | null;
+  /**
+   * Paste the OpenStreetMap iframe embed code here.
+   */
+  map?: string | null;
+  contactNumbers?:
+    | {
+        number?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  emailAddresses?:
+    | {
+        email?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Manage light and dark theme logos
+   */
+  logos?: {
+    /**
+     * For light backgrounds
+     */
+    logoLight?: (number | null) | Media;
+    /**
+     * For dark backgrounds
+     */
+    logoDark?: (number | null) | Media;
+  };
+  /**
+   * Select the main navigation menu to handle the header navigation
+   */
+  mainNavigation?: (number | null) | Navigation;
+  footerColumns?:
+    | {
+        title?: string | null;
+        type?: ('brand' | 'nav' | 'contact') | null;
+        brandLogo?: (number | null) | Media;
+        /**
+         * Text to display below the logo in this column
+         */
+        description?: string | null;
+        socialLinks?:
+          | {
+              icon?: string | null;
+              url?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        navItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'packages';
+                      value: number | Package;
+                    } | null)
+                  | ({
+                      relationTo: 'activities';
+                      value: number | Activity;
+                    } | null)
+                  | ({
+                      relationTo: 'testimonials';
+                      value: number | Testimonial;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        contactInfo?: {
+          address?: string | null;
+          phone?: string | null;
+          email?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  footerBottom?: {
+    copyright?: string | null;
+    legalLinks?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null)
+              | ({
+                  relationTo: 'packages';
+                  value: number | Package;
+                } | null)
+              | ({
+                  relationTo: 'activities';
+                  value: number | Activity;
+                } | null)
+              | ({
+                  relationTo: 'testimonials';
+                  value: number | Testimonial;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  socialLinks?:
+    | {
+        label?: string | null;
+        icon: number | Media;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  address?: T;
+  map?: T;
+  contactNumbers?:
+    | T
+    | {
+        number?: T;
+        id?: T;
+      };
+  emailAddresses?:
+    | T
+    | {
+        email?: T;
+        id?: T;
+      };
+  logos?:
+    | T
+    | {
+        logoLight?: T;
+        logoDark?: T;
+      };
+  mainNavigation?: T;
+  footerColumns?:
+    | T
+    | {
+        title?: T;
+        type?: T;
+        brandLogo?: T;
+        description?: T;
+        socialLinks?:
+          | T
+          | {
+              icon?: T;
+              url?: T;
+              id?: T;
+            };
+        navItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        contactInfo?:
+          | T
+          | {
+              address?: T;
+              phone?: T;
+              email?: T;
+            };
+        id?: T;
+      };
+  footerBottom?:
+    | T
+    | {
+        copyright?: T;
+        legalLinks?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+      };
+  socialLinks?:
+    | T
+    | {
+        label?: T;
+        icon?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

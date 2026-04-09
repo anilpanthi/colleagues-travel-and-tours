@@ -4,8 +4,9 @@ import React, { createContext, useCallback, use, useEffect, useState } from 'rea
 
 import type { Theme, ThemeContextType } from './types'
 
-import canUseDOM from '@/utilities/canUseDOM'
+
 import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
+
 import { themeIsValid } from './types'
 
 const initialContext: ThemeContextType = {
@@ -17,15 +18,6 @@ const ThemeContext = createContext(initialContext)
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 	const [theme, setThemeState] = useState<Theme | undefined>(undefined)
-
-	useEffect(() => {
-		if (canUseDOM) {
-			const savedTheme = document.documentElement.getAttribute('data-theme') as Theme
-			if (themeIsValid(savedTheme)) {
-				setThemeState(savedTheme)
-			}
-		}
-	}, [])
 
 	const setTheme = useCallback((themeToSet: Theme | null) => {
 		if (themeToSet === null) {
@@ -41,24 +33,33 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [])
 
 	useEffect(() => {
-		let themeToSet: Theme = defaultTheme
-		const preference = window.localStorage.getItem(themeLocalStorageKey)
+		const themeToSet = ((): Theme => {
+			const savedTheme = document.documentElement.getAttribute('data-theme') as Theme
+			if (themeIsValid(savedTheme)) return savedTheme
 
-		if (themeIsValid(preference)) {
-			themeToSet = preference
-		} else {
+			const preference = window.localStorage.getItem(themeLocalStorageKey)
+			if (themeIsValid(preference)) return preference
+
 			const implicitPreference = getImplicitPreference()
+			if (implicitPreference) return implicitPreference
 
-			if (implicitPreference) {
-				themeToSet = implicitPreference
-			}
-		}
+			return defaultTheme
+		})()
+
 
 		document.documentElement.setAttribute('data-theme', themeToSet)
-		setThemeState(themeToSet)
+		
+		// Use a delay to avoid synchronous state update within effect
+		const timeout = setTimeout(() => {
+			setThemeState(themeToSet)
+		}, 0)
+
+		return () => clearTimeout(timeout)
 	}, [])
+
 
 	return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
 }
+
 
 export const useTheme = (): ThemeContextType => use(ThemeContext)
