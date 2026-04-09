@@ -61,9 +61,15 @@ export default buildConfig({
     prodMigrations: migrations,
   }),
   sharp,
-  onInit: async (_payload) => {
-    // Migrations are now handled in the deployment lifecycle (entrypoint.sh)
-    // to prevent race conditions during multi-instance deployments.
+  onInit: async (payload) => {
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        await payload.db.migrate()
+        console.log('Migrations completed successfully.')
+      } catch (error) {
+        console.error('Error during migrations:', error)
+      }
+    }
   },
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleagues-travel.com',

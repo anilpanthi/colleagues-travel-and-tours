@@ -27,15 +27,6 @@ wait_for_db() {
 # Run the wait function
 wait_for_db
 
-# Run database migrations
-# This ensures migrations are completed before any app instance starts processing requests
-echo "Running database migrations..."
-if [ -f "node_modules/.bin/payload" ]; then
-  su-exec nextjs:nodejs ./node_modules/.bin/payload migrate
-else
-  echo "Payload binary not found, skipping explicit migrations. Ensure migrations are handled externally."
-fi
-
 # Fix permissions for the media volume at runtime
 echo "Fixing permissions for /app/media..."
 chown -R nextjs:nodejs /app/media
