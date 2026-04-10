@@ -61,6 +61,9 @@ export default buildConfig({
     Categories,
   ],
   globals: [SiteSettings],
+  rateLimit: {
+    trustProxy: true,
+  },
 
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '', // Explicitly empty to trigger error if missing
