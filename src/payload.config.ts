@@ -39,6 +39,9 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const sanitizedServerURL = serverURL.replace(/\/$/, '')
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -46,9 +49,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
-  cors: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'].filter(Boolean),
-  csrf: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'].filter(Boolean),
+  serverURL: sanitizedServerURL,
+  cors: [sanitizedServerURL].filter(Boolean),
+  csrf: [sanitizedServerURL].filter(Boolean),
   collections: [
     Users,
     Media,
