@@ -16,7 +16,7 @@ export default function NotFound() {
     <div className={styles.notFoundWrapper}>
       <div className={styles.bgText}>404</div>
       <div className={styles.content}>
-        <h1 className={styles.title}>Oops! Page Not Found Test</h1>
+        <h1 className={styles.title}>Oops! Page Not Found</h1>
         <p className={styles.description}>
           The page you&apos;re looking for doesn&apos;t exist or has been moved. Don&apos;t worry,
           even the best explorers get lost sometimes.
