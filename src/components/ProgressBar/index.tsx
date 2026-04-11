@@ -9,11 +9,15 @@ export const ProgressBar = () => {
   const [progress, setProgress] = useState(0)
   const [isNavigating, setIsNavigating] = useState(false)
 
-  useEffect(() => {
-    // When pathname changes, navigation has finished
+  const [prevPathname, setPrevPathname] = useState(pathname)
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setIsNavigating(false)
     setProgress(100)
-    
+  }
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setProgress(0)
     }, 400)

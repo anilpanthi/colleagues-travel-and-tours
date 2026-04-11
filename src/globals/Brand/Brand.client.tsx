@@ -8,5 +8,7 @@ interface BrandClientProps {
 }
 
 export const BrandClient: React.FC<BrandClientProps> = ({ logos }) => {
+  console.log(logos)
+
   return <h1>Hi Brand</h1>
 }

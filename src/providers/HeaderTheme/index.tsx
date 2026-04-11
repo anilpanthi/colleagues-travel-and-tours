@@ -23,15 +23,13 @@ const initialContext: ContextType = {
 const HeaderThemeContext = createContext(initialContext)
 
 export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(undefined)
-  const [hasHeroImage, setHasHeroImageState] = useState<boolean>(true)
-
-  useEffect(() => {
+  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(() => {
     if (canUseDOM) {
-      const initTheme = document.documentElement.getAttribute('data-theme') as Theme
-      setThemeState(initTheme)
+      return document.documentElement.getAttribute('data-theme') as Theme
     }
-  }, [])
+    return undefined
+  })
+  const [hasHeroImage, setHasHeroImageState] = useState<boolean>(true)
 
   const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
     setThemeState(themeToSet)
