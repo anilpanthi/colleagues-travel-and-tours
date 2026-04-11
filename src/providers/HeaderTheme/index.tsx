@@ -2,7 +2,7 @@
 
 import type { Theme } from '@/providers/Theme/types'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
+import React, { createContext, useCallback, use, useState } from 'react'
 
 import canUseDOM from '@/utilities/canUseDOM'
 
