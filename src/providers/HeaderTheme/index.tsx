@@ -2,9 +2,7 @@
 
 import type { Theme } from '@/providers/Theme/types'
 
-import React, { createContext, useCallback, use, useState } from 'react'
-
-import canUseDOM from '@/utilities/canUseDOM'
+import React, { createContext, useCallback, use, useEffect, useState } from 'react'
 
 export interface ContextType {
   headerTheme?: Theme | null
@@ -23,13 +21,22 @@ const initialContext: ContextType = {
 const HeaderThemeContext = createContext(initialContext)
 
 export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(() => {
-    if (canUseDOM) {
-      return document.documentElement.getAttribute('data-theme') as Theme
-    }
-    return undefined
-  })
+  // Initialize to undefined to ensure match between server and client during hydration
+  const [headerTheme, setThemeState] = useState<Theme | undefined | null>(undefined)
   const [hasHeroImage, setHasHeroImageState] = useState<boolean>(true)
+
+  useEffect(() => {
+    // Safely read the theme after component mounts on the client
+    const theme = document.documentElement.getAttribute('data-theme') as Theme
+    if (theme) {
+      // Use a timeout to avoid synchronous state update within effect (cascading renders)
+      const timeout = setTimeout(() => {
+        setThemeState(theme)
+      }, 0)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [])
 
   const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
     setThemeState(themeToSet)

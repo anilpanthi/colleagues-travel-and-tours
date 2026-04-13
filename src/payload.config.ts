@@ -4,6 +4,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from '@payloadcms/translations/languages/en'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
@@ -25,6 +26,8 @@ import { SiteSettings } from '@/globals/SiteSettings/config'
 //plugins
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +35,9 @@ const dirname = path.dirname(filename)
 // Check for required environment variables in production
 if (process.env.NODE_ENV === 'production') {
   if (!process.env.PAYLOAD_SECRET) {
-    console.warn('WARNING: PAYLOAD_SECRET is not set in production. This will cause authentication failures.')
+    console.warn(
+      'WARNING: PAYLOAD_SECRET is not set in production. This will cause authentication failures.',
+    )
   }
   if (!process.env.DATABASE_URL) {
     console.warn('WARNING: DATABASE_URL is not set in production. Connection will fail.')
@@ -48,6 +53,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+  },
+  i18n: {
+    supportedLanguages: { en },
   },
   serverURL: sanitizedServerURL,
   cors: [sanitizedServerURL].filter(Boolean),
@@ -104,6 +112,10 @@ export default buildConfig({
     formBuilderPlugin({
       // see below for a list of available options
     }),
+    nestedDocsPlugin({
+      collections: ['categories', 'activities', 'pages', 'packages'],
+      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
     redirectsPlugin({
       collections: ['pages', 'posts', 'activities', 'packages', 'testimonials', 'categories'],
 
@@ -112,6 +124,13 @@ export default buildConfig({
           group: 'Plugins',
         },
       },
+    }),
+    seoPlugin({
+      // We keep the plugin registered so its translations are loaded,
+      // but we don't list collections here because the user is manually
+      // adding the SEO fields in a custom tab layout.
+      generateTitle: ({ doc }) => `${doc.title} | Colleagues Travel And Tours`,
+      generateURL: ({ doc }) => `${sanitizedServerURL}/${doc.slug}`,
     }),
   ],
 })

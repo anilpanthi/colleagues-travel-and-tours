@@ -1,4 +1,4 @@
-import { getClientSideURL } from '@/utilities/getURL'
+import { getServerSideURL } from '@/utilities/getURL'
 
 /**
  * Processes media resource URL to ensure proper formatting
@@ -13,12 +13,18 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     cacheTag = encodeURIComponent(cacheTag)
   }
 
-  // Check if URL already has http/https protocol
+  // Convert absolute internal URLs to relative paths (best for next/image)
+  // We use getServerSideURL consistently to avoid hydration mismatches
+  const serverUrl = getServerSideURL()
+  if (serverUrl && url.startsWith(serverUrl)) {
+    url = url.substring(serverUrl.length)
+  }
+
+  // Check if URL still has http/https protocol (external URLs)
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
-  // Otherwise prepend client-side URL
-  const baseUrl = getClientSideURL()
-  return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
+  // Return formatted relative path
+  return cacheTag ? `${url}?${cacheTag}` : `${url}`
 }

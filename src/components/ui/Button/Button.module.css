@@ -12,132 +12,132 @@
 } */
 
 .button {
-	padding: 0.8rem 1.6rem;
-	border-radius: 0.6rem;
-	font-size: 1.4rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
-	border: 1px solid transparent;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	height: 4rem;
-	text-decoration: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  text-decoration: none;
 }
 
 /* ---------- Sizes ---------- */
 .lg {
-	padding: 1.2rem 3.2rem;
-	font-size: 1.6rem;
-	min-height: 4.8rem;
+  padding: 1.2rem 3.2rem;
+  font-size: 1.6rem;
+  min-height: 4.8rem;
 }
 
 .md {
-	padding: 0.8rem 2rem;
-	font-size: 1.5rem;
-	min-height: 4rem;
+  padding: 0.8rem 2rem;
+  font-size: 1.5rem;
+  min-height: 4rem;
 }
 
 .sm {
-	padding: 0.4rem 1.2rem;
-	font-size: 1.4rem;
-	min-height: 3.2rem;
+  padding: 0.4rem 1.2rem;
+  font-size: 1.4rem;
+  min-height: 3.2rem;
 }
 
 /* ---------- Appearances ---------- */
 .primary {
-	background-color: var(--color-primary);
-	color: var(--color-primary-foreground);
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
 }
 
 .primary:hover {
-	background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
 }
 
 .secondary {
-	background: #d9b341;
-	color: #1a1a1a;
+  background: #d9b341;
+  color: #1a1a1a;
 }
 
 .secondary:hover {
-	background: #c9a535;
+  background: #c9a535;
 }
 
 .outline {
-	background-color: transparent;
-	border: 1px solid var(--color-white-40);
-	text-decoration: none;
-	color: var(--color-white);
-	backdrop-filter: blur(4px);
+  background-color: transparent;
+  border: 1px solid var(--color-white-40);
+  text-decoration: none;
+  color: var(--color-white);
+  backdrop-filter: blur(4px);
 }
 
 .outline:hover {
-	background-color: var(--color-white-10);
+  background-color: var(--color-white-10);
 }
 
 .outlineBlack {
-	gap: 0.8rem;
-	color: #374151;
-	background: #ffffff;
+  gap: 0.8rem;
+  color: #374151;
+  background: #ffffff;
 
-	border: 1px solid #d1d5db;
-	border-radius: 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.8rem;
 
-	text-decoration: none;
-	transition: background 0.3s ease;
+  text-decoration: none;
+  transition: background 0.3s ease;
 }
 
 .outlineBlack:hover {
-	background: #f9fafb;
+  background: #f9fafb;
 }
 
 .simpleLinkbtn {
-	gap: 0.8rem;
-	color: var(--color-primary);
-	text-decoration: none;
-	transition: all 0.3s ease;
+  gap: 0.8rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .simpleLinkbtn:hover {
-	color: var(--color-primary-dark);
-	text-decoration: underline;
+  color: var(--color-primary-dark);
+  text-decoration: underline;
 }
 
 .blackBtn {
-	gap: 0.8rem;
-	background-color: var(--color-gray-800);
-	color: #fff;
+  gap: 0.8rem;
+  background-color: var(--color-gray-800);
+  color: #fff;
 }
 
 .blackBtn:hover {
-	color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .ghost {
-	background: transparent;
-	color: #0468bf;
+  background: transparent;
+  color: #0468bf;
 }
 
 .ghost:hover {
-	background: rgba(4, 104, 191, 0.1);
+  background: rgba(4, 104, 191, 0.1);
 }
 
 /* ---------- Utilities ---------- */
 .fullWidth {
-	width: 100%;
+  width: 100%;
 }
 
 .icon {
-	display: inline-flex;
-	align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .text {
-	line-height: 1;
+  line-height: 1;
 }
 
 .button:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }

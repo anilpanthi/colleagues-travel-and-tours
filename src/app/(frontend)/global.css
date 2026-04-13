@@ -1,11 +1,30 @@
 :root {
-  --color-primary: #f59e0b;
+
+  /* Colors */
+  --color-primary: oklch(76.858% 0.1646 70.075);
   --color-primary-dark: #d97706;
-  --white-color: #fff;
+  --color-primary-30: rgba(245, 158, 11, 0.3);
+  --color-white: #ffffffd1;
+  --color-white-scrolled: rgba(255, 255, 255, 0.1);
+
+
+  --color-yellow-900-30: rgba(120, 53, 15, 0.3);
+  --color-orange-900-20: rgba(124, 45, 18, 0.2);
+  --color-white-40: rgba(255, 255, 255, 0.4);
+  --color-white-10: rgba(255, 255, 255, 0.1);
+  --color-white-5: rgba(255, 255, 255, 0.05);
+  --color-gray-300: #d1d5db;
+  --color-gray-800: #1f2937;
+  --color-primary-foreground: #1f2937;
+  --color-gray-100: #f3f4f6;
+
+  /* Backround */
+  --color-bg-light: #f9fafb;
+  --color-footer-bg: #1f2937;
 
   /* Fonts */
-  --primary-font: var(--font-inter), sans-serif;
-  --secondary-font: var(--font-jost), sans-serif;
+  --font-primary: var(--font-inter), sans-serif;
+  --font-secondary: var(--font-jost), sans-serif;
 
   /* Font Sizes */
   --font-xl: 2.4rem;
@@ -19,6 +38,17 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  /* Msc */
+  --nav-h: 8rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -27,9 +57,13 @@ html {
 }
 
 body {
-  font-family: var(--primary-font);
-  font-size: 1.6rem;
-  background-color: var(--white-color);
-  color: var(--color-foreground);
+  font-family: var(--font-primary);
+  font-size: var(--font-sm);
+  background: #f0eff5;
   line-height: 1.5;
 }
+
+/* [data-theme='dark'] {
+  background-color: black;
+  color: white;
+} */

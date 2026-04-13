@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { generatePath } from '@/utilities/generatePath'
 
-import type { Page, Post, Package, Activity, Testimonial } from '@/payload-types'
+import type { Page, Post, Package, Activity, Testimonial, Category } from '@/payload-types'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonAppearance | 'default' | null
@@ -13,12 +13,13 @@ type CMSLinkType = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'pages' | 'posts' | 'packages' | 'activities' | 'testimonials'
-    value: Page | Post | Package | Activity | Testimonial | string | number
+    relationTo: 'pages' | 'posts' | 'packages' | 'activities' | 'testimonials' | 'categories'
+    value: Page | Post | Package | Activity | Testimonial | Category | string | number
   } | null
   size?: ButtonSize | 'clear' | null
   type?: 'custom' | 'reference' | null
   url?: string | null
+  onClick?: (e: React.MouseEvent) => void
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -32,6 +33,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    onClick,
   } = props
 
   let href = url
@@ -51,7 +53,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+      <Link className={cn(className)} href={href || url || ''} {...newTabProps} onClick={onClick}>
         {label && label}
         {children && children}
       </Link>
@@ -64,7 +66,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
         size={size as ButtonSize} 
         appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
         href={href || url || ''}
-        {...(newTabProps as any)}
+        onClick={onClick}
+        {...(newTabProps)}
     >
         {label && label}
         {children && children}

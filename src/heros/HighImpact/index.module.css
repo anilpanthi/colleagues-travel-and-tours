@@ -23,23 +23,21 @@
 	background-color: rgba(36, 35, 35, 0.5);
 }
 
-/* .heroOverlayGradient {
+.heroOverlayGradient {
 	position: absolute;
 	inset: 0;
-	background-image: linear-gradient(
-		to bottom right,
-		var(--color-yellow-900-30),
-		transparent,
-		var(--color-orange-900-20)
-	);
-} */
+	background-image: linear-gradient(to bottom right,
+			var(--color-yellow-900-30),
+			transparent,
+			var(--color-orange-900-20));
+}
 
-/* .heroOverlayGradient::after {
+.heroOverlayGradient::after {
 	content: '';
 	position: absolute;
 	inset: 0;
 	background: rgba(0, 0, 0, 0.25);
-} */
+}
 
 .heroContentWrapper {
 	position: relative;
@@ -101,6 +99,7 @@
 }
 
 @media (min-width: 640px) {
+
 	/* sm breakpoint */
 	.heroTitle {
 		font-size: 6rem;
@@ -109,6 +108,7 @@
 }
 
 @media (min-width: 1024px) {
+
 	/* lg breakpoint */
 	.heroTitle {
 		font-size: 7.2rem;
@@ -147,8 +147,9 @@
 .heroDesc {
 	font-family: var(--font-jost);
 	font-weight: 300;
-	color: var(--color-gray-100);
-	/* letter-spacing: 1px; */
+	color: #b3b4aa;
+	color: rgba(255, 255, 255, 0.8);
+	letter-spacing: 1px;
 }
 
 .heroActions {
@@ -182,16 +183,22 @@
 /* Hero Features */
 .heroFeatures {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 3.2rem;
 	max-width: 76.8rem;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
 	.heroFeatures {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: 1fr;
+	}
+	.featureCard {
+		max-width: 28rem;
+		width: 100%;
+		padding-left: 1.8rem;
+		justify-self: center;
 	}
 }
 
@@ -292,6 +299,7 @@
 }
 
 @keyframes bounce {
+
 	0%,
 	100% {
 		transform: translateX(-50%) translateY(0);

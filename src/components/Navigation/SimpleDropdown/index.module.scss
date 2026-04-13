@@ -1,0 +1,23 @@
+.simpleDropdown {
+  list-style: none;
+  padding: 1rem 0;
+
+  &_item {
+    padding: 0;
+  }
+
+  &_link {
+    display: block;
+    padding: 0.8rem 1.5rem;
+    color: #333 !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: var(--font-xs);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+      color: var(--color-primary) !important;
+    }
+  }
+}

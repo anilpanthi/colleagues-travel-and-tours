@@ -1,0 +1,149 @@
+.postContent {
+	padding-top: 8rem;
+	padding-bottom: 10rem;
+	background-color: var(--color-white);
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.article {
+	max-width: 800px;
+	margin: 0 auto;
+	animation: slideUp 0.8s ease-out;
+}
+
+.postMeta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3rem;
+	margin-bottom: 4rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid var(--color-gray-200);
+}
+
+.metaItem {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.metaLabel {
+	font-size: 1.2rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--color-gray-500);
+	font-weight: 600;
+}
+
+.metaValue {
+	font-size: 1.4rem;
+	color: var(--color-foreground);
+	font-weight: 500;
+}
+
+.categories {
+	display: flex;
+	gap: 1rem;
+}
+
+.categoryTag {
+	background-color: var(--color-gray-100);
+	padding: 0.4rem 1rem;
+	border-radius: 2rem;
+	font-size: 1.2rem;
+	color: var(--color-gray-800);
+}
+
+.postHeader {
+	padding-top: 15rem;
+	padding-bottom: 5rem;
+	background-color: var(--color-gray-50);
+	border-bottom: 1px solid var(--color-gray-200);
+
+	:global(.container) {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+}
+
+.mainTitle {
+	font-size: 4.8rem;
+	font-weight: 700;
+	margin-top: 2rem;
+	margin-bottom: 0;
+	color: var(--color-foreground);
+	line-height: 1.1;
+	font-family: var(--font-inter);
+}
+
+.richText {
+	font-size: 1.8rem;
+	line-height: 1.8;
+	color: var(--text-color);
+	font-family: var(--font-jost);
+	margin-bottom: 8rem;
+
+	/* Styling for specific elements inside RichText if needed */
+	h2,
+	h3,
+	h4 {
+		margin-top: 4rem;
+		margin-bottom: 2rem;
+		color: var(--color-foreground);
+		font-family: var(--font-inter);
+	}
+
+	p {
+		margin-bottom: 2.5rem;
+	}
+
+	img {
+		border-radius: 1.2rem;
+		margin: 4rem 0;
+	}
+}
+
+.relatedSection {
+	border-top: 1px solid var(--color-gray-200);
+	padding-top: 8rem;
+}
+
+.relatedTitle {
+	font-size: 3.2rem;
+	font-weight: 700;
+	margin-bottom: 4rem;
+	text-align: center;
+	color: var(--color-foreground);
+	font-family: var(--font-inter);
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 768px) {
+	.postContent {
+		padding-top: 5rem;
+		padding-bottom: 7rem;
+	}
+
+	.article {
+		padding: 0 1rem;
+	}
+
+	.richText {
+		font-size: 1.7rem;
+	}
+}

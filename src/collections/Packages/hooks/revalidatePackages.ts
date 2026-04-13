@@ -40,5 +40,3 @@ export const revalidateDelete: CollectionAfterDeleteHook<Package> = ({ doc, req:
 
   return doc
 }
-
-

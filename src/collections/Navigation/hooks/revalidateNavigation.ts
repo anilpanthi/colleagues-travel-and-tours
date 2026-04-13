@@ -9,6 +9,7 @@ export const revalidateNavigation: CollectionAfterChangeHook = ({
 		payload.logger.info(`Revalidating navigation: ${doc.name}`)
 
 		revalidateTag('global_header', 'max')
+		revalidateTag('global_site-settings', 'max')
 	}
 
 	return doc
@@ -18,6 +19,7 @@ export const revalidateDelete: CollectionAfterDeleteHook = ({ doc, req: { payloa
 	if (!context.disableRevalidate) {
 		payload.logger.info(`Revalidating navigation on delete: ${doc.name}`)
 		revalidateTag('global_header', 'max')
+		revalidateTag('global_site-settings', 'max')
 	}
 
 	return doc

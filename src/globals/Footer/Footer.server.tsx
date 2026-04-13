@@ -2,13 +2,13 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
 import { FooterClient } from './Footer.client'
 
-export async function Footer() {
-  const siteSettings = await getCachedGlobal('site-settings', 1)()
-  
+import type { SiteSetting } from '@/payload-types'
+
+export async function Footer({ footerColumns , footerBottom }: { footerColumns?: SiteSetting['footerColumns'] , footerBottom?: SiteSetting['footerBottom'] }) {
   return (
     <FooterClient 
-      footerColumns={siteSettings?.footerColumns}
-      footerBottom={siteSettings?.footerBottom}
+      footerColumns={footerColumns}
+      footerBottom={footerBottom}
     />
   )
 }

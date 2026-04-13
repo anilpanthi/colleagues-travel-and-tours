@@ -26,6 +26,9 @@ importers:
       '@payloadcms/plugin-form-builder':
         specifier: 3.81.0
         version: 3.81.0(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.1(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.7.3)
+      '@payloadcms/plugin-nested-docs':
+        specifier: 3.81.0
+        version: 3.81.0(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))
       '@payloadcms/plugin-redirects':
         specifier: 3.81.0
         version: 3.81.0(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))
@@ -35,6 +38,9 @@ importers:
       '@payloadcms/richtext-lexical':
         specifier: 3.81.0
         version: 3.81.0(@faceless-ui/modal@3.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@payloadcms/next@3.81.0(@types/react@19.2.14)(graphql@16.13.2)(monaco-editor@0.55.1)(next@16.2.1(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.7.3))(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.1(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.7.3)(yjs@13.6.30)
+      '@payloadcms/translations':
+        specifier: 3.81.0
+        version: 3.81.0
       '@payloadcms/ui':
         specifier: 3.81.0
         version: 3.81.0(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.1(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(sass@1.77.4))(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.7.3)
@@ -1438,6 +1444,11 @@ packages:
       payload: 3.81.0
       react: ^19.0.1 || ^19.1.2 || ^19.2.1
       react-dom: ^19.0.1 || ^19.1.2 || ^19.2.1
+
+  '@payloadcms/plugin-nested-docs@3.81.0':
+    resolution: {integrity: sha512-qYmU14RnneHvw0CUe+Ir0O0jBXPTd8I6DlC9/OS8Obqm7ClxL8HtIVMSeKqFfgSseNMNi9f8sChF/OmT4eHTig==}
+    peerDependencies:
+      payload: 3.81.0
 
   '@payloadcms/plugin-redirects@3.81.0':
     resolution: {integrity: sha512-BJFP4nKOmv3O7kf0Py6OBGJ3Ugqz4L/8Cvl3lc90bVuBLuZtku1r5hnm+q/kA2Vl1e+f82Ty2yf32iaQ3W7L+w==}
@@ -5966,6 +5977,10 @@ snapshots:
       - next
       - supports-color
       - typescript
+
+  '@payloadcms/plugin-nested-docs@3.81.0(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))':
+    dependencies:
+      payload: 3.81.0(graphql@16.13.2)(typescript@5.7.3)
 
   '@payloadcms/plugin-redirects@3.81.0(payload@3.81.0(graphql@16.13.2)(typescript@5.7.3))':
     dependencies:
