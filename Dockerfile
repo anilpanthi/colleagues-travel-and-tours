@@ -30,6 +30,8 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+ENV PAYLOAD_IGNORE_MIGRATIONS=true
+
 RUN \
   if [ -f yarn.lock ]; then yarn run generate:importmap && yarn run build; \
   elif [ -f package-lock.json ]; then npm run generate:importmap && npm run build; \

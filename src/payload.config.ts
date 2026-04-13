@@ -87,6 +87,11 @@ export default buildConfig({
   sharp,
   onInit: async (payload) => {
     if (process.env.NODE_ENV === 'production') {
+      if (process.env.PAYLOAD_IGNORE_MIGRATIONS === 'true') {
+        console.log('PAYLOAD_IGNORE_MIGRATIONS is set to true. Skipping migrations.')
+        return
+      }
+
       console.log('Production mode detected. Checking for pending migrations...')
       try {
         await payload.db.migrate()
