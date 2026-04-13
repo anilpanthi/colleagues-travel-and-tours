@@ -14,7 +14,7 @@ export const revalidateActivity: CollectionAfterChangeHook<any> = ({
       try {
         revalidatePath(path)
         revalidatePath('/activities', 'layout')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating activity at path: ${path}`)
       }
     }
@@ -27,7 +27,7 @@ export const revalidateActivity: CollectionAfterChangeHook<any> = ({
       try {
         revalidatePath(oldPath)
         revalidatePath('/activities', 'layout')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating old activity at path: ${oldPath}`)
       }
     }

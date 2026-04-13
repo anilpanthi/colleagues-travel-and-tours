@@ -18,7 +18,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       try {
         revalidatePath(path)
         revalidateTag('pages-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating page at path: ${path}`)
       }
     }
@@ -32,7 +32,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       try {
         revalidatePath(oldPath)
         revalidateTag('pages-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating old page at path: ${oldPath}`)
       }
     }

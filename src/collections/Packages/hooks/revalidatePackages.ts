@@ -18,7 +18,7 @@ export const revalidatePackages: CollectionAfterChangeHook<Package> = async ({
       try {
         revalidatePath(path)
         revalidateTag('packages-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating product at path: ${path}`)
       }
     }
@@ -32,7 +32,7 @@ export const revalidatePackages: CollectionAfterChangeHook<Package> = async ({
       try {
         revalidatePath(oldPath)
         revalidateTag('packages-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating old product at path: ${oldPath}`)
       }
     }
@@ -47,7 +47,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<Package> = ({ doc, req:
     try {
       revalidatePath(path)
       revalidateTag('packages-sitemap', 'max')
-    } catch (err) {
+    } catch (_err) {
       // Ignore errors during render
     }
   }

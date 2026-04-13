@@ -18,7 +18,7 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
       try {
         revalidatePath(path)
         revalidateTag('posts-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating post at path: ${path}`)
       }
     }
@@ -32,7 +32,7 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
       try {
         revalidatePath(oldPath)
         revalidateTag('posts-sitemap', 'max')
-      } catch (err) {
+      } catch (_err) {
         payload.logger.error(`Error revalidating old post at path: ${oldPath}`)
       }
     }
@@ -47,7 +47,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { 
     try {
       revalidatePath(path)
       revalidateTag('posts-sitemap', 'max')
-    } catch (err) {
+    } catch (_err) {
       // Ignore errors during render
     }
   }

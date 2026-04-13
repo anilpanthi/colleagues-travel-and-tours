@@ -37,7 +37,7 @@ export const revalidateTestimonials: CollectionAfterChangeHook<Testimonial> = as
           payload.logger.info(`Revalidating package at path: ${path} due to testimonial change`)
           try {
             revalidatePath(path)
-          } catch (err) {
+          } catch (_err) {
             // Ignore errors during render
           }
         }
@@ -70,7 +70,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<Testimonial> = async ({
             payload.logger.info(`Revalidating package at path: ${path} due to testimonial deletion`)
             try {
               revalidatePath(path)
-            } catch (err) {
+            } catch (_err) {
               // Ignore errors during render
             }
           }
