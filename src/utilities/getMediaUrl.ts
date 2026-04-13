@@ -26,5 +26,9 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
   }
 
   // Return formatted relative path
+  if (!url.startsWith('/') && !url.startsWith('http')) {
+    url = `/${url}`
+  }
+
   return cacheTag ? `${url}?${cacheTag}` : `${url}`
 }
