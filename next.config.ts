@@ -33,7 +33,9 @@ const nextConfig: NextConfig = {
             return null
           }
         })
-        .filter(Boolean) as any),
+        .filter((item): item is { hostname: string; protocol: 'http' | 'https' } =>
+          Boolean(item),
+        )),
     ],
     qualities: [75, 100],
   },
