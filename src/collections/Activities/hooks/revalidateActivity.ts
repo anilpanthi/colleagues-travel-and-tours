@@ -1,7 +1,8 @@
 import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
+import type { Activity } from '../../../payload-types'
 
-export const revalidateActivity: CollectionAfterChangeHook<any> = ({
+export const revalidateActivity: CollectionAfterChangeHook<Activity> = ({
   doc,
   previousDoc,
   req: { payload, context },
@@ -35,14 +36,14 @@ export const revalidateActivity: CollectionAfterChangeHook<any> = ({
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<any> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Activity> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate && doc?.slug) {
     const path = `/activities/${doc.slug}`
 
     try {
       revalidatePath(path)
       revalidatePath('/activities', 'layout')
-    } catch (err) {
+    } catch (_err) {
       // Ignore errors during render
     }
   }

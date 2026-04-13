@@ -35,6 +35,7 @@ const nextConfig: NextConfig = {
         })
         .filter(Boolean) as any),
     ],
+    qualities: [75, 100],
   },
   output: 'standalone',
   webpack: (webpackConfig) => {

@@ -12,7 +12,7 @@ interface BrandClientProps {
   isScrolled?: boolean
 }
 
-export const BrandClient: React.FC<BrandClientProps> = ({ logos, theme, isScrolled }) => {
+export const BrandClient: React.FC<BrandClientProps> = ({ logos, isScrolled }) => {
   const logo = isScrolled ? logos?.logoLight : logos?.logoDark
   return (
     <div className={styles.brandLink} style={{ marginTop: '1px' }}>
