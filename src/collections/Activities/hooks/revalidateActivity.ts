@@ -7,32 +7,44 @@ export const revalidateActivity: CollectionAfterChangeHook<any> = ({
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
-    if (doc._status === 'published') {
+    if (doc._status === 'published' && doc.slug) {
       const path = `/activities/${doc.slug}`
       payload.logger.info(`Revalidating activity at path: ${path}`)
 
-      revalidatePath(path)
-      revalidatePath('/activities', 'layout')
+      try {
+        revalidatePath(path)
+        revalidatePath('/activities', 'layout')
+      } catch (err) {
+        payload.logger.error(`Error revalidating activity at path: ${path}`)
+      }
     }
 
     // If the activity was previously published, we need to revalidate the old path
-    if (previousDoc?._status === 'published' && doc._status !== 'published') {
+    if (previousDoc?._status === 'published' && doc._status !== 'published' && previousDoc.slug) {
       const oldPath = `/activities/${previousDoc.slug}`
       payload.logger.info(`Revalidating old activity at path: ${oldPath}`)
 
-      revalidatePath(oldPath)
-      revalidatePath('/activities', 'layout')
+      try {
+        revalidatePath(oldPath)
+        revalidatePath('/activities', 'layout')
+      } catch (err) {
+        payload.logger.error(`Error revalidating old activity at path: ${oldPath}`)
+      }
     }
   }
   return doc
 }
 
 export const revalidateDelete: CollectionAfterDeleteHook<any> = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate) {
-    const path = `/activities/${doc?.slug}`
+  if (!context.disableRevalidate && doc?.slug) {
+    const path = `/activities/${doc.slug}`
 
-    revalidatePath(path)
-    revalidatePath('/activities', 'layout')
+    try {
+      revalidatePath(path)
+      revalidatePath('/activities', 'layout')
+    } catch (err) {
+      // Ignore errors during render
+    }
   }
 
   return doc

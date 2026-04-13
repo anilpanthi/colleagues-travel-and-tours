@@ -35,7 +35,11 @@ export const revalidateTestimonials: CollectionAfterChangeHook<Testimonial> = as
         if (pkg?.slug) {
           const path = `/${pkg.slug}`
           payload.logger.info(`Revalidating package at path: ${path} due to testimonial change`)
-          revalidatePath(path)
+          try {
+            revalidatePath(path)
+          } catch (err) {
+            // Ignore errors during render
+          }
         }
       } catch (err) {
         payload.logger.error(`Error revalidating package ${id}: ${err}`)
@@ -64,7 +68,11 @@ export const revalidateDelete: CollectionAfterDeleteHook<Testimonial> = async ({
           if (fetchedPkg?.slug) {
             const path = `/${fetchedPkg.slug}`
             payload.logger.info(`Revalidating package at path: ${path} due to testimonial deletion`)
-            revalidatePath(path)
+            try {
+              revalidatePath(path)
+            } catch (err) {
+              // Ignore errors during render
+            }
           }
         } catch (err) {
           payload.logger.error(`Error revalidating package ${id}: ${err}`)
