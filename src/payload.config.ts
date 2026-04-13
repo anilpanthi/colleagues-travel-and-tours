@@ -25,6 +25,7 @@ import { SiteSettings } from '@/globals/SiteSettings/config'
 
 //plugins
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
@@ -114,6 +115,19 @@ export default buildConfig({
     },
   }),
   plugins: [
+    importExportPlugin({
+      collections: [
+        { slug: 'users' },
+        { slug: 'pages' },
+        { slug: 'posts' },
+        { slug: 'activities' },
+        { slug: 'packages' },
+        { slug: 'testimonials' },
+        { slug: 'categories' },
+        { slug: 'navigation' },
+      ],
+      // see below for a list of available options
+    }),
     formBuilderPlugin({
       // see below for a list of available options
     }),
