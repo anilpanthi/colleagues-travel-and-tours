@@ -24,7 +24,7 @@ export const CardsBlock: React.FC<CardBlockProps> = async (props) => {
 		const payload = await getPayload({ config: configPromise })
 		const fetchedItems = await payload.find({
 			collection: collection as keyof Config['collections'],
-			depth: 1,
+			depth: 2,
 			limit: limit || 10,
 			sort: '-createdAt',
 		})

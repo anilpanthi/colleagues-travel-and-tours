@@ -9,6 +9,7 @@ export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 
 	const result = await payload.find({
 		collection: 'pages',
+		depth: 5,
 		draft,
 		limit: 1,
 		pagination: false,
