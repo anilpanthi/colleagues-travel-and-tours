@@ -51,6 +51,15 @@
   padding: 0;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overscroll-behavior: none;
+}
+
+
 html {
   box-sizing: border-box;
   font-size: 62.5%;
