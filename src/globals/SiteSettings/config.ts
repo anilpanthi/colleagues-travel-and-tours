@@ -1,7 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 import { link } from '@/fields/link'
-import { lucideIcon } from '@/fields/lucideIcon'
+
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',

@@ -129,7 +129,39 @@ export default buildConfig({
       // see below for a list of available options
     }),
     formBuilderPlugin({
-      // see below for a list of available options
+      formOverrides: {
+        fields: ({ defaultFields }) => {
+          return defaultFields.map((field) => {
+            if (
+              'name' in field &&
+              field.name === 'fields' &&
+              'blocks' in field &&
+              Array.isArray(field.blocks)
+            ) {
+              return {
+                ...field,
+                blocks: field.blocks.map((block) => {
+                  if (['text', 'textarea', 'email', 'number'].includes(block.slug)) {
+                    return {
+                      ...block,
+                      fields: [
+                        ...(block.fields || []),
+                        {
+                          name: 'placeholder',
+                          type: 'text',
+                          label: 'Placeholder',
+                        },
+                      ],
+                    }
+                  }
+                  return block
+                }),
+              }
+            }
+            return field
+          })
+        },
+      },
     }),
     nestedDocsPlugin({
       collections: ['categories', 'activities', 'pages', 'packages'],

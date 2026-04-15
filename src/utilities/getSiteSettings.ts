@@ -1,5 +1,5 @@
 import { getCachedGlobal } from './getGlobals'
-import type { SiteSetting } from '@/payload-types'
+
 
 /**
  * Optimized fetcher for Site Settings used by both Header and Footer.

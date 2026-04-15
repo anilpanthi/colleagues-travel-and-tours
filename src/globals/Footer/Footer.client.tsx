@@ -9,7 +9,7 @@ import Link from 'next/link'
 import type { Media as MediaType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import { MapPin, Phone, Mail, icons } from 'lucide-react'
+import { MapPin, Phone, Mail } from 'lucide-react'
 import { generatePath } from '@/utilities/generatePath'
 
 interface FooterClientProps {
@@ -31,7 +31,6 @@ export const FooterClient: React.FC<FooterClientProps> = ({
   address,
   emails,
 }) => {
-  console.log(contactInfo)
   return (
     <footer className={styles.footer}>
       <Container>
@@ -99,7 +98,6 @@ export const FooterClient: React.FC<FooterClientProps> = ({
               const displayAddress = address
               const displayPhone = contactInfo?.[0]?.number
               const displayEmail = emails?.[0]?.email
-              console.log(displayAddress, displayPhone, displayEmail)
               return (
                 <div key={index} className={styles.footerCol}>
                   <h4 className={styles.footerTitle}>{col.title}</h4>
@@ -135,7 +133,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
           <div className={styles.footerBottom}>
             <p>{footerBottom.copyright}</p>
             <p className={styles.poweredBy}>
-              Powered by
+              Developed by
               <a href="https://www.antiqcode.com" target="_blank" rel="noopener noreferrer">
                 antiqcode
               </a>
