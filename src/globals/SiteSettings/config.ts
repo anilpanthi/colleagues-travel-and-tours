@@ -164,15 +164,7 @@ export const SiteSettings: GlobalConfig = {
                     },
                   ],
                 },
-                {
-                  name: 'brandLogo',
-                  type: 'upload',
-                  relationTo: 'media',
-                  label: 'Brand Logo',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'brand',
-                  },
-                },
+
                 {
                   name: 'description',
                   type: 'textarea',
@@ -182,23 +174,7 @@ export const SiteSettings: GlobalConfig = {
                     description: 'Text to display below the logo in this column',
                   },
                 },
-                {
-                  name: 'socialLinks',
-                  type: 'array',
-                  label: 'Social Media Links',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'brand',
-                  },
-                  fields: [
-                    lucideIcon,
-                    {
-                      name: 'url',
-                      type: 'text',
-                      required: false,
-                      label: 'URL',
-                    },
-                  ],
-                },
+  
                 {
                   name: 'navItems',
                   type: 'array',
@@ -210,42 +186,6 @@ export const SiteSettings: GlobalConfig = {
                     link({
                       appearances: false,
                     }),
-                  ],
-                },
-                {
-                  name: 'contactInfo',
-                  type: 'group',
-                  label: 'Contact Information',
-                  admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'contact',
-                  },
-                  fields: [
-                    {
-                      name: 'address',
-                      type: 'text',
-                      label: 'Address',
-                    },
-                    {
-                      type: 'row',
-                      fields: [
-                        {
-                          name: 'phone',
-                          type: 'text',
-                          label: 'Phone Number',
-                          admin: {
-                            width: '50%',
-                          },
-                        },
-                        {
-                          name: 'email',
-                          type: 'text',
-                          label: 'Email Address',
-                          admin: {
-                            width: '50%',
-                          },
-                        },
-                      ],
-                    },
                   ],
                 },
               ],

@@ -1,7 +1,7 @@
 :root {
 
   /* Colors */
-  --color-primary: oklch(76.858% 0.1646 70.075);
+  --color-primary: #f59e0b;
   --color-primary-dark: #d97706;
   --color-primary-30: rgba(245, 158, 11, 0.3);
   --color-white: #ffffffd1;
@@ -71,6 +71,20 @@ body {
   background: #f0eff5;
   line-height: 1.5;
 }
+
+/* --- Layout Wrapper (Sticky Footer) --- */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 
 /* [data-theme='dark'] {
   background-color: black;

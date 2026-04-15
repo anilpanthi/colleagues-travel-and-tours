@@ -16,8 +16,12 @@ export const getCachedSiteSettings = () =>
     },
     footerColumns: true,
     footerBottom: true,
+    socialLinks: true,
+    contactNumbers: true,
+    address: true,
+    emailAddresses: true,
   })()
 
-// Re-export as getSiteSettings for backward compatibility if needed, 
+// Re-export as getSiteSettings for backward compatibility if needed,
 // though we should prefer the cached version for layout components.
 export const getSiteSettings = getCachedSiteSettings

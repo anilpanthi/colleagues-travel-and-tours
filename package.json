@@ -26,7 +26,7 @@
     "@payloadcms/live-preview-react": "3.81.0",
     "@payloadcms/next": "3.81.0",
     "@payloadcms/plugin-form-builder": "3.81.0",
-    "@payloadcms/plugin-import-export": "^3.82.1",
+    "@payloadcms/plugin-import-export": "3.81.0",
     "@payloadcms/plugin-nested-docs": "3.81.0",
     "@payloadcms/plugin-redirects": "3.81.0",
     "@payloadcms/plugin-seo": "3.81.0",

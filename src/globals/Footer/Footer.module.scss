@@ -36,6 +36,7 @@
 .footerDesc {
   color: var(--color-gray-300);
   font-size: 1.4rem;
+  font-family: var(--font-jost);
   line-height: 1.6;
   margin-bottom: 2.4rem;
   max-width: 38.4rem;
@@ -137,6 +138,7 @@
   text-align: center;
   font-size: 1.4rem;
   color: var(--color-gray-300);
+  font-family: var(--font-jost);
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -167,4 +169,27 @@
 
 .separator {
   color: rgba(255, 255, 255, 0.2);
+}
+
+.poweredBy {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #636363;
+  margin: 0; // Reset p margin
+  a {
+    text-decoration: none;
+    color: #919090;
+    font-size: 1.2rem;
+    transition: opacity 0.3s;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+.socialIconMedia {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
 }

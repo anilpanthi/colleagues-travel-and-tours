@@ -2836,18 +2836,10 @@ export interface SiteSetting {
     | {
         title?: string | null;
         type?: ('brand' | 'nav' | 'contact') | null;
-        brandLogo?: (number | null) | Media;
         /**
          * Text to display below the logo in this column
          */
         description?: string | null;
-        socialLinks?:
-          | {
-              icon?: string | null;
-              url?: string | null;
-              id?: string | null;
-            }[]
-          | null;
         navItems?:
           | {
               link: {
@@ -2880,11 +2872,6 @@ export interface SiteSetting {
               id?: string | null;
             }[]
           | null;
-        contactInfo?: {
-          address?: string | null;
-          phone?: string | null;
-          email?: string | null;
-        };
         id?: string | null;
       }[]
     | null;
@@ -2965,15 +2952,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         title?: T;
         type?: T;
-        brandLogo?: T;
         description?: T;
-        socialLinks?:
-          | T
-          | {
-              icon?: T;
-              url?: T;
-              id?: T;
-            };
         navItems?:
           | T
           | {
@@ -2987,13 +2966,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                     label?: T;
                   };
               id?: T;
-            };
-        contactInfo?:
-          | T
-          | {
-              address?: T;
-              phone?: T;
-              email?: T;
             };
         id?: T;
       };

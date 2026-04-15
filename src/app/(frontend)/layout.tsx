@@ -11,9 +11,11 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import './global.css'
 
 import { ProgressBar } from '@/components/ProgressBar'
-import { Header } from '@/globals/Header/Header.server'
-import { Footer } from '@/globals/Footer/Footer.server'
+
 import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
+
+import { FooterClient } from '@/globals/Footer/Footer.client'
+import { HeaderClient } from '@/globals/Header/Header.client'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
@@ -42,7 +44,17 @@ const jost = Jost({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const siteSettings = await getCachedSiteSettings()
 
-  const { mainNavigation, logos, footerColumns, footerBottom } = siteSettings
+  const { mainNavigation, logos } = siteSettings
+
+  const footerData = {
+    footerColumns: siteSettings?.footerColumns,
+    logos: siteSettings?.logos?.logoDark,
+    footerBottom: siteSettings?.footerBottom,
+    socialLinks: siteSettings?.socialLinks,
+    contactInfo: siteSettings?.contactNumbers,
+    address: siteSettings?.address,
+    emails: siteSettings?.emailAddresses,
+  }
 
   return (
     <html className={cn(inter.variable, jost.variable)} lang="en" suppressHydrationWarning>
@@ -53,11 +65,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Providers>
           <div className="layout-wrapper">
             <ProgressBar />
-            <Header mainNavigation={mainNavigation} logos={logos} />
-            <main className="main-content">
-              {children}
-            </main>
-            <Footer footerColumns={footerColumns} footerBottom={footerBottom} />
+            <HeaderClient mainNavigation={mainNavigation} logos={logos} />
+            <main className="main-content">{children}</main>
+            <FooterClient {...footerData} />
           </div>
         </Providers>
       </body>

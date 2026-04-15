@@ -45,9 +45,16 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     }
   }
 
-  if (!href) return null
+  if (!href && label) {
+    href = `/${label.toLowerCase().replace(/\s+/g, '-')}`
+  }
 
-  const size = appearance === 'inline' ? 'md' : (sizeFromProps === 'clear' ? 'md' : sizeFromProps)
+  if (!href) {
+    console.warn('CMSLink: No href resolved', props)
+    return null
+  }
+
+  const size = appearance === 'inline' ? 'md' : sizeFromProps === 'clear' ? 'md' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
   /* Ensure we don't break any styles set by richText */
@@ -61,16 +68,16 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button 
-        className={className} 
-        size={size as ButtonSize} 
-        appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
-        href={href || url || ''}
-        onClick={onClick}
-        {...(newTabProps)}
+    <Button
+      className={className}
+      size={size as ButtonSize}
+      appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
+      href={href || url || ''}
+      onClick={onClick}
+      {...newTabProps}
     >
-        {label && label}
-        {children && children}
+      {label && label}
+      {children && children}
     </Button>
   )
 }
