@@ -9,11 +9,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { draftMode } from 'next/headers'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { getSiteSettings } from '@/utilities/getSiteSettings'
-import type { Media } from '@/payload-types'
-
 import styles from './page.module.css'
-import Container from '@/components/ui/Container'
-import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 
 export default async function ContactPage() {
   const { isEnabled: draft } = await draftMode()
