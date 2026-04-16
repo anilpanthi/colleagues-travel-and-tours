@@ -65,6 +65,7 @@ export const Cards: Block = {
 				return false
 			},
 			hasMany: true,
+			
 			admin: {
 				condition: (_, siblingData) => siblingData?.populateBy === 'selection',
 			},

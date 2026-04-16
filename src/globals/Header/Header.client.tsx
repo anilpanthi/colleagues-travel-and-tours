@@ -28,6 +28,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
 
   const [isFront, setIsFront] = useState<boolean>(true)
 
+
+
   useEffect(() => {
     setIsMounted(true)
   }, [])
@@ -86,7 +88,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
 
-  const menuItems = mainNavigation && typeof mainNavigation === 'object' ? mainNavigation.items : null
+  const menuItems =
+    mainNavigation && typeof mainNavigation === 'object' ? mainNavigation.items : null
 
   return (
     <header
@@ -96,7 +99,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
         isMounted && (isFront ? cssClass.primary : cssClass.secondary),
         isMounted && (isPastHero || !hasHeroImage) && 'past-hero',
         isMobileMenuOpen && cssClass.mobileMenuOpen,
-        !hasHeroImage && cssClass.noHero,
+        isMounted && !hasHeroImage && 'noHero',
       )}
       {...(isMounted && theme ? { 'data-theme': theme } : {})}
     >
