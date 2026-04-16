@@ -1,118 +1,118 @@
 // src/components/ui/accordion/Accordion.module.scss
 
 .accordion {
-	width: 100%;
+  width: 100%;
 }
 
 .title {
-	font-size: 2.4rem;
-	font-weight: 700;
+  font-size: 2.4rem;
+  font-weight: 700;
 
-	margin-bottom: 2rem;
-	color: #000;
+  margin-bottom: 2rem;
+  color: #000;
 }
 
 .item {
-	border-radius: 8px;
-	overflow: hidden;
-	margin-bottom: 2rem;
-	background: var(--card-bg, #fff);
-	transform: translateZ(0);
-	transition: all 0.3s ease;
-	line-height: 1.25;
-	&[data-state='open'] {
-		// border-color: var(--primary, #3b82f6);
-		// box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-	}
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background: var(--card-bg, #fff);
+  transform: translateZ(0);
+  transition: all 0.3s ease;
+  line-height: 1.25;
+  &[data-state='open'] {
+    // border-color: var(--primary, #3b82f6);
+    // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .trigger {
-	width: 100%;
-	padding: 2rem 2.4rem;
-	border: none;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-	font-size: 2rem;
-	font-weight: 600;
-	color: var(--foreground, #0f172a);
-	cursor: pointer;
-	transition: all 0.2s;
-	border-radius: 8px;
-	overflow: hidden; // Ensures .day is clipped to trigger's radius
+  width: 100%;
+  padding: 2rem 2.4rem;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #3d3b3b;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 8px;
+  overflow: hidden; // Ensures .day is clipped to trigger's radius
 
-	&[data-state='open'] {
-		border-radius: 8px 8px 0 8px !important; // Ensure rounding even when open
-	}
+  &[data-state='open'] {
+    border-radius: 8px 8px 0 8px !important; // Ensure rounding even when open
+  }
 
-	.titleWrapper {
-		flex: 1;
-		text-align: left;
-		display: flex;
-		gap: 3rem;
-		.day {
-			color: #fff;
-			font-size: 2rem;
-			background: var(--color-primary);
-			padding: 2rem 1.2rem;
-			margin: -2rem 0.6rem -2rem -2.4rem;
-			display: inline-block;
-			border-radius: 8px 0 0 8px !important; // Always rounded on the left
-		}
-	}
+  .titleWrapper {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    gap: 3rem;
+    .day {
+      color: #fff;
+      font-size: 1.8rem;
+      background: var(--color-primary);
+      padding: 2rem 1.2rem;
+      margin: -2rem 0.6rem -2rem -2.4rem;
+      display: inline-block;
+      border-radius: 8px 0 0 8px !important; // Always rounded on the left
+    }
+  }
 
-	// Remove the state-dependent override that was causing square corners
-	// &[data-state='open'] .day { ... }
+  // Remove the state-dependent override that was causing square corners
+  // &[data-state='open'] .day { ... }
 
-	.chevron {
-		transition: transform 0.3s ease;
-		flex-shrink: 0;
-	}
+  .chevron {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
 
-	&[data-state='open'] .chevron {
-		transform: rotate(180deg);
-	}
+  &[data-state='open'] .chevron {
+    transform: rotate(180deg);
+  }
 }
 
 .content {
-	overflow: hidden;
-	padding: 0 2.4rem;
-	color: #787878;
-	font-family: var(--font-jost);
-	font-weight: 400;
-	font-size: 1.8rem;
-	line-height: 1.6;
-	border-radius: 0 0 8px 8px;
-	// background: #fff; // Removed to prevent animation flicker
+  overflow: hidden;
+  padding: 0 2.4rem;
+  color: #787878;
+  font-family: var(--font-jost);
+  font-weight: 400;
+  font-size: 1.8rem;
+  line-height: 1.6;
+  border-radius: 0 0 8px 8px;
+  // background: #fff; // Removed to prevent animation flicker
 }
 
 .contentInner {
-	padding: 1.2rem 0 2rem;
+  padding: 1.2rem 0 2rem;
 }
 
 .variant {
-	&-ghost .item {
-		border: none;
-		background: transparent;
-		box-shadow: none;
-	}
+  &-ghost .item {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
 
-	&-bordered .item {
-		border-radius: 0;
-		border-left: 0;
-		border-right: 0;
-		margin-bottom: 0;
+  &-bordered .item {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    margin-bottom: 0;
 
-		&:first-child {
-			border-top: none;
-		}
-	}
+    &:first-child {
+      border-top: none;
+    }
+  }
 
-	&-minimal .item {
-		border: none;
-		background: transparent;
-		box-shadow: none;
-		margin-bottom: 4px;
-	}
+  &-minimal .item {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    margin-bottom: 4px;
+  }
 }

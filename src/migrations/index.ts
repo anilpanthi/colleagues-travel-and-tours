@@ -3,6 +3,7 @@ import * as migration_20260409_130703_new_collections from './20260409_130703_ne
 import * as migration_20260413_031809_nested_doc from './20260413_031809_nested_doc';
 import * as migration_20260415_085930_cleanup_site_settings from './20260415_085930_cleanup_site_settings';
 import * as migration_20260415_152253_add_placeholder_fields_to_forms from './20260415_152253_add_placeholder_fields_to_forms';
+import * as migration_20260416_162815_package_fields_update from './20260416_162815_package_fields_update';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260415_152253_add_placeholder_fields_to_forms.up,
     down: migration_20260415_152253_add_placeholder_fields_to_forms.down,
-    name: '20260415_152253_add_placeholder_fields_to_forms'
+    name: '20260415_152253_add_placeholder_fields_to_forms',
+  },
+  {
+    up: migration_20260416_162815_package_fields_update.up,
+    down: migration_20260416_162815_package_fields_update.down,
+    name: '20260416_162815_package_fields_update'
   },
 ];

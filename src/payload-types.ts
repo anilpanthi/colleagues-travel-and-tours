@@ -447,6 +447,21 @@ export interface Package {
     };
     [k: string]: unknown;
   } | null;
+  packageFacts?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   detailedItinerary?: DetailedItinerary;
   includes?: {
     root: {
@@ -478,21 +493,7 @@ export interface Package {
     };
     [k: string]: unknown;
   } | null;
-  packageFacts?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  mapEmbed?: string | null;
   relatedPackages?: (number | Package)[] | null;
   meta?: {
     title?: string | null;
@@ -502,6 +503,12 @@ export interface Package {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  Activity?: (number | Activity)[] | null;
   tripDuration?: string | null;
   tripGrade?: ('easy' | 'moderate' | 'difficult' | 'strenuous') | null;
   bestSeason?: string | null;
@@ -516,16 +523,10 @@ export interface Package {
         id?: string | null;
       }[]
     | null;
+  featuredImage?: (number | null) | Media;
   price?: number | null;
   salePrice?: number | null;
-  featuredImage?: (number | null) | Media;
   bookingForm?: (number | null) | Form;
-  Activity?: (number | Activity)[] | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
   parent?: (number | null) | Package;
   breadcrumbs?:
     | {
@@ -2046,10 +2047,11 @@ export interface PackagesSelect<T extends boolean = true> {
         id?: T;
       };
   overview?: T;
+  packageFacts?: T;
   detailedItinerary?: T | DetailedItinerarySelect<T>;
   includes?: T;
   excludes?: T;
-  packageFacts?: T;
+  mapEmbed?: T;
   relatedPackages?: T;
   meta?:
     | T
@@ -2058,6 +2060,9 @@ export interface PackagesSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  generateSlug?: T;
+  slug?: T;
+  Activity?: T;
   tripDuration?: T;
   tripGrade?: T;
   bestSeason?: T;
@@ -2072,13 +2077,10 @@ export interface PackagesSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  featuredImage?: T;
   price?: T;
   salePrice?: T;
-  featuredImage?: T;
   bookingForm?: T;
-  Activity?: T;
-  generateSlug?: T;
-  slug?: T;
   parent?: T;
   breadcrumbs?:
     | T

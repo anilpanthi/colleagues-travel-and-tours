@@ -136,7 +136,22 @@ export const Packages: CollectionConfig<'packages'> = {
                 },
               ],
             },
-
+            {
+              name: 'packageFacts',
+              type: 'richText',
+              label: 'Trip Highlights',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
+                  ]
+                },
+              }),
+            },
             {
               name: 'detailedItinerary',
               type: 'array',
@@ -208,20 +223,9 @@ export const Packages: CollectionConfig<'packages'> = {
               }),
             },
             {
-              name: 'packageFacts',
-              type: 'richText',
-              label: 'Trip Highlights',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    UnorderedListFeature(),
-                    OrderedListFeature(),
-                  ]
-                },
-              }),
+              name: 'mapEmbed',
+              type: 'textarea',
+              label: 'Map Embed',
             },
           ],
           label: 'Content',
@@ -272,6 +276,17 @@ export const Packages: CollectionConfig<'packages'> = {
           ],
         },
       ],
+    },
+    slugField(),
+    {
+      name: 'Activity',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'activities',
+      label: 'Activity',
     },
     {
       type: 'collapsible',
@@ -342,6 +357,15 @@ export const Packages: CollectionConfig<'packages'> = {
       ],
     },
     {
+      name: 'featuredImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Featured Image',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'price',
       type: 'number',
       label: 'Regular Price',
@@ -359,16 +383,6 @@ export const Packages: CollectionConfig<'packages'> = {
     },
 
     {
-      name: 'featuredImage',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Featured Image',
-      admin: {
-        position: 'sidebar',
-      },
-    },
-
-    {
       name: 'bookingForm',
       type: 'relationship',
       relationTo: 'forms',
@@ -376,17 +390,6 @@ export const Packages: CollectionConfig<'packages'> = {
         position: 'sidebar',
       },
     },
-    {
-      name: 'Activity',
-      type: 'relationship',
-      admin: {
-        position: 'sidebar',
-      },
-      hasMany: true,
-      relationTo: 'activities',
-      label: 'Activity',
-    },
-    slugField(),
   ],
   hooks: {
     afterChange: [revalidatePackages],
