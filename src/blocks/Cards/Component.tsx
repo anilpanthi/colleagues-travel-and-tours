@@ -1,7 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import type { CardsBlock as CardBlockProps, Config } from '@/payload-types'
+import type { Activity, CardsBlock as CardBlockProps, Config, Package, Post, Testimonial } from '@/payload-types'
 import Cards from '@/components/ui/Card/Cards'
 
 export const CardsBlock: React.FC<CardBlockProps> = async (props) => {
@@ -57,7 +57,8 @@ export const CardsBlock: React.FC<CardBlockProps> = async (props) => {
     )
 
     // Create a lookup map for the fetched documents
-    const docsMap: Record<string, Record<string | number, any>> = {}
+    type ItemDoc = Config['collections'][keyof Config['collections']]
+    const docsMap: Record<string, Record<string | number, ItemDoc>> = {}
     collectionResults.forEach((res) => {
       docsMap[res.collectionSlug] = {}
       res.docs.forEach((doc) => {
