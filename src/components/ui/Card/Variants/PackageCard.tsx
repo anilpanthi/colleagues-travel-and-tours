@@ -17,9 +17,15 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
 		<>
 			{data?.map((item, index) => {
 				const doc = item?.value as Package
-				const { id, title, slug, featuredImage, meta, price } = doc
-				const href = slug ? `/${slug}` : `/${collection}/${id}`
+				if (!doc || typeof doc !== 'object') {
+					console.warn('PackageCard: doc is not populated', item)
+					return null
+				}
 
+				const { id, title, slug, featuredImage, meta, price } = doc
+				// Default to 'packages' if collection is not provided or 'none'
+				const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
+				const href = slug ? `/${slug}` : `/${collectionSlug}/${id}`
 				return (
 					<Card key={index} className={styles.packageCard}>
 						<Card.Div className={styles.packageCard__image_wrapper}>

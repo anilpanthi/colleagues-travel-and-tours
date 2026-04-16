@@ -20,6 +20,28 @@ export const CardsBlock: React.FC<CardBlockProps> = async (props) => {
 
 	let items = selectedItemsFromProps
 
+	if (populateBy === 'selection' && items && items.length > 0) {
+		const payload = await getPayload({ config: configPromise })
+		const fetchedItems = await Promise.all(
+			items.map(async (item) => {
+				if (!item || typeof item.value === 'object') return item
+				try {
+					const doc = await payload.findByID({
+						collection: item.relationTo ,
+						id: item.value,
+						depth: 2,
+					})
+					return {
+						...item,
+						value: doc,
+					}
+				} catch (err) {
+					return item
+				}
+			}),
+		)
+		items = fetchedItems as CardBlockProps['selectedItems']
+	}
 	if (populateBy === 'collection' && collection && collection !== 'none') {
 		const payload = await getPayload({ config: configPromise })
 		const fetchedItems = await payload.find({

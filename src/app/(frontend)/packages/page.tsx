@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import React from 'react'
 import Cards from '@/components/ui/Card/Cards'
 import style from './page.module.scss'
 import { StaticHero } from '@/heros/StaticHero/StaticHero'
@@ -26,12 +25,11 @@ export default async function PackagesPage() {
 	try {
 		packages = await payload.find({
 			collection: 'packages',
-			depth: 1,
+			depth: 2,
 			limit: 6,
 			overrideAccess: false,
 		})
 	} catch (error) {
-		console.error('Error fetching packages:', error)
 		packages = {
 			docs: [],
 			totalDocs: 0,
