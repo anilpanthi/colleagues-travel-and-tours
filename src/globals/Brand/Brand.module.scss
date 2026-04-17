@@ -3,6 +3,8 @@
 }
 
 .brandImage {
-  width: 89px;
+  width: auto;
   height: 57px;
+  max-width: 100%;
+  object-fit: contain;
 }
