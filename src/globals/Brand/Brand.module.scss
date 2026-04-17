@@ -1,10 +1,15 @@
 .brandLink {
   text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.brandname {
+  display: block;
 }
 
 .brandImage {
-  width: auto;
+  width: 89px;
   height: 57px;
-  max-width: 100%;
-  object-fit: contain;
+  padding-right: 0.5rem;
 }
