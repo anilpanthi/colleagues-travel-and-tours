@@ -1,24 +1,15 @@
-// .brandLink {
-//   text-decoration: none;
-//   display: flex;
-//   align-items: center;
-// }
-
-// .brandname {
-//   display: block;
-// }
-
-// .brandImage {
-//   // width: 89px;
-//   height: 57px;
-//   padding-right: 0.5rem;
-// }
-
 .brandLink {
   text-decoration: none;
+  display: flex;
+  align-items: flex-start;
+  z-index: 0;
 }
 
 .brandImage {
-  height: 5rem;
-  padding-right: 1rem;
+  height: 57px;
+  // max-width: 100%;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 1;
+  padding-right: 0.5rem;
 }
