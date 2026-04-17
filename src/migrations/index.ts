@@ -4,6 +4,7 @@ import * as migration_20260413_031809_nested_doc from './20260413_031809_nested_
 import * as migration_20260415_085930_cleanup_site_settings from './20260415_085930_cleanup_site_settings';
 import * as migration_20260415_152253_add_placeholder_fields_to_forms from './20260415_152253_add_placeholder_fields_to_forms';
 import * as migration_20260416_162815_package_fields_update from './20260416_162815_package_fields_update';
+import * as migration_20260417_170145_changedTabsPackages from './20260417_170145_changedTabsPackages';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260416_162815_package_fields_update.up,
     down: migration_20260416_162815_package_fields_update.down,
-    name: '20260416_162815_package_fields_update'
+    name: '20260416_162815_package_fields_update',
+  },
+  {
+    up: migration_20260417_170145_changedTabsPackages.up,
+    down: migration_20260417_170145_changedTabsPackages.down,
+    name: '20260417_170145_changedTabsPackages'
   },
 ];

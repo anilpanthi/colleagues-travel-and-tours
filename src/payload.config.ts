@@ -164,7 +164,7 @@ export default buildConfig({
       },
     }),
     nestedDocsPlugin({
-      collections: ['categories', 'activities', 'pages', 'packages'],
+      collections: ['categories', 'activities', 'pages'],
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
     redirectsPlugin({

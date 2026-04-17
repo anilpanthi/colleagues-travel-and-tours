@@ -75,47 +75,53 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 				})}
 			</Swiper>
 
-			<Swiper
-				onSwiper={setThumbsSwiper}
-				loop={false}
-				spaceBetween={10}
-				slidesPerView={'auto'}
-				freeMode={true}
-				watchSlidesProgress={true}
-				slideToClickedSlide={true}
-				modules={[FreeMode, Navigation, Thumbs]}
-				observer={true}
-				observeParents={true}
-				className={styles.thumbSwiper}
-			>
-				{images.map((item, index) => {
-					const media = typeof item.image === 'object' ? (item.image as Media) : null
-					if (!media || !media.url) return null
+			{images.length > 1 && (
+				<Swiper
+					onSwiper={setThumbsSwiper}
+					loop={false}
+					spaceBetween={10}
+					slidesPerView={'auto'}
+					freeMode={true}
+					watchSlidesProgress={true}
+					slideToClickedSlide={true}
+					modules={[FreeMode, Navigation, Thumbs]}
+					observer={true}
+					observeParents={true}
+					className={styles.thumbSwiper}
+				>
+					{images.map((item, index) => {
+						const media = typeof item.image === 'object' ? (item.image as Media) : null
+						if (!media || !media.url) return null
 
-					return (
-						<SwiperSlide key={index} className={styles.thumbSlide}>
-							<div className={styles.thumbWrapper}>
-								<Image
-									src={media.url}
-									alt={media.alt || 'Gallery Thumb'}
-									fill
-									className={styles.thumbImage}
-									sizes="10px"
-									unoptimized
-								/>
-							</div>
-						</SwiperSlide>
-					)
-				})}
-			</Swiper>
+						return (
+							<SwiperSlide key={index} className={styles.thumbSlide}>
+								<div className={styles.thumbWrapper}>
+									<Image
+										src={media.url}
+										alt={media.alt || 'Gallery Thumb'}
+										fill
+										className={styles.thumbImage}
+										sizes="10px"
+										unoptimized
+									/>
+								</div>
+							</SwiperSlide>
+						)
+					})}
+				</Swiper>
+			)}
 
 			{/* Custom Navigation Arrows */}
-			<button className={`${styles.navButton} ${styles.prev}`}>
-				<ChevronLeft size={30} />
-			</button>
-			<button className={`${styles.navButton} ${styles.next}`}>
-				<ChevronRight size={30} />
-			</button>
+			{images.length > 1 && (
+				<>
+					<button className={`${styles.navButton} ${styles.prev}`}>
+						<ChevronLeft size={30} />
+					</button>
+					<button className={`${styles.navButton} ${styles.next}`}>
+						<ChevronRight size={30} />
+					</button>
+				</>
+			)}
 		</div>
 	)
 }

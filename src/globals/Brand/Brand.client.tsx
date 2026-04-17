@@ -25,7 +25,7 @@ export const BrandClient: React.FC<BrandClientProps> = ({ logos, isScrolled }) =
       </Link> */}
       <Link href={'/'}>
         {/* <img src={src} alt="logo" height="57px" width="100px" /> */}
-        {src && <Image src={src} alt="logo" height={57} width={100} />}
+        {src && <Image src={src} alt="logo" height={57} width={100} loading="eager" />}
       </Link>
     </div>
   )

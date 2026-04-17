@@ -49,16 +49,6 @@ export const Packages: CollectionConfig<'packages'> = {
     update: authenticated,
   },
 
-  // defaultPopulate: {
-  // 	title: true,
-  // 	slug: true,
-  // 	Activity: true,
-  // 	featuredImage: true,
-  // 	meta: {
-  // 		image: true,
-  // 		description: true,
-  // 	},
-  // },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
@@ -92,6 +82,7 @@ export const Packages: CollectionConfig<'packages'> = {
           label: 'Hero',
         },
         {
+          label: 'Gallery',
           fields: [
             {
               name: 'gallery',
@@ -106,36 +97,37 @@ export const Packages: CollectionConfig<'packages'> = {
                 },
               ],
             },
+          ],
+        },
+        {
+          label: 'Overview',
+          fields: [
             {
-              type: 'collapsible',
+              name: 'overview',
+              type: 'richText',
               label: 'Package Overview',
-              admin: {
-                initCollapsed: false,
-              },
-              fields: [
-                {
-                  name: 'overview',
-                  type: 'richText',
-                  editor: lexicalEditor({
-                    features: ({ rootFeatures }) => {
-                      return [
-                        ...rootFeatures,
-                        HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                        BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-                        FixedToolbarFeature(),
-                        InlineToolbarFeature(),
-                        HorizontalRuleFeature(),
-                        UnorderedListFeature(),
-                        OrderedListFeature(),
-                        AlignFeature(),
-                      ]
-                    },
-                  }),
-                  label: false,
-                  required: false,
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
+                    AlignFeature(),
+                  ]
                 },
-              ],
+              }),
+              required: false,
             },
+          ],
+        },
+        {
+          label: 'Highlights',
+          fields: [
             {
               name: 'packageFacts',
               type: 'richText',
@@ -152,6 +144,11 @@ export const Packages: CollectionConfig<'packages'> = {
                 },
               }),
             },
+          ],
+        },
+        {
+          label: 'Itineraries',
+          fields: [
             {
               name: 'detailedItinerary',
               type: 'array',
@@ -189,7 +186,12 @@ export const Packages: CollectionConfig<'packages'> = {
                 },
               ],
             },
+          ],
+        },
 
+        {
+          label: 'Inc/Exc',
+          fields: [
             {
               name: 'includes',
               type: 'richText',
@@ -222,35 +224,94 @@ export const Packages: CollectionConfig<'packages'> = {
                 },
               }),
             },
-            {
-              name: 'mapEmbed',
-              type: 'textarea',
-              label: 'Map Embed',
-            },
           ],
-          label: 'Content',
         },
         {
+          label: 'Map',
           fields: [
             {
-              name: 'relatedPackages',
-              type: 'relationship',
-              admin: {
-                position: 'sidebar',
-              },
-              filterOptions: ({ id }) => {
-                return {
-                  id: {
-                    not_in: [id],
-                  },
-                }
-              },
-              hasMany: true,
-              relationTo: 'packages',
+              name: 'mapIframe',
+              type: 'richText',
+              label: 'Map Embed',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
+                  ]
+                },
+              }),
             },
           ],
-          label: 'Meta',
         },
+
+        {
+          label: 'FAQs',
+          fields: [
+            {
+              name: 'faqs',
+              type: 'array',
+              interfaceName: 'FAQs',
+              label: 'FAQs',
+              minRows: 1,
+              admin: {
+                components: {
+                  RowLabel: '@/blocks/Accordion/RowLabel',
+                },
+              },
+              fields: [
+                {
+                  name: 'question',
+                  type: 'text',
+                },
+                {
+                  name: 'answer',
+                  type: 'richText',
+                  editor: lexicalEditor({
+                    features: ({ rootFeatures }) => {
+                      return [
+                        ...rootFeatures,
+                        FixedToolbarFeature(),
+                        InlineToolbarFeature(),
+                        UnorderedListFeature(),
+                        OrderedListFeature(),
+                      ]
+                    },
+                  }),
+                },
+              ],
+            },
+          ],
+        },
+
+        {
+          label: 'Msc',
+          fields: [
+            {
+              name: 'miscellaneous',
+              type: 'richText',
+              label: 'Miscellaneous Content',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
+            },
+          ],
+        },
+
         {
           name: 'meta',
           label: 'SEO',

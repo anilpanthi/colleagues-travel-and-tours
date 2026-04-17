@@ -33,6 +33,31 @@ export type DetailedItinerary =
     }[]
   | null;
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQs".
+ */
+export type FAQs =
+  | {
+      question?: string | null;
+      answer?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      id?: string | null;
+    }[]
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -493,8 +518,37 @@ export interface Package {
     };
     [k: string]: unknown;
   } | null;
-  mapEmbed?: string | null;
-  relatedPackages?: (number | Package)[] | null;
+  mapIframe?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  faqs?: FAQs;
+  miscellaneous?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   meta?: {
     title?: string | null;
     /**
@@ -527,15 +581,6 @@ export interface Package {
   price?: number | null;
   salePrice?: number | null;
   bookingForm?: (number | null) | Form;
-  parent?: (number | null) | Package;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Package;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -2051,8 +2096,9 @@ export interface PackagesSelect<T extends boolean = true> {
   detailedItinerary?: T | DetailedItinerarySelect<T>;
   includes?: T;
   excludes?: T;
-  mapEmbed?: T;
-  relatedPackages?: T;
+  mapIframe?: T;
+  faqs?: T | FAQsSelect<T>;
+  miscellaneous?: T;
   meta?:
     | T
     | {
@@ -2081,15 +2127,6 @@ export interface PackagesSelect<T extends boolean = true> {
   price?: T;
   salePrice?: T;
   bookingForm?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2102,6 +2139,15 @@ export interface DetailedItinerarySelect<T extends boolean = true> {
   title?: T;
   heading?: T;
   details?: T;
+  id?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQs_select".
+ */
+export interface FAQsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
   id?: T;
 }
 /**

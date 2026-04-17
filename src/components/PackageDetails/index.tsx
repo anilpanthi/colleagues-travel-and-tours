@@ -118,13 +118,12 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg }) => {
               </div>
             )}
 
-            {pkg.mapEmbed && (
+            {pkg.mapIframe && (
               <div className={style.mapSection}>
                 <h2 className={style.title}>Map</h2>
-                <div
-                  className={style.mapEmbed}
-                  dangerouslySetInnerHTML={{ __html: pkg.mapEmbed }}
-                />
+                <div className={style.mapIframeRichText}>
+                  <RichText data={pkg.mapIframe} enableGutter={false} />
+                </div>
               </div>
             )}
           </div>
