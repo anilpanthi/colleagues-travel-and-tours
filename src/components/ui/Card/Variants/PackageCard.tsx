@@ -68,7 +68,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
                   href={href}
                   iconRight={<ArrowRight size={16} />}
                 >
-                  More Details
+                  Details
                 </Button>
               </Card.Div>
             </Card.Div>
