@@ -24,7 +24,7 @@ export const Pagination: React.FC<{
 
   const getPageHref = (pageNumber: number) => {
     if (pageNumber === 1) return basePath
-    return `${basePath}/page/${pageNumber}`
+    return `${basePath}?page=${pageNumber}`
   }
 
   return (

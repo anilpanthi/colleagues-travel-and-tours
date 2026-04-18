@@ -17,8 +17,14 @@ export const metadata: Metadata = {
 	description: 'Explore our travel packages.',
 }
 
-export default async function PackagesPage() {
+export default async function PackagesPage({
+	searchParams: searchParamsPromise,
+}: {
+	searchParams: Promise<{ page?: string }>
+}) {
 	const payload = await getPayload({ config: configPromise })
+	const { page: pageParam = '1' } = await searchParamsPromise
+	const currentPage = Math.max(1, Number.parseInt(pageParam, 10) || 1)
 
 	let packages: PaginatedDocs<Package>
 
@@ -27,9 +33,10 @@ export default async function PackagesPage() {
 			collection: 'packages',
 			depth: 2,
 			limit: 6,
+			page: currentPage,
 			overrideAccess: false,
 		})
-	} catch (error) {
+	} catch (_error) {
 		packages = {
 			docs: [],
 			totalDocs: 0,
