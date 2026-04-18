@@ -3,7 +3,7 @@ import Card from '../Primitives/Card'
 import styles from './PackageCard.module.scss'
 
 import { Button } from '@/components/ui/Button/Button'
-import { ChevronRight, Camera } from 'lucide-react'
+import { ChevronRight, Camera, CalendarHeart, ArrowRight, Mountain } from 'lucide-react'
 
 import Link from 'next/link'
 
@@ -22,17 +22,25 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
-        const { id, title, slug, featuredImage, meta, price } = doc
+        const { id, title, slug, featuredImage, meta } = doc
+
         // Default to 'packages' if collection is not provided or 'none'
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
         const href = slug ? `/${slug}` : `/${collectionSlug}/${id}`
         return (
           <Card key={index} className={styles.packageCard}>
+            {doc.tripDuration && (
+              <Card.Span className={styles.packageCard__batch_duration}>
+                {doc.tripDuration}
+              </Card.Span>
+            )}
+
             <Card.Div className={styles.packageCard__image_wrapper}>
               {meta?.image || featuredImage ? (
                 <Card.Image
                   resource={(meta?.image || featuredImage) as Media}
                   className={styles.packageCard__image}
+                  imgClassName={styles.packageCard__image}
                   fill
                   loading="lazy"
                 />
@@ -42,31 +50,40 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
                 </div>
               )}
             </Card.Div>
+            {/* Dsiplaying title and facts */}
             <Card.Div className={styles.packageCard__content_top}>
               <Card.Title as={Link} href={href} className={styles.packageCard__title}>
                 {title}
               </Card.Title>
-              <Card.text className={styles.packageCard__description}>{meta?.description}</Card.text>
-            </Card.Div>
-            <Card.Div className={styles.packageCard__content_bottom}>
-              <Card.Div className={styles.packageCard__price_details}>
-                {/* <Card.Span className={styles.packageCard__price_description}>
-                  Starting From
-                </Card.Span>
-                <Card.Span className={styles.packageCard__price}>${price || 'N/A'}</Card.Span>
-                <Card.Span className={styles.packageCard__price_tax}>TAXES INCL/PERS</Card.Span> */}
-              </Card.Div>
-              <Card.Div className={styles.packageCard__button}>
+              <Card.Div className={styles.packageCard__content_top_facts}>
+                <Card.Div>
+                  Grade: <Card.Span>{doc.tripGrade}</Card.Span>
+                </Card.Div>
+                <Card.Div>
+                  <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
+                </Card.Div>
                 <Button
-                  appearance="blackBtn"
-                  size="sm"
+                  appearance="simpleLinkbtn"
+                  size="md"
                   href={href}
-                  iconRight={<ChevronRight size={16} />}
+                  iconRight={<ArrowRight size={16} />}
                 >
-                  Inquire Now
+                  More Details
                 </Button>
               </Card.Div>
             </Card.Div>
+            {/* <Card.Div className={styles.packageCard__content_bottom}>
+              <Card.Div className={styles.packageCard__button}>
+                <Button
+                  appearance="simpleLinkbtn"
+                  size="sm"
+                  href={href}
+                  iconRight={<ArrowRight size={16} />}
+                >
+                  Detail
+                </Button>
+              </Card.Div>
+            </Card.Div> */}
           </Card>
         )
       })}

@@ -26,6 +26,7 @@ export default function ActivityCard({ data, collection }: ActivityCardProps) {
 							<Card.Image
 								resource={cardImage as Media}
 								className={styles.activityCard__image}
+								imgClassName={styles.activityCard__image}
 								fill
 							/>
 						) : (
