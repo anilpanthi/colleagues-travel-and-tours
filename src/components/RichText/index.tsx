@@ -38,6 +38,18 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
 	...defaultConverters,
 	...LinkJSXConverter({ internalDocToHref }),
+	text: (args) => {
+		const { node } = args
+		if (typeof node.text === 'string' && node.text.includes('<iframe') && node.text.includes('</iframe>')) {
+			// Render the text node as HTML if it contains an iframe.
+			return <span dangerouslySetInnerHTML={{ __html: node.text }} />
+		}
+		// Fallback to default
+		if (typeof defaultConverters.text === 'function') {
+			return defaultConverters.text(args as any)
+		}
+		return <>{node.text}</>
+	},
 	blocks: {
 		banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
 		mediaBlock: ({ node }) => (

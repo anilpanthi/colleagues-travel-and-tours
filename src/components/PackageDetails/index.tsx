@@ -14,22 +14,27 @@ import style from './index.module.scss'
 
 interface PackageDetailsProps {
   pkg: Package
+  /**
+   * Optional slot for server components (e.g. `RelatedPackages`).
+   * Pass as JSX children from a Server Component — not as a custom prop — to avoid hydration mismatches.
+   */
+  children?: React.ReactNode
 }
 
-export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg }) => {
+export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children }) => {
   const { setHeaderTheme, setHasHeroImage } = useHeaderTheme()
-  const hasHeroImage = Boolean(
+  const packageHasHeroImage = Boolean(
     pkg?.hero?.type && pkg?.hero?.type !== 'none' && pkg?.hero?.type !== 'lowImpact',
   )
 
   useEffect(() => {
-    if (!hasHeroImage) {
+    if (!packageHasHeroImage) {
       setHeaderTheme('light')
       setHasHeroImage(false)
     } else {
       setHasHeroImage(true)
     }
-  }, [setHeaderTheme, setHasHeroImage, hasHeroImage])
+  }, [setHeaderTheme, setHasHeroImage, packageHasHeroImage])
 
   // Construct custom breadcrumbs: Home -> Activities -> [Activity Name] -> Package Name
   const activity =
@@ -122,8 +127,39 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg }) => {
               <div className={style.mapSection}>
                 <h2 className={style.title}>Map</h2>
                 <div className={style.mapIframeRichText}>
-                  <RichText data={pkg.mapIframe} enableGutter={false} />
+                  {typeof pkg.mapIframe === 'string' ? (
+                    <div dangerouslySetInnerHTML={{ __html: pkg.mapIframe }} />
+                  ) : (
+                    <RichText data={pkg.mapIframe} enableGutter={false} />
+                  )}
                 </div>
+              </div>
+            )}
+
+            {/* Faqs */}
+            {pkg?.faqs && pkg.faqs.length > 0 && (
+              <div className={style.detailedItinerary}>
+                <Accordion
+                  title="Faqs"
+                  variant="ghost"
+                  allowMultiple={false}
+                  defaultOpenIds={(pkg?.faqs?.[0]?.id ? [pkg.faqs[0].id] : []) as string[]}
+                >
+                  {pkg?.faqs?.map((item) => {
+                    if (!item?.id) return null
+                    return (
+                      <AccordionItem key={item.id} value={item.id} heading={item.question ?? ''}>
+                        {item.answer && <RichText data={item.answer} enableGutter={false} />}
+                      </AccordionItem>
+                    )
+                  })}
+                </Accordion>
+              </div>
+            )}
+
+            {pkg?.miscellaneous && (
+              <div className="msc">
+                <RichText data={pkg.miscellaneous} enableGutter={false} />
               </div>
             )}
           </div>
@@ -205,6 +241,8 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg }) => {
             )}
           </aside>
         </div>
+
+        {children}
       </Content>
     </>
   )

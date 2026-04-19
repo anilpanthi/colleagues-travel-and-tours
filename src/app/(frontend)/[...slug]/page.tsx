@@ -12,7 +12,14 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PackageDetails } from '@/components/PackageDetails'
 import { notFound, permanentRedirect } from 'next/navigation'
-import { queryPages, queryPackages, queryPageBySlug, queryPackageBySlug } from './queries'
+import {
+	queryPages,
+	queryPackages,
+	queryPageBySlug,
+	queryPackageBySlug,
+	queryRelatedPackages,
+} from './queries'
+import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 
 export async function generateStaticParams() {
 	const pages = await queryPages()
@@ -57,11 +64,14 @@ export default async function Page({ params: paramsPromise }: Args) {
 	const pkg = await queryPackageBySlug({ slug: decodedSlug })
 
 	if (pkg) {
+		const relatedDocs = await queryRelatedPackages({ pkg })
 		return (
 			<>
 				<PayloadRedirects disableNotFound url={url} />
 				{draft && <LivePreviewListener />}
-				<PackageDetails pkg={pkg} />
+				<PackageDetails pkg={pkg}>
+					{relatedDocs.length > 0 ? <RelatedPackages packages={relatedDocs} /> : null}
+				</PackageDetails>
 			</>
 		)
 	}

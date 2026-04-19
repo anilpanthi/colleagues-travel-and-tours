@@ -231,20 +231,8 @@ export const Packages: CollectionConfig<'packages'> = {
           fields: [
             {
               name: 'mapIframe',
-              type: 'richText',
+              type: 'textarea',
               label: 'Map Embed',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    UnorderedListFeature(),
-                    OrderedListFeature(),
-                  ]
-                },
-              }),
             },
           ],
         },

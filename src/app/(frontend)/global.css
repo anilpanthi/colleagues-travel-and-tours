@@ -102,6 +102,133 @@ textarea::placeholder {
   opacity: 0.3;
 }
 
+.payload-richtext {
+
+  h2 {
+    color: #1a202c;
+    margin-bottom: 2rem;
+    font-size: 2.4rem;
+    font-weight: 600;
+    font-family: var(--font-inter);
+
+  }
+
+  h1 {
+    color: #1a202c;
+    margin-bottom: 2.5rem;
+    font-size: 2.8rem;
+    font-weight: 600;
+    font-family: var(--font-inter);
+  }
+
+
+
+  p {
+    color: #4a5568;
+    font-size: 1.8rem;
+    line-height: 1.8;
+    font-family: var(--font-jost);
+
+  }
+
+
+
+  .list-check {
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .list-check li {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+    margin-bottom: .8rem;
+    list-style: none;
+  }
+
+  /* Hide default checkbox */
+  .list-check input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    cursor: default;
+    position: relative;
+    margin-top: 2px;
+    background-color: #fff;
+    transition: all 0.2s ease;
+  }
+
+  /* Checked state */
+  .list-check input[type="checkbox"]:checked {
+    background-color: var(--color-primary);
+    /* border-color: #228be6; */
+  }
+
+  /* Check icon */
+  .list-check input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 6px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* Label styling */
+  .list-check label {
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.5;
+    cursor: default;
+  }
+
+  /* Completed item */
+  .list-item-checkbox-checked label {
+    /* text-decoration: line-through;
+    color: #9ca3af; */
+  }
+
+  .list-check br {
+    display: none;
+  }
+
+}
+
+/* .msc styles — sits outside .payload-richtext because the DOM is: .msc > .payload-richtext > content */
+.msc .list-bullet {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+  list-style-type: none;
+  font-family: var(--font-jost);
+  font-size: 1.8rem;
+}
+
+.msc .list-bullet li {
+  color: #4a5568;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  font-family: var(--font-jost);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+/* Custom minimal bullet */
+.msc .list-bullet li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-gray-800);
+  border-radius: 50%;
+}
 
 /* [data-theme='dark'] {
   background-color: black;
