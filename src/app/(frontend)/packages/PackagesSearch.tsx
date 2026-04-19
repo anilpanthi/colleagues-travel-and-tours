@@ -14,9 +14,14 @@ export function PackagesSearch({ searchQuery, styles }: PackagesSearchProps) {
   const currentParams = useSearchParams()
   const [query, setQuery] = useState(searchQuery ?? '')
 
-  useEffect(() => {
+  // Sync local query state with the prop without an effect.
+  // When searchQuery changes (e.g. back/forward navigation),
+  // update state during render to avoid cascading renders from setState-in-effect.
+  const [prevSearchQuery, setPrevSearchQuery] = useState(searchQuery)
+  if (prevSearchQuery !== searchQuery) {
+    setPrevSearchQuery(searchQuery)
     setQuery(searchQuery ?? '')
-  }, [searchQuery])
+  }
 
   const buildUrl = useMemo(() => {
     return (nextQuery: string) => {

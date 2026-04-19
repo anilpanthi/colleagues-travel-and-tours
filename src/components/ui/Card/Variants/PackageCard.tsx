@@ -22,6 +22,8 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
+        console.log(doc)
+
         const { id, title, slug, featuredImage, meta } = doc
 
         // Default to 'packages' if collection is not provided or 'none'
@@ -55,32 +57,43 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
               <Card.Title as={Link} href={href} className={styles.packageCard__title}>
                 {title}
               </Card.Title>
+              {/* <Card.Span className={styles.packageCard__content_top_grade}>
+                {doc?.tripGrade}
+              </Card.Span> */}
+              {/* <Card.text>{meta?.description}</Card.text> */}
+
               <Card.Div className={styles.packageCard__content_top_facts}>
-                <Card.Div>
-                  Grade: <Card.Span>{doc.tripGrade}</Card.Span>
-                </Card.Div>
-                <Card.Div>
-                  <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
-                </Card.Div>
+                {doc?.elevation && (
+                  <Card.Div className={styles.packageCard__content_top_facts_elevation}>
+                    <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
+                  </Card.Div>
+                )}
                 <Button
                   appearance="simpleLinkbtn"
+                  className={styles.packageCard__content_top_facts_btn}
                   size="md"
                   href={href}
                   iconRight={<ArrowRight size={16} />}
                 >
-                  Details
+                  More Details
                 </Button>
               </Card.Div>
             </Card.Div>
             {/* <Card.Div className={styles.packageCard__content_bottom}>
-              <Card.Div className={styles.packageCard__button}>
+              <Card.Div className={styles.packageCard__content_bottom_facts}>
+                {doc?.elevation && (
+                  <Card.Div className={styles.packageCard__content_bottom_facts_elevation}>
+                    <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
+                  </Card.Div>
+                )}
                 <Button
                   appearance="simpleLinkbtn"
-                  size="sm"
+                  className={styles.packageCard__content_top_facts_btn}
+                  size="md"
                   href={href}
                   iconRight={<ArrowRight size={16} />}
                 >
-                  Detail
+                  More Details
                 </Button>
               </Card.Div>
             </Card.Div> */}

@@ -1,10 +1,10 @@
 // src/components/ui/accordion/Accordion.tsx
 'use client'
 
-import { createContext, useContext, useState, useCallback, ReactNode, memo } from 'react'
+import { createContext, useContext, useState, useCallback, memo } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import styles from './Accordion.module.scss'
-import { AccordionContextValue, AccordionBaseProps, AccordionVariant } from './types'
+import { AccordionContextValue, AccordionBaseProps } from './types'
 
 const accordionVariants = cva(styles.accordion, {
 	variants: {

@@ -14,10 +14,6 @@ import style from './index.module.scss'
 
 interface PackageDetailsProps {
   pkg: Package
-  /**
-   * Optional slot for server components (e.g. `RelatedPackages`).
-   * Pass as JSX children from a Server Component — not as a custom prop — to avoid hydration mismatches.
-   */
   children?: React.ReactNode
 }
 
