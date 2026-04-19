@@ -14,8 +14,9 @@ export const Pagination: React.FC<{
   page: number
   totalPages: number
   basePath?: string
+  queryParams?: Record<string, string | string[] | undefined>
 }> = (props) => {
-  const { className, page, totalPages, basePath = '/posts' } = props
+  const { className, page, totalPages, basePath = '/posts', queryParams } = props
   const hasNextPage = page < totalPages
   const hasPrevPage = page > 1
 
@@ -23,8 +24,29 @@ export const Pagination: React.FC<{
   const hasExtraNextPages = page + 1 < totalPages
 
   const getPageHref = (pageNumber: number) => {
-    if (pageNumber === 1) return basePath
-    return `${basePath}?page=${pageNumber}`
+    const params = new URLSearchParams()
+
+    Object.entries(queryParams ?? {}).forEach(([key, value]) => {
+      if (key === 'page' || value === undefined) return
+
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          if (item) params.append(key, item)
+        })
+        return
+      }
+
+      if (value) {
+        params.set(key, value)
+      }
+    })
+
+    if (pageNumber > 1) {
+      params.set('page', String(pageNumber))
+    }
+
+    const queryString = params.toString()
+    return queryString ? `${basePath}?${queryString}` : basePath
   }
 
   return (

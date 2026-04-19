@@ -1,0 +1,255 @@
+.packages {
+  padding-bottom: 5rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #f3f7fb 100%);
+}
+
+.rangeSection {
+  margin-bottom: 1.6rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(30rem, 32rem) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.cardsSection {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  border-radius: 1.8rem;
+  padding: 1.6rem;
+  box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.06);
+}
+
+.searchBar {
+  margin-bottom: 1.2rem;
+}
+
+.searchLabel {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.searchInput {
+  width: 100%;
+  border: 1px solid #d3dae6;
+  border-radius: 1.2rem;
+  padding: 1.1rem 1.2rem;
+  font-size: 1.45rem;
+  background: #fcfdff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #0f5a9c;
+  box-shadow: 0 0 0 3px rgba(15, 90, 156, 0.14);
+}
+
+.filterSidebar {
+  position: sticky;
+  top: 1.8rem;
+}
+
+.filterForm {
+  border: 1px solid #dfe7f1;
+  border-radius: 1.8rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.06);
+}
+
+.filterHead {
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid #ecf1f6;
+}
+
+.filterTitle {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.filterSubtitle {
+  margin: 0.7rem 0 0;
+  font-size: 1.3rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid #eff3f8;
+}
+
+.formGroup:last-of-type {
+  margin-bottom: 1.2rem;
+  border-bottom: 0;
+  padding-bottom: 0.2rem;
+}
+
+.groupLabel {
+  margin: 0 0 0.7rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.input,
+.select {
+  width: 100%;
+  border: 1px solid #d3dae6;
+  border-radius: 1.1rem;
+  padding: 0.95rem 1rem;
+  font-size: 1.35rem;
+  background: #fcfdff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #0f5a9c;
+  box-shadow: 0 0 0 3px rgba(15, 90, 156, 0.14);
+}
+
+.checkboxGroup {
+  display: grid;
+  gap: 0.45rem;
+  max-height: 26rem;
+  overflow: auto;
+  padding-right: 0.4rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  font-size: 1.3rem;
+  color: #1e293b;
+  padding: 0.3rem 0.1rem;
+}
+
+.checkboxLabel input {
+  width: 1.55rem;
+  height: 1.55rem;
+  accent-color: #0f5a9c;
+}
+
+.selectLabel {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.selectLabel > span {
+  font-size: 1.25rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.clearButton {
+  border: 1px solid #d4deea;
+  border-radius: 1.1rem;
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  background-color: #f8fbff;
+  color: #0f5a9c;
+  font-weight: 600;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+.clearButton:hover {
+  background: #eef6ff;
+  border-color: #bdd8ef;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.resultsTitle {
+  margin: 0;
+  font-size: 2.1rem;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.resultsMeta {
+  margin: 0.35rem 0 0;
+  font-size: 1.35rem;
+  color: #64748b;
+}
+
+.activeFilterBadge {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f5a9c;
+  border: 1px solid #bfd9ef;
+  background: #f0f7fd;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+}
+
+@media (min-width: 1200px) {
+  .layout {
+    gap: 2.4rem;
+  }
+}
+
+.emptyState {
+  border: 1px dashed #cfd8e4;
+  border-radius: 1.4rem;
+  background: #f8fafc;
+  padding: 3rem 1.8rem;
+  text-align: center;
+}
+
+.emptyState h4 {
+  margin: 0 0 0.8rem;
+  color: #0f172a;
+  font-size: 1.9rem;
+}
+
+.emptyState p {
+  margin: 0;
+  color: #64748b;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filterSidebar {
+    position: static;
+  }
+
+  .cardsSection {
+    padding: 1.2rem;
+  }
+}

@@ -69,14 +69,14 @@ export const Button: React.FC<ButtonProps> = ({
 
 	if (href) {
 		return (
-			<Link href={href} prefetch className={classes} {...(rest as any)}>
+			<Link href={href} prefetch className={classes} {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
 				{content}
 			</Link>
 		)
 	}
 
 	return (
-		<button className={classes} {...(rest as any)}>
+		<button className={classes} {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
 			{content}
 		</button>
 	)
