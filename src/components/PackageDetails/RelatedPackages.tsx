@@ -26,4 +26,5 @@ export function RelatedPackages({ packages }: RelatedPackagesProps) {
       />
     </div>
   )
+
 }
