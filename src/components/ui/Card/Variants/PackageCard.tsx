@@ -63,11 +63,11 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
               {/* <Card.text>{meta?.description}</Card.text> */}
 
               <Card.Div className={styles.packageCard__content_top_facts}>
-                {/* {doc?.elevation && (
+                {doc?.elevation && (
                   <Card.Div className={styles.packageCard__content_top_facts_elevation}>
                     <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
                   </Card.Div>
-                )} */}
+                )}
                 <Button
                   appearance="simpleLinkbtn"
                   className={styles.packageCard__content_top_facts_btn}
