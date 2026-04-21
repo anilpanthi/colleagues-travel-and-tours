@@ -8,27 +8,27 @@ import { MediumImpactHero } from '@/heros/MediumImpact'
 import { StaticHero } from './StaticHero/StaticHero'
 
 const heroes = {
-	highImpact: HighImpactHero,
-	lowImpact: LowImpactHero,
-	mediumImpact: MediumImpactHero,
-	staticHero: StaticHero,
+  highImpact: HighImpactHero,
+  lowImpact: LowImpactHero,
+  mediumImpact: MediumImpactHero,
+  staticHero: StaticHero,
 }
 
 import { BreadcrumbItem } from '@/components/Breadcrumbs/Index'
 
 type RenderHeroProps = Page['hero'] & {
-	title?: string | null
-	breadcrumbs?: BreadcrumbItem[] | null
+  title?: string | null
+  breadcrumbs?: BreadcrumbItem[] | null
 }
 
 export const RenderHero: React.FC<RenderHeroProps> = (props) => {
-	const { type } = props || {}
+  const { type } = props || {}
 
-	if (!type || type === 'none') return null
+  if (!type || type === 'none') return null
 
-	const HeroToRender = heroes[type]
+  const HeroToRender = heroes[type]
 
-	if (!HeroToRender) return null
+  if (!HeroToRender) return null
 
-	return <HeroToRender {...(props)} />
+  return <HeroToRender {...props} />
 }

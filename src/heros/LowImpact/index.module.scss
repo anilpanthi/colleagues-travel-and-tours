@@ -1,19 +1,19 @@
 .lowImpactHero {
-	// background-color: oklch(96.2% 0.059 95.617);
-	background-color: #f3f3f3;
-	padding: 1rem 0;
-	// margin-top: 1rem;
+  // background-color: oklch(96.2% 0.059 95.617);
+  background-color: #dddbdba8;
+  padding: 0.8rem 0;
+  // margin-top: 1rem;
 }
 
 .title {
-	font-size: clamp(2rem, 5vw, 4rem);
-	font-weight: 400;
-	margin-top: 1rem;
-	color: var(--color-foreground);
-	text-transform: capitalize;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 400;
+  margin-top: 1rem;
+  color: var(--color-foreground);
+  text-transform: capitalize;
 }
 
 .breadcrumbs_custom {
-	--br-item-font-size: 1.6rem !important;
-	--br-separator-color: var(--color-gray-800) !important;
+  --br-item-font-size: 1.6rem !important;
+  --br-separator-color: var(--color-gray-800) !important;
 }

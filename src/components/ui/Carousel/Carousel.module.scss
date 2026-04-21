@@ -2,9 +2,6 @@
   width: 100%;
   position: relative;
 
-  .swiper-slide .swiper-slide-next {
-    transform: scale(1.08);
-  }
   .navButton {
     position: absolute;
     top: 35%;
@@ -61,4 +58,9 @@
 
 .mySwiper {
   padding: 1rem 0 !important;
+}
+
+.swiper-slide-next {
+  transform: scale(1.08);
+  background-color: #374151;
 }
