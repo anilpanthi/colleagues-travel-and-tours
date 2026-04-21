@@ -26,6 +26,7 @@ import { Calendar, Tag, User } from 'lucide-react'
 // import styles from './page.module.css'
 import styles from './singlePost.module.scss'
 import Content from '@/components/ui/Content/Index'
+import Row from '@/components/ui/Row'
 
 export async function generateStaticParams() {
   try {
@@ -68,9 +69,12 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects url={url} />
 
   const recentPosts = await queryRecentPosts({ currentSlug: decodedSlug })
-  
-  const currentCategoryId = post.categories?.[0] && typeof post.categories[0] === 'object' ? post.categories[0].id : null
-  const relatedPosts = currentCategoryId ? await queryRelatedPostsByCategory({ categoryId: currentCategoryId, currentPostId: post.id }) : []
+
+  const currentCategoryId =
+    post.categories?.[0] && typeof post.categories[0] === 'object' ? post.categories[0].id : null
+  const relatedPosts = currentCategoryId
+    ? await queryRelatedPostsByCategory({ categoryId: currentCategoryId, currentPostId: post.id })
+    : []
 
   const category = post.categories?.[0]
   const categoryName = category && typeof category === 'object' ? category.title : null
@@ -176,42 +180,45 @@ export default async function Post({ params: paramsPromise }: Args) {
           </div>
         </div>
 
-
-        {relatedPosts.length > 0 && (
-          <RelatedPosts
-            docs={relatedPosts}
-            introContent={{
-              root: {
-                type: 'root',
-                children: [
-                  {
-                    type: 'heading',
+        <Row>
+          {relatedPosts.length > 0 && (
+            <div className={styles.relatedPosts}>
+              <RelatedPosts
+                docs={relatedPosts}
+                introContent={{
+                  root: {
+                    type: 'root',
                     children: [
                       {
-                        type: 'text',
-                        detail: 0,
-                        format: 0,
-                        mode: 'normal',
-                        style: '',
-                        text: 'Related Posts',
+                        type: 'heading',
+                        children: [
+                          {
+                            type: 'text',
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'Related Articles And Posts',
+                            version: 1,
+                          },
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        tag: 'h2',
                         version: 1,
                       },
                     ],
                     direction: 'ltr',
                     format: '',
                     indent: 0,
-                    tag: 'h2',
                     version: 1,
                   },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                version: 1,
-              },
-            }}
-          />
-        )}
+                }}
+              />
+            </div>
+          )}
+        </Row>
       </Content>
     </article>
   )
