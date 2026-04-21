@@ -17,7 +17,11 @@ export const OurTeamBlock: React.FC<
         {members.map((member, index) => (
           <div key={index} className={styles.memberCard}>
             <div className={styles.imageWrapper}>
-              <MediaComponent resource={member.profilePicture} />
+              <MediaComponent
+                resource={member.profilePicture}
+                fill
+                imgClassName={styles.image}
+              />
             </div>
             <div className={styles.info}>
               <span className={styles.name}>{member.name}</span>

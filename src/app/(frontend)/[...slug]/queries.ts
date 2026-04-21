@@ -5,7 +5,13 @@ import { draftMode } from 'next/headers'
 import type { Package } from '@/payload-types'
 
 export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (e) {
+    // draftMode() can throw when not called from a server component or during build in some cases
+  }
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -26,7 +32,11 @@ export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (e) {}
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -48,7 +58,11 @@ export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
 /** Up to `limit` other packages that share an Activity with `pkg`, newest first. */
 export const queryRelatedPackages = cache(
   async ({ pkg, limit = 6 }: { pkg: Package; limit?: number }): Promise<Package[]> => {
-    const { isEnabled: draft } = await draftMode()
+    let draft = false
+    try {
+      const { isEnabled } = await draftMode()
+      draft = isEnabled
+    } catch (e) {}
     const payload = await getPayload({ config: configPromise })
 
     const activityIds = (pkg.Activity ?? [])

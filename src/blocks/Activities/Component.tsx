@@ -1,4 +1,4 @@
-import type { ActivitiesBlock as ActivitiesBlockProps } from 'src/payload-types'
+import type { ActivitiesBlock as ActivitiesBlockProps } from '@/payload-types'
 import { ThingsTodo } from './ThingsToDo'
 type Props = {
 	className?: string

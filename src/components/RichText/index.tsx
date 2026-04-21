@@ -33,9 +33,13 @@ type NodeTypes =
 	  >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
-	const { value, relationTo } = linkNode.fields.doc!
+	const doc = linkNode.fields?.doc
+	if (!doc || !doc.value) {
+		return '#'
+	}
+	const { value, relationTo } = doc
 	if (typeof value !== 'object') {
-		throw new Error('Expected value to be an object')
+		return '#'
 	}
 	const slug = value.slug
 	return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
@@ -52,7 +56,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 		}
 		// Fallback to default
 		if (typeof defaultConverters.text === 'function') {
-			return defaultConverters.text(args as any)
+			return defaultConverters.text(args)
 		}
 		return <>{node.text}</>
 	},
