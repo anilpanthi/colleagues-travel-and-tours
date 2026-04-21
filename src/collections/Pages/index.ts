@@ -25,6 +25,7 @@ import { Cards } from '@/blocks/Cards/config'
 import { Carousel } from '@/blocks/Carousel/config'
 import { Section } from '@/blocks/Section/config'
 import { WhyUs } from '@/blocks/WhyUs/config'
+import { SimpleContent } from '@/blocks/SimpleContent/config'
 
 export const Pages: CollectionConfig<'pages'> = {
 	// ... (omitting some lines for brevity in match, but providing full replacement)
@@ -90,6 +91,7 @@ export const Pages: CollectionConfig<'pages'> = {
 								Cards,
 								Carousel,
 								WhyUs,
+								SimpleContent,
 							],
 							required: true,
 							admin: {

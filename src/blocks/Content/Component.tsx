@@ -29,6 +29,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
 										data={richText}
 										enableGutter={false}
 										enableProse={false}
+										className={style.content}
 										style={{
 											color: '#4a5568',
 											fontFamily: 'var(--font-jost)',

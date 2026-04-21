@@ -200,6 +200,13 @@ textarea::placeholder {
     display: none;
   }
 
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    /* margin: 2rem 0; */
+  }
 }
 
 /* .msc styles — sits outside .payload-richtext because the DOM is: .msc > .payload-richtext > content */

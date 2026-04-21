@@ -659,6 +659,7 @@ export interface Page {
     | CardsBlock
     | CarouselBlock
     | WhyUsBlock
+    | SimpleContentBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1412,6 +1413,30 @@ export interface WhyUsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'whyUs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SimpleContentBlock".
+ */
+export interface SimpleContentBlock {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'simplecontent';
 }
 /**
  * Manage navigation menus with support for simple links, single dropdowns, and multi-column mega menus.
@@ -2254,6 +2279,7 @@ export interface PagesSelect<T extends boolean = true> {
         cards?: T | CardsBlockSelect<T>;
         carousel?: T | CarouselBlockSelect<T>;
         whyUs?: T | WhyUsBlockSelect<T>;
+        simplecontent?: T | SimpleContentBlockSelect<T>;
       };
   meta?:
     | T
@@ -2454,6 +2480,15 @@ export interface WhyUsBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SimpleContentBlock_select".
+ */
+export interface SimpleContentBlockSelect<T extends boolean = true> {
+  content?: T;
   id?: T;
   blockName?: T;
 }
