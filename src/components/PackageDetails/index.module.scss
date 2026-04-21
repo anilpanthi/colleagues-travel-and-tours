@@ -53,6 +53,14 @@
   line-height: 1.8;
   color: #4a5568;
   font-family: var(--font-jost);
+
+  p {
+    margin-bottom: 1.4rem;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .detailedItinerary,
