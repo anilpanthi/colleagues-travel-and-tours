@@ -6,6 +6,7 @@ import * as migration_20260415_152253_add_placeholder_fields_to_forms from './20
 import * as migration_20260416_162815_package_fields_update from './20260416_162815_package_fields_update';
 import * as migration_20260417_170145_changedTabsPackages from './20260417_170145_changedTabsPackages';
 import * as migration_20260419_125017_changedMapEmbedding from './20260419_125017_changedMapEmbedding';
+import * as migration_20260421_183034_addedNewBlocks from './20260421_183034_addedNewBlocks';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20260419_125017_changedMapEmbedding.up,
     down: migration_20260419_125017_changedMapEmbedding.down,
-    name: '20260419_125017_changedMapEmbedding'
+    name: '20260419_125017_changedMapEmbedding',
+  },
+  {
+    up: migration_20260421_183034_addedNewBlocks.up,
+    down: migration_20260421_183034_addedNewBlocks.down,
+    name: '20260421_183034_addedNewBlocks'
   },
 ];
