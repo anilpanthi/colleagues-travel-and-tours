@@ -3196,6 +3196,21 @@ export interface LegalDocumentsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OurTeamBlock".
+ */
+export interface OurTeamBlock {
+  members: {
+    name: string;
+    profilePicture: number | Media;
+    role: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ourTeam';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BannerBlock".
  */
 export interface BannerBlock {

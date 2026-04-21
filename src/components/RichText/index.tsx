@@ -18,16 +18,18 @@ import type {
 	CallToActionBlock as CTABlockProps,
 	MediaBlock as MediaBlockProps,
 	LegalDocumentsBlock as LegalDocumentsBlockProps,
+	OurTeamBlock as OurTeamBlockProps,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { LegalDocumentsBlock } from '@/blocks/LegalDocuments/Component'
+import { OurTeamBlock } from '@/blocks/OurTeam/Component'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes =
 	| DefaultNodeTypes
 	| SerializedBlockNode<
-			CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps | LegalDocumentsBlockProps
+			CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps | LegalDocumentsBlockProps | OurTeamBlockProps
 	  >
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
@@ -69,6 +71,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 		code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
 		cta: ({ node }) => <CallToActionBlock {...node.fields} />,
 		legalDocuments: ({ node }) => <LegalDocumentsBlock {...node.fields} />,
+		ourTeam: ({ node }) => <OurTeamBlock {...node.fields} />,
 	},
 })
 
