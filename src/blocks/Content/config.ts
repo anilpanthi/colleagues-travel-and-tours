@@ -11,6 +11,7 @@ import {
 
 import { link } from '@/fields/link'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { LegalDocuments } from '@/blocks/LegalDocuments/config'
 
 const columnFields: Field[] = [
   {
@@ -44,7 +45,7 @@ const columnFields: Field[] = [
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-          BlocksFeature({ blocks: [MediaBlock] }),
+          BlocksFeature({ blocks: [MediaBlock, LegalDocuments] }),
           AlignFeature(),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
