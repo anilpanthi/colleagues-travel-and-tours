@@ -104,9 +104,13 @@
         }
 
         &_text {
-          font-family: var(--font-jost);
+          color: #4a5568;
           font-size: 1.8rem;
-          color: rgba(31, 31, 31, 0.8);
+          line-height: 1.8;
+          font-family: var(--font-jost);
+          p {
+            margin-bottom: 1.4rem;
+          }
         }
 
         &_img {
