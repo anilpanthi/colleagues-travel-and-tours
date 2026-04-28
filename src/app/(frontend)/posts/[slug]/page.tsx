@@ -138,7 +138,7 @@ export default async function Post({ params: paramsPromise }: Args) {
             </div>
 
             {/* display featured image  */}
-            {/* {post.featuredImage && <div className={styles.pd__cont_gr_left_img}></div>} */}
+            {post.featuredImage && <div className={styles.pd__cont_gr_left_img}></div>}
 
             <RichText
               className={styles.pd__cont_gr_left_text}
