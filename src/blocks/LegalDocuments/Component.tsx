@@ -107,27 +107,29 @@ export const LegalDocumentsBlock: React.FC<
               <X size={32} />
             </button>
 
-            <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-              <button className={cn(styles.lightboxNav, styles.prev)} onClick={prevImage}>
+            <div className={styles.lightboxContent} onClick={closeLightbox}>
+              <button
+                className={cn(styles.lightboxNav, styles.prev)}
+                onClick={prevImage}
+                aria-label="Previous image"
+              >
                 <ChevronLeft size={48} />
               </button>
 
-              <div className={styles.activeImageWrapper}>
+              <div className={styles.activeImageWrapper} onClick={(e) => e.stopPropagation()}>
                 <motion.div
                   key={currentIndex}
                   initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: isZoomed ? 2.5 : 1,
+                  animate={{
+                    opacity: 1,
+                    scale: isZoomed ? 2 : 1,
                     cursor: isZoomed ? 'grab' : 'zoom-in',
-                    x: isZoomed ? undefined : 0,
-                    y: isZoomed ? undefined : 0
                   }}
-                  whileDrag={{ cursor: 'grabbing' }}
                   drag={isZoomed}
-                  dragElastic={0.6}
-                  dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-                  transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                  dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
+                  dragElastic={0.1}
+                  whileDrag={{ cursor: 'grabbing' }}
+                  transition={{ type: 'spring', damping: 30, stiffness: 300 }}
                   className={styles.motionWrapper}
                   onClick={toggleZoom}
                 >
@@ -141,7 +143,11 @@ export const LegalDocumentsBlock: React.FC<
                 </motion.div>
               </div>
 
-              <button className={cn(styles.lightboxNav, styles.next)} onClick={nextImage}>
+              <button
+                className={cn(styles.lightboxNav, styles.next)}
+                onClick={nextImage}
+                aria-label="Next image"
+              >
                 <ChevronRight size={48} />
               </button>
             </div>
