@@ -22,7 +22,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
-        console.log(doc)
+    
 
         const { id, title, slug, featuredImage, meta } = doc
 

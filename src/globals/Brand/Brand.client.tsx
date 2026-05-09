@@ -17,7 +17,7 @@ export const BrandClient: React.FC<BrandClientProps> = ({ logos, isScrolled }) =
   const logo = isScrolled ? logos?.logoLight : logos?.logoDark
   const logoObj = typeof logo === 'object' ? logo : null
   const src = logoObj?.url ? getMediaUrl(logoObj.url, logoObj.updatedAt) : null
-  // console.log(src)
+
   return (
     <div className={styles.brandLinkyyy} style={{ marginTop: '1px' }}>
       {/* <Link href="/" className={styles.brandname}>

@@ -3,6 +3,12 @@
   color: var(--color-white);
   padding: 6.4rem 0 3.2rem;
   margin-top: auto;
+
+  svg {
+    overflow: visible;
+    display: block;
+    flex-shrink: 0;
+  }
 }
 
 .footerGrid {
