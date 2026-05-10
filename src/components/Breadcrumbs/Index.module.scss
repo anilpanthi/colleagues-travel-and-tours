@@ -14,6 +14,10 @@
 		padding: 0;
 		border-bottom: none;
 	}
+
+	@media (max-width: 768px) {
+		display: none;
+	}
 }
 
 .container {
