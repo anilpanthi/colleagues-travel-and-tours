@@ -18,7 +18,7 @@
   }
 
   &_columnTitle {
-    font-size: 1.3rem;
+    font-size: var(--font-xs);
     font-weight: var(--font-weight-semibold);
     color: #111;
     margin-bottom: 1rem;
@@ -42,7 +42,7 @@
   &_link {
     color: #555 !important;
     text-decoration: none;
-    font-size: var(--font-xxs);
+    font-size: var(--font-xs);
     transition: color 0.2s ease;
     display: block;
     width: 100%;

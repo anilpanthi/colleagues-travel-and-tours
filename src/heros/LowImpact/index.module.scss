@@ -1,12 +1,12 @@
 .lowImpactHero {
   // background-color: oklch(96.2% 0.059 95.617);
-  background-color: #e8e8e8;
+  background-color: rgba(98, 116, 142,0.2);
   // padding: 0.4rem 0;
   // margin-top: 1rem;
 }
 
 .title {
-  font-size: clamp(1.4rem, 5vw, 2.4rem);
+  font-size: clamp(1.2rem, 5vw, 2.4rem);
   font-weight: 400;
   margin-top: 1rem;
   color: #878787;
