@@ -9,6 +9,7 @@ import Gallery from '@/components/Gallery'
 import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import { ReadMore } from '@/components/ui/ReadMore'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
+import { Media } from '@/components/Media'
 
 import style from './index.module.scss'
 
@@ -119,16 +120,25 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
               </div>
             )}
 
-            {pkg.mapIframe && (
+            {(pkg.mapType === 'embedMap' ? pkg.mapIframe : pkg.mapImage) && (
               <div className={style.mapSection}>
                 <h2 className={style.title}>Map</h2>
-                <div className={style.mapIframeRichText}>
-                  {typeof pkg.mapIframe === 'string' ? (
-                    <div dangerouslySetInnerHTML={{ __html: pkg.mapIframe }} />
-                  ) : (
-                    <RichText data={pkg.mapIframe} enableGutter={false} />
+                {pkg.mapType === 'embedMap' && pkg.mapIframe && (
+                  <div className={style.mapIframeRichText}>
+                    {typeof pkg.mapIframe === 'string' ? (
+                      <div dangerouslySetInnerHTML={{ __html: pkg.mapIframe }} />
+                    ) : (
+                      <RichText data={pkg.mapIframe} enableGutter={false} />
+                    )}
+                  </div>
+                )}
+                {pkg.mapType === 'imageUpload' &&
+                  pkg.mapImage &&
+                  typeof pkg.mapImage === 'object' && (
+                    <div className={style.mapImageWrapper}>
+                      <Media resource={pkg.mapImage} />
+                    </div>
                   )}
-                </div>
               </div>
             )}
 
@@ -197,7 +207,13 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                       {pkg.bestSeason && (
                         <tr>
                           <th>Best Season:</th>
-                          <td>{pkg.bestSeason}</td>
+                          <td>
+                            {Array.isArray(pkg.bestSeason)
+                              ? pkg.bestSeason
+                                  .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+                                  .join(', ')
+                              : pkg.bestSeason}
+                          </td>
                         </tr>
                       )}
                       {pkg.perDayHiking && (

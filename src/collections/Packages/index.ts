@@ -33,15 +33,7 @@ import { revalidateDelete, revalidatePackages } from './hooks/revalidatePackages
 
 export const Packages: CollectionConfig<'packages'> = {
   slug: 'packages',
-  versions: {
-    drafts: {
-      autosave: {
-        interval: 100,
-      },
-      schedulePublish: true,
-    },
-    maxPerDoc: 50,
-  },
+
   access: {
     create: authenticated,
     delete: authenticated,
@@ -230,9 +222,36 @@ export const Packages: CollectionConfig<'packages'> = {
           label: 'Map',
           fields: [
             {
+              name: 'mapType',
+              type: 'radio',
+              defaultValue: 'embedMap',
+              options: [
+                {
+                  label: 'Image Upload',
+                  value: 'imageUpload',
+                },
+                {
+                  label: 'Embed Map',
+                  value: 'embedMap',
+                },
+              ],
+            },
+            {
+              name: 'mapImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Map Image',
+              admin: {
+                condition: (data) => data?.mapType === 'imageUpload',
+              },
+            },
+            {
               name: 'mapIframe',
               type: 'textarea',
               label: 'Map Embed',
+              admin: {
+                condition: (data) => data?.mapType === 'embedMap',
+              },
             },
           ],
         },
@@ -347,7 +366,7 @@ export const Packages: CollectionConfig<'packages'> = {
       fields: [
         {
           name: 'tripDuration',
-          type: 'text',
+          type: 'number',
           label: 'Trip Duration',
         },
         {
@@ -363,8 +382,23 @@ export const Packages: CollectionConfig<'packages'> = {
         },
         {
           name: 'bestSeason',
-          type: 'text',
+          type: 'select',
           label: 'Best Season',
+          hasMany: true,
+          options: [
+            { label: 'January', value: 'january' },
+            { label: 'February', value: 'february' },
+            { label: 'March', value: 'march' },
+            { label: 'April', value: 'april' },
+            { label: 'May', value: 'may' },
+            { label: 'June', value: 'june' },
+            { label: 'July', value: 'july' },
+            { label: 'August', value: 'august' },
+            { label: 'September', value: 'september' },
+            { label: 'October', value: 'october' },
+            { label: 'November', value: 'november' },
+            { label: 'December', value: 'december' },
+          ],
         },
         {
           name: 'perDayHiking',
@@ -373,7 +407,7 @@ export const Packages: CollectionConfig<'packages'> = {
         },
         {
           name: 'elevation',
-          type: 'text',
+          type: 'number',
           label: 'Elevation',
         },
         {
@@ -445,13 +479,13 @@ export const Packages: CollectionConfig<'packages'> = {
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  // versions: {
-  //   drafts: {
-  //     autosave: {
-  //       interval: 100,
-  //     },
-  //     schedulePublish: true,
-  //   },
-  //   maxPerDoc: 50,
-  // },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }

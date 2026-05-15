@@ -140,13 +140,19 @@ export const queryPackages = cache(async () => {
 })
 
 export const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (e) {}
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'categories',
+    draft,
     limit: 1,
     pagination: false,
-    overrideAccess: false,
+    overrideAccess: draft,
     where: {
       slug: {
         equals: slug,

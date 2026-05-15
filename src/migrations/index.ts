@@ -7,6 +7,7 @@ import * as migration_20260416_162815_package_fields_update from './20260416_162
 import * as migration_20260417_170145_changedTabsPackages from './20260417_170145_changedTabsPackages';
 import * as migration_20260419_125017_changedMapEmbedding from './20260419_125017_changedMapEmbedding';
 import * as migration_20260421_183034_addedNewBlocks from './20260421_183034_addedNewBlocks';
+import * as migration_20260511_104807_packgCollChange from './20260511_104807_packgCollChange';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260421_183034_addedNewBlocks.up,
     down: migration_20260421_183034_addedNewBlocks.down,
-    name: '20260421_183034_addedNewBlocks'
+    name: '20260421_183034_addedNewBlocks',
+  },
+  {
+    up: migration_20260511_104807_packgCollChange.up,
+    down: migration_20260511_104807_packgCollChange.down,
+    name: '20260511_104807_packgCollChange'
   },
 ];

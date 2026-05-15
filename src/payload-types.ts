@@ -518,6 +518,8 @@ export interface Package {
     };
     [k: string]: unknown;
   } | null;
+  mapType?: ('imageUpload' | 'embedMap') | null;
+  mapImage?: (number | null) | Media;
   mapIframe?: string | null;
   faqs?: FAQs;
   miscellaneous?: {
@@ -549,11 +551,26 @@ export interface Package {
   generateSlug?: boolean | null;
   slug: string;
   Activity?: (number | Activity)[] | null;
-  tripDuration?: string | null;
+  tripDuration?: number | null;
   tripGrade?: ('easy' | 'moderate' | 'difficult' | 'strenuous') | null;
-  bestSeason?: string | null;
+  bestSeason?:
+    | (
+        | 'january'
+        | 'february'
+        | 'march'
+        | 'april'
+        | 'may'
+        | 'june'
+        | 'july'
+        | 'august'
+        | 'september'
+        | 'october'
+        | 'november'
+        | 'december'
+      )[]
+    | null;
   perDayHiking?: string | null;
-  elevation?: string | null;
+  elevation?: number | null;
   accommodation?: string | null;
   transportation?: string | null;
   customFacts?:
@@ -859,6 +876,7 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2107,6 +2125,8 @@ export interface PackagesSelect<T extends boolean = true> {
   detailedItinerary?: T | DetailedItinerarySelect<T>;
   includes?: T;
   excludes?: T;
+  mapType?: T;
+  mapImage?: T;
   mapIframe?: T;
   faqs?: T | FAQsSelect<T>;
   miscellaneous?: T;
@@ -2570,6 +2590,7 @@ export interface CategoriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3172,6 +3193,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'pages';
           value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'categories';
+          value: number | Category;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

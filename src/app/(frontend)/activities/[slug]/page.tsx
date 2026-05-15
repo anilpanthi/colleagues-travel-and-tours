@@ -49,7 +49,13 @@ export default async function ActivityPage({
 	params: paramsPromise,
 	searchParams: searchParamsPromise,
 }: Args & { searchParams: Promise<{ page?: string }> }) {
-	const { isEnabled: draft } = await draftMode()
+	let draft = false
+	try {
+		const { isEnabled } = await draftMode()
+		draft = isEnabled
+	} catch (e) {
+		// draftMode() can throw when not called from a server component or during build
+	}
 	const { slug = '' } = await paramsPromise
 	const { page: pageNumber = '1' } = await searchParamsPromise
 
@@ -64,6 +70,7 @@ export default async function ActivityPage({
 	const packages = await payload.find({
 		collection: 'packages',
 		depth: 1,
+		draft,
 		limit: 6,
 		page: parseInt(pageNumber),
 		overrideAccess: draft,
@@ -149,7 +156,7 @@ const queryActivityBySlug = cache(async ({ slug }: { slug: string }) => {
 
 	const result = await payload.find({
 		collection: 'activities',
-		draft: false,
+		draft,
 		limit: 1,
 		overrideAccess: draft,
 		pagination: false,

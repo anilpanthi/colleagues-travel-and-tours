@@ -138,9 +138,32 @@
   }
 }
 
+.rangeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.rangeValue {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f5a9c;
+  background: #f0f7fd;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.8rem;
+}
+
+.rangeSlider {
+  width: 100%;
+  accent-color: #0f5a9c;
+  cursor: pointer;
+}
+
 .actionRow {
   display: flex;
   align-items: center;
+  gap: 1rem;
   margin-top: 0.3rem;
 }
 
@@ -162,6 +185,24 @@
   }
 }
 
+.showResultsButton {
+  display: none;
+  border: none;
+  border-radius: 1.1rem;
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  background-color: #0f5a9c;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.3rem;
+  width: 100%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #0c4a82;
+  }
+}
+
 .cardsSection {
   min-width: 0;
   background: #fff;
@@ -169,6 +210,12 @@
   border-radius: 1.8rem;
   padding: 1.6rem;
   box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.06);
+}
+
+.paginationWrapper {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
 }
 
 .resultsHeader {
@@ -247,6 +294,10 @@
 
   .mobileFilterBtn {
     display: flex;
+  }
+
+  .showResultsButton {
+    display: block;
   }
 
   .filterSidebar {

@@ -8,6 +8,8 @@ import Cards from '@/components/ui/Card/Cards'
 import { Pagination } from '@/components/Pagination'
 import { PageRange } from '@/components/PageRange'
 import { queryCategoryBySlug } from '../../[...slug]/queries'
+import { draftMode } from 'next/headers'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
@@ -25,6 +27,12 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
   const { slug } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
 
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (e) {}
+
   const category = await queryCategoryBySlug({ slug })
 
   if (!category) {
@@ -34,13 +42,14 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
   const posts = await payload.find({
     collection: 'posts',
     depth: 1,
+    draft,
     limit: 6,
+    overrideAccess: draft,
     where: {
       categories: {
         contains: category.id,
       },
     },
-    overrideAccess: false,
   })
 
   // Transform posts to the format required by the Cards component
@@ -51,6 +60,7 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
 
   return (
     <div className={styles.categoryPage}>
+      {draft && <LivePreviewListener />}
       <StaticHero
         title={category.title}
         tagline="Category Archive"

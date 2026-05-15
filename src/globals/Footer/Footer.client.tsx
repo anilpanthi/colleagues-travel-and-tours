@@ -11,6 +11,8 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { generatePath } from '@/utilities/generatePath'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
+import Image from 'next/image'
 
 interface FooterClientProps {
   footerColumns: SiteSetting['footerColumns']
@@ -31,6 +33,9 @@ export const FooterClient: React.FC<FooterClientProps> = ({
   address,
   emails,
 }) => {
+  const logoObj = typeof logos === 'object' ? logos : null
+  const src = logoObj?.url ? getMediaUrl(logoObj.url, logoObj.updatedAt) : null
+  
   return (
     <footer className={styles.footer}>
       <Container>
@@ -41,7 +46,9 @@ export const FooterClient: React.FC<FooterClientProps> = ({
                 <div key={index} className={styles.footerCol}>
                   {logos && (
                     <Link href="/" className={styles.footerBrand}>
-                      <Media resource={logos as MediaType} imgClassName={styles.footerLogo} />
+                      {src && (
+                        <Image src={src} alt="logo" height={57} width={100} loading="eager" />
+                      )}
                     </Link>
                   )}
                   {col.description && <p className={styles.footerDesc}>{col.description}</p>}
