@@ -20,10 +20,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL
   );
   
-  ALTER TABLE "packages" ALTER COLUMN "trip_duration" SET DATA TYPE numeric;
-  ALTER TABLE "packages" ALTER COLUMN "elevation" SET DATA TYPE numeric;
-  ALTER TABLE "_packages_v" ALTER COLUMN "version_trip_duration" SET DATA TYPE numeric;
-  ALTER TABLE "_packages_v" ALTER COLUMN "version_elevation" SET DATA TYPE numeric;
+  ALTER TABLE "packages" ALTER COLUMN "trip_duration" SET DATA TYPE numeric USING NULLIF(regexp_replace("trip_duration", '[^0-9.]', '', 'g'), '')::numeric;
+  ALTER TABLE "packages" ALTER COLUMN "elevation" SET DATA TYPE numeric USING NULLIF(regexp_replace("elevation", '[^0-9.]', '', 'g'), '')::numeric;
+  ALTER TABLE "_packages_v" ALTER COLUMN "version_trip_duration" SET DATA TYPE numeric USING NULLIF(regexp_replace("version_trip_duration", '[^0-9.]', '', 'g'), '')::numeric;
+  ALTER TABLE "_packages_v" ALTER COLUMN "version_elevation" SET DATA TYPE numeric USING NULLIF(regexp_replace("version_elevation", '[^0-9.]', '', 'g'), '')::numeric;
   ALTER TABLE "packages" ADD COLUMN "map_type" "enum_packages_map_type" DEFAULT 'embedMap';
   ALTER TABLE "packages" ADD COLUMN "map_image_id" integer;
   ALTER TABLE "_packages_v" ADD COLUMN "version_map_type" "enum__packages_v_version_map_type" DEFAULT 'embedMap';
