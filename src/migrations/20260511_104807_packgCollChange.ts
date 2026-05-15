@@ -2,7 +2,14 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."enum_packages_best_season" AS ENUM('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+  DROP TABLE IF EXISTS "packages_best_season" CASCADE;
+  DROP TABLE IF EXISTS "_packages_v_version_best_season" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum_packages_best_season" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum_packages_map_type" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum__packages_v_version_best_season" CASCADE;
+  DROP TYPE IF EXISTS "public"."enum__packages_v_version_map_type" CASCADE;
+
+  CREATE TYPE "public"."enum_packages_best_season" AS ENUM('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
   CREATE TYPE "public"."enum_packages_map_type" AS ENUM('imageUpload', 'embedMap');
   CREATE TYPE "public"."enum__packages_v_version_best_season" AS ENUM('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
   CREATE TYPE "public"."enum__packages_v_version_map_type" AS ENUM('imageUpload', 'embedMap');
