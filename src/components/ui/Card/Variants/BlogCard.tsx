@@ -47,13 +47,25 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 				const categoryName =
 					category && typeof category === 'object' ? (category as Category).title : ''
 
-				const formattedDate = publishedAt
-					? new Date(publishedAt).toLocaleDateString('en-US', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric',
-						})
-					: null
+				const getFormattedDate = (dateString: string) => {
+					const date = new Date(dateString)
+					const months = [
+						'January',
+						'February',
+						'March',
+						'April',
+						'May',
+						'June',
+						'July',
+						'August',
+						'September',
+						'October',
+						'November',
+						'December',
+					]
+					return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`
+				}
+				const formattedDate = publishedAt ? getFormattedDate(publishedAt) : null
 
 				const readingTime = content ? calculateReadingTime(content) : null
 

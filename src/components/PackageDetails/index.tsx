@@ -168,6 +168,17 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                 <RichText data={pkg.miscellaneous} enableGutter={false} />
               </div>
             )}
+
+            <div className={style.ctaSection}>
+              <span className={style.title}>Book This Trip</span>
+              <form>
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="tel" placeholder="Phone" />
+                <textarea placeholder="Message"></textarea>
+                <button type="submit">Book Now</button>
+              </form>
+            </div>
           </div>
 
           {/* Sidebar */}

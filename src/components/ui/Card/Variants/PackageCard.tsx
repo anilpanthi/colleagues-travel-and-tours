@@ -22,8 +22,6 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
-    
-
         const { id, title, slug, featuredImage, meta } = doc
 
         // Default to 'packages' if collection is not provided or 'none'
@@ -33,7 +31,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           <Card key={index} className={styles.packageCard}>
             {doc.tripDuration && (
               <Card.Span className={styles.packageCard__batch_duration}>
-                {doc.tripDuration}
+                {doc.tripDuration} Days
               </Card.Span>
             )}
 

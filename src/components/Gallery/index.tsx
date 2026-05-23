@@ -25,8 +25,38 @@ type Props = {
 
 export const Gallery: React.FC<Props> = ({ images }) => {
 	const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperType | null>(null)
+	const [isMounted, setIsMounted] = React.useState(false)
+
+	React.useEffect(() => {
+		setIsMounted(true)
+	}, [])
 
 	if (!images || images.length === 0) return null
+
+	if (!isMounted) {
+		// Render just the first image as a static placeholder during SSR/hydration to prevent CLS and hydration mismatch
+		const firstImage = images[0]
+		const media = firstImage && typeof firstImage.image === 'object' ? (firstImage.image as Media) : null
+		if (!media || !media.url) return null
+
+		return (
+			<div className={styles.galleryContainer}>
+				<div className={styles.mainSwiper}>
+					<div className={styles.imageWrapper}>
+						<Image
+							src={media.url}
+							alt={media.alt || 'Gallery Image'}
+							fill
+							className={styles.image}
+							sizes="(max-width: 1200px) 100vw, 1200px"
+							priority
+							unoptimized
+						/>
+					</div>
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={styles.galleryContainer}>

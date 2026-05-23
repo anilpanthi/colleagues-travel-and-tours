@@ -2,7 +2,7 @@
 import React from 'react'
 import type { CarouselBlock as CarouselBlockProps, Testimonial } from '@/payload-types'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Autoplay } from 'swiper/modules'
+import { Navigation, Autoplay, Pagination } from 'swiper/modules'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import TestimonialCard from '../Card/Variants/TestimonialCard'
 
@@ -21,12 +21,41 @@ type CarouselProps = {
 }
 
 export default function Carousel({ selectedItems }: CarouselProps) {
+	const [isMounted, setIsMounted] = React.useState(false)
+
+	React.useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
 	if (!selectedItems || selectedItems.length === 0) return null
+
+	if (!isMounted) {
+		// Render just the first card as a static placeholder during SSR/hydration to prevent CLS and hydration mismatch
+		const firstItem = selectedItems[0]
+		if (!firstItem || typeof firstItem.value === 'number') return null
+
+		return (
+			<div className={styles.carouselContainer}>
+				<div className={styles.mySwiper}>
+					{firstItem.relationTo === 'testimonials' ? (
+						<TestimonialCard testimonial={firstItem.value as Testimonial} />
+					) : (
+						<div className={styles.placeholderCard}>
+							<h3>
+								{(firstItem.value as { title?: string; author?: string }).title ||
+									(firstItem.value as { title?: string; author?: string }).author}
+							</h3>
+						</div>
+					)}
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={styles.carouselContainer}>
 			<Swiper
-				modules={[Navigation, Autoplay]}
+				modules={[Navigation, Autoplay, Pagination]}
 				autoplay={{
 					delay: 3000,
 					disableOnInteraction: false,

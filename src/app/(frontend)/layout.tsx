@@ -61,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <InitTheme />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>
           <div className="layout-wrapper">
             <ProgressBar />

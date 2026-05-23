@@ -13,13 +13,12 @@ export interface TestimonialCardProps {
 export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
 	const { author, quote, avatar, rating, createdAt } = testimonial
 
-	const formattedDate = createdAt
-		? new Date(createdAt).toLocaleDateString('en-US', {
-				month: 'short',
-				day: 'numeric',
-				year: 'numeric',
-			})
-		: ''
+	const getFormattedDate = (dateString: string) => {
+		const date = new Date(dateString)
+		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`
+	}
+	const formattedDate = createdAt ? getFormattedDate(createdAt) : ''
 
 	return (
 		<Card className={styles.testimonialCard}>
