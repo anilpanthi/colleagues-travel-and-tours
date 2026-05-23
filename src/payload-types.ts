@@ -3016,6 +3016,10 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  contactForm?: (number | null) | Form;
+  bookingForm?: (number | null) | Form;
+  flightBookingForm?: (number | null) | Form;
+  enquiryForm?: (number | null) | Form;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3094,6 +3098,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  contactForm?: T;
+  bookingForm?: T;
+  flightBookingForm?: T;
+  enquiryForm?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { RenderHero } from '@/heros/RenderHero'
 import RichText from '@/components/RichText'
 import Content from '@/components/ui/Content/Index'
@@ -12,6 +12,7 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { Media } from '@/components/Media'
 
 import style from './index.module.scss'
+import { Button } from '../ui/Button'
 
 interface PackageDetailsProps {
   pkg: Package
@@ -20,6 +21,9 @@ interface PackageDetailsProps {
 
 export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children }) => {
   const { setHeaderTheme, setHasHeroImage } = useHeaderTheme()
+
+    const [showEnquiryModal, setShowEnquiryModal] = useState(false)
+    const [showBookingModal, setShowBookingModal] = useState(false)
   const packageHasHeroImage = Boolean(
     pkg?.hero?.type && pkg?.hero?.type !== 'none' && pkg?.hero?.type !== 'lowImpact',
   )
@@ -168,17 +172,6 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                 <RichText data={pkg.miscellaneous} enableGutter={false} />
               </div>
             )}
-
-            <div className={style.ctaSection}>
-              <span className={style.title}>Book This Trip</span>
-              <form>
-                <input type="text" placeholder="Name" />
-                <input type="email" placeholder="Email" />
-                <input type="tel" placeholder="Phone" />
-                <textarea placeholder="Message"></textarea>
-                <button type="submit">Book Now</button>
-              </form>
-            </div>
           </div>
 
           {/* Sidebar */}
@@ -206,7 +199,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                       {pkg.tripDuration && (
                         <tr>
                           <th>Trip Duration:</th>
-                          <td>{pkg.tripDuration}</td>
+                          <td>{pkg.tripDuration} Days</td>
                         </tr>
                       )}
                       {pkg.tripGrade && (
@@ -236,7 +229,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                       {pkg.elevation && (
                         <tr>
                           <th>Elevation:</th>
-                          <td>{pkg.elevation}</td>
+                          <td>{pkg.elevation} Meters</td>
                         </tr>
                       )}
                       {pkg.accommodation && (
@@ -262,9 +255,25 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                 </div>
               </div>
             )}
+            <div className={style.contactGroup}>
+              <Button appearance="primary" size="lg">
+                Book this package
+              </Button>
+              <Button appearance="outlineBlack" size="lg">
+                Make an Enquiry
+              </Button>
+            </div>
           </aside>
         </div>
 
+        {/* <Button
+        appearance="primary"
+        size="sm"
+        iconLeft={<Plane className={CtaStyle.iconPlane} />}
+        onClick={handleOpenModal}
+      >
+        Book Your Flight
+      </Button> */}
         {children}
       </Content>
     </>

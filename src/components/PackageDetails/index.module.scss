@@ -196,26 +196,26 @@
 
 /* Sidebar Styling */
 .singlePackage__right {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 3rem;
   position: sticky;
   top: 12rem;
 }
 
 .tripFacts {
-  background: #ffffff;
+  background: #96d5f338;
   border: 1px solid #e2e8f0;
-  border-radius: 1.6rem;
-  padding: 2.5rem;
-  margin-bottom: 3rem;
+  // border-radius: 1.6rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
 
   .tripFacts__table {
     width: 100%;
     border-collapse: collapse;
 
     tr {
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid #b1b1b1;
 
       &:last-child {
         border-bottom: none;
@@ -240,6 +240,14 @@
       font-weight: 500;
     }
   }
+}
+
+.contactGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;  
+
+  // width: 100%;
 }
 
 .capitalize {

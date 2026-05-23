@@ -17,6 +17,7 @@ import {
   queryPageBySlug,
   queryPackageBySlug,
   queryRelatedPackages,
+  queryFormsByTitle,
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 
@@ -73,11 +74,16 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   if (pkg) {
     const relatedDocs = await queryRelatedPackages({ pkg })
+
+    const form = await queryFormsByTitle({ title: 'Contact' })
+
+
+
     return (
       <>
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
-        <PackageDetails pkg={pkg}>
+        <PackageDetails pkg={pkg} >
           {relatedDocs.length > 0 ? <RelatedPackages packages={relatedDocs} /> : null}
         </PackageDetails>
       </>

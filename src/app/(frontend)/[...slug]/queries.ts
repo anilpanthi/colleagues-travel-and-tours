@@ -32,18 +32,11 @@ export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
-  let draft = false
-  try {
-    const { isEnabled } = await draftMode()
-    draft = isEnabled
-  } catch (e) {}
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'packages',
-    draft,
     limit: 1,
-    overrideAccess: draft,
     pagination: false,
     where: {
       slug: {
@@ -156,6 +149,31 @@ export const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
     where: {
       slug: {
         equals: slug,
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
+})
+
+export const queryFormsByTitle = cache(async ({ title }: { title: string }) => {
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (e) {}
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'forms',
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    depth: 2, // Important: populate form fields & blocks
+    where: {
+      title: {
+        equals: title,
       },
     },
   })

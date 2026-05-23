@@ -256,6 +256,36 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+
+        {
+          label: 'Miscellaneous',
+          fields: [
+            {
+              name: 'contactForm',
+              label: 'Contact Form',
+              type: 'relationship',
+              relationTo: 'forms',
+            },
+            {
+              name: 'bookingForm',
+              label: 'Package Booking Form',
+              type: 'relationship',
+              relationTo: 'forms',
+            },
+            {
+              name:'flightBookingForm',
+              label:'Flight Booking Form',
+              type:'relationship',
+              relationTo:'forms',
+            },
+            {
+              name: 'enquiryForm',
+              label: 'Enquiry Form',
+              type: 'relationship',
+              relationTo: 'forms',
+            },
+          ],
+        },
       ],
     },
   ],
