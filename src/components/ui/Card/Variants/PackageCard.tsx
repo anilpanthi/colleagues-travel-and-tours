@@ -2,8 +2,8 @@ import type { CardsBlock, Package, Media } from '@/payload-types'
 import Card from '../Primitives/Card'
 import styles from './PackageCard.module.scss'
 
-import { Button } from '@/components/ui/Button/Button'
-import { ChevronRight, Camera, CalendarHeart, ArrowRight, Mountain, Compass } from 'lucide-react'
+
+import {  Camera, Mountain, Compass } from 'lucide-react'
 
 import Link from 'next/link'
 
