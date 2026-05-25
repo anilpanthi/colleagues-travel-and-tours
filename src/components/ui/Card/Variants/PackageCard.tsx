@@ -3,7 +3,7 @@ import Card from '../Primitives/Card'
 import styles from './PackageCard.module.scss'
 
 import { Button } from '@/components/ui/Button/Button'
-import { ChevronRight, Camera, CalendarHeart, ArrowRight, Mountain } from 'lucide-react'
+import { ChevronRight, Camera, CalendarHeart, ArrowRight, Mountain, Compass } from 'lucide-react'
 
 import Link from 'next/link'
 
@@ -30,13 +30,15 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
         const href = slug ? `/${slug}` : `/${collectionSlug}/${id}`
         return (
-          <Card key={index} className={styles.packageCard}>
+          <Card key={index} className={styles.packageCard} as={Link} href={href}>
             {doc.tripDuration && (
               <Card.Span className={styles.packageCard__batch_duration}>
                 {doc.tripDuration} Days
               </Card.Span>
             )}
-            
+            {doc.tripGrade && (
+              <Card.Span className={styles.packageCard__batch_grade}>{doc.tripGrade}</Card.Span>
+            )}
 
             <Card.Div className={styles.packageCard__image_wrapper}>
               {meta?.image || featuredImage ? (
@@ -55,49 +57,25 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
             </Card.Div>
             {/* Dsiplaying title and facts */}
             <Card.Div className={styles.packageCard__content_top}>
-              <Card.Title as={Link} href={href} className={styles.packageCard__title}>
+              <Card.Title className={styles.packageCard__title}>
                 {title}
               </Card.Title>
-              {/* <Card.Span className={styles.packageCard__content_top_grade}>
-                {doc?.tripGrade}
-              </Card.Span> */}
-              {/* <Card.text>{meta?.description}</Card.text> */}
-
               <Card.Div className={styles.packageCard__content_top_facts}>
                 {doc?.elevation && (
                   <Card.Div className={styles.packageCard__content_top_facts_elevation}>
-                    <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
+                    <Mountain size={18} /> <Card.Span>{doc.elevation} m</Card.Span>
                   </Card.Div>
                 )}
-                <Button
-                  appearance="simpleLinkbtn"
-                  className={styles.packageCard__content_top_facts_btn}
-                  size="md"
-                  href={href}
-                  iconRight={<ArrowRight size={16} />}
-                >
-                  More Details
-                </Button>
+                {doc?.Activity &&
+                  doc.Activity.length > 0 &&
+                  typeof doc.Activity[0] === 'object' && (
+                    <Card.Div className={styles.packageCard__content_top_facts_elevation}>
+                      <Compass size={18} /> <Card.Span>{doc.Activity[0].title}</Card.Span>
+                    </Card.Div>
+                  )}
+
               </Card.Div>
             </Card.Div>
-            {/* <Card.Div className={styles.packageCard__content_bottom}>
-              <Card.Div className={styles.packageCard__content_bottom_facts}>
-                {doc?.elevation && (
-                  <Card.Div className={styles.packageCard__content_bottom_facts_elevation}>
-                    <Mountain size={18} /> <Card.Span>{doc.elevation}</Card.Span>
-                  </Card.Div>
-                )}
-                <Button
-                  appearance="simpleLinkbtn"
-                  className={styles.packageCard__content_top_facts_btn}
-                  size="md"
-                  href={href}
-                  iconRight={<ArrowRight size={16} />}
-                >
-                  More Details
-                </Button>
-              </Card.Div>
-            </Card.Div> */}
           </Card>
         )
       })}
