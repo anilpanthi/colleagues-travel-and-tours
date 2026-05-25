@@ -11,13 +11,13 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { PackageDetails } from '@/components/PackageDetails'
 import { notFound, permanentRedirect } from 'next/navigation'
+import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 import {
   queryPages,
   queryPackages,
   queryPageBySlug,
   queryPackageBySlug,
   queryRelatedPackages,
-  queryFormsByTitle,
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 
@@ -74,16 +74,19 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   if (pkg) {
     const relatedDocs = await queryRelatedPackages({ pkg })
+    const siteSettings = await getCachedSiteSettings()
 
-    const form = await queryFormsByTitle({ title: 'Contact' })
+    const { bookingForm , enquiryForm } = siteSettings
 
+  
 
+    // const { mainNavigation, logos, flightBookingForm } = siteSettings
 
     return (
       <>
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
-        <PackageDetails pkg={pkg} >
+        <PackageDetails pkg={pkg} bookingForm={bookingForm} enquiryForm={enquiryForm}>
           {relatedDocs.length > 0 ? <RelatedPackages packages={relatedDocs} /> : null}
         </PackageDetails>
       </>

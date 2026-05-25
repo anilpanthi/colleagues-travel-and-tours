@@ -1,6 +1,5 @@
 import { getCachedGlobal } from './getGlobals'
 
-
 /**
  * Optimized fetcher for Site Settings used by both Header and Footer.
  * Consolidates all necessary fields into a single request with a unified cache key.
@@ -20,6 +19,18 @@ export const getCachedSiteSettings = () =>
     contactNumbers: true,
     address: true,
     emailAddresses: true,
+    contactForm: {
+      items: true,
+    },
+    bookingForm: {
+      items: true,
+    },
+    flightBookingForm: {
+      items: true,
+    },
+    enquiryForm: {
+      items: true,
+    },
   })()
 
 // Re-export as getSiteSettings for backward compatibility if needed,

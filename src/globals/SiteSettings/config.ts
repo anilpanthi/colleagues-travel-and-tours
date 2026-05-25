@@ -2,7 +2,6 @@ import type { GlobalConfig } from 'payload'
 import { revalidateSiteSettings } from './hooks/revalidateSiteSettings'
 import { link } from '@/fields/link'
 
-
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   access: {
@@ -174,7 +173,7 @@ export const SiteSettings: GlobalConfig = {
                     description: 'Text to display below the logo in this column',
                   },
                 },
-  
+
                 {
                   name: 'navItems',
                   type: 'array',
@@ -265,24 +264,48 @@ export const SiteSettings: GlobalConfig = {
               label: 'Contact Form',
               type: 'relationship',
               relationTo: 'forms',
+              admin: {
+                description: 'Select contact form to display in contact page.',
+                style: {
+                  maxWidth: '500px',
+                },
+              },
             },
             {
               name: 'bookingForm',
               label: 'Package Booking Form',
               type: 'relationship',
               relationTo: 'forms',
+              admin: {
+                description: 'Select package booking form to display in package booking page.',
+                style: {
+                  maxWidth: '500px',
+                },
+              },
             },
             {
-              name:'flightBookingForm',
-              label:'Flight Booking Form',
-              type:'relationship',
-              relationTo:'forms',
+              name: 'flightBookingForm',
+              label: 'Flight Booking Form',
+              type: 'relationship',
+              relationTo: 'forms',
+              admin: {
+                description: 'Select flight booking form to display cta button.',
+                style: {
+                  maxWidth: '500px',
+                },
+              },
             },
             {
               name: 'enquiryForm',
               label: 'Enquiry Form',
               type: 'relationship',
               relationTo: 'forms',
+              admin: {
+                description: 'Select enquiry form to display in package details page.',
+                style: {
+                  maxWidth: '500px',
+                },
+              },
             },
           ],
         },

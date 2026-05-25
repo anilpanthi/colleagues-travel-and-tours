@@ -1,29 +1,39 @@
 'use client'
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RenderHero } from '@/heros/RenderHero'
 import RichText from '@/components/RichText'
 import Content from '@/components/ui/Content/Index'
 import { Accordion, AccordionItem } from '@/components/Accordion/Index'
-import type { Package } from '@/payload-types'
+import type { Package, SiteSetting } from '@/payload-types'
 import Gallery from '@/components/Gallery'
 import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import { ReadMore } from '@/components/ui/ReadMore'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { Media } from '@/components/Media'
+import Modal from '@/components/ui/Modal/Modal'
+import { FormBlock } from '@/blocks/Form/Component'
+import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import style from './index.module.scss'
 import { Button } from '../ui/Button'
 
 interface PackageDetailsProps {
   pkg: Package
+  bookingForm: SiteSetting['bookingForm']
+  enquiryForm: SiteSetting['enquiryForm']
   children?: React.ReactNode
 }
 
-export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children }) => {
+export const PackageDetails: React.FC<PackageDetailsProps> = ({
+  pkg,
+  bookingForm,
+  enquiryForm,
+  children,
+}) => {
   const { setHeaderTheme, setHasHeroImage } = useHeaderTheme()
+  const [showModal, setShowModal] = useState(false)
+  const [activeFormType, setActiveFormType] = useState<'book' | 'enquiry' | null>(null)
 
-    const [showEnquiryModal, setShowEnquiryModal] = useState(false)
-    const [showBookingModal, setShowBookingModal] = useState(false)
   const packageHasHeroImage = Boolean(
     pkg?.hero?.type && pkg?.hero?.type !== 'none' && pkg?.hero?.type !== 'lowImpact',
   )
@@ -48,6 +58,94 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
     ...(activity ? [{ label: activity.title, url: `/activities/${activity.slug}` }] : []),
     { label: pkg.title },
   ]
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setActiveFormType(null)
+  }
+
+  const openPopUp = (type: 'book' | 'enquiry') => {
+    setActiveFormType(type)
+    setShowModal(true)
+  }
+
+  const activeForm =
+    activeFormType === 'book' ? bookingForm : activeFormType === 'enquiry' ? enquiryForm : null
+  const formToDisplay =
+    activeForm && typeof activeForm === 'object' ? (activeForm as unknown as FormType) : null
+
+  const tripFactsContent = (pkg.tripDuration ||
+    pkg.tripGrade ||
+    pkg.bestSeason ||
+    pkg.perDayHiking ||
+    pkg.elevation ||
+    pkg.accommodation ||
+    pkg.transportation ||
+    (pkg.customFacts && pkg.customFacts.length > 0)) && (
+    <div className={style.tripFacts}>
+      <h3 className={style.sidebarTitle}>Trip Facts</h3>
+      <div className={style.tripFacts__body}>
+        <table className={style.tripFacts__table}>
+          <tbody>
+            {pkg.tripDuration && (
+              <tr>
+                <th>Trip Duration:</th>
+                <td>{pkg.tripDuration} Days</td>
+              </tr>
+            )}
+            {pkg.tripGrade && (
+              <tr>
+                <th>Trip Grade:</th>
+                <td className={style.capitalize}>{pkg.tripGrade}</td>
+              </tr>
+            )}
+            {pkg.bestSeason && (
+              <tr>
+                <th>Best Season:</th>
+                <td>
+                  {Array.isArray(pkg.bestSeason)
+                    ? pkg.bestSeason
+                        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+                        .join(', ')
+                    : pkg.bestSeason}
+                </td>
+              </tr>
+            )}
+            {pkg.perDayHiking && (
+              <tr>
+                <th>Per Day Hiking:</th>
+                <td>{pkg.perDayHiking}</td>
+              </tr>
+            )}
+            {pkg.elevation && (
+              <tr>
+                <th>Elevation:</th>
+                <td>{pkg.elevation} Meters</td>
+              </tr>
+            )}
+            {pkg.accommodation && (
+              <tr>
+                <th>Accommodation:</th>
+                <td>{pkg.accommodation}</td>
+              </tr>
+            )}
+            {pkg.transportation && (
+              <tr>
+                <th>Transportation:</th>
+                <td>{pkg.transportation}</td>
+              </tr>
+            )}
+            {pkg.customFacts?.map((fact, index) => (
+              <tr key={index}>
+                <th>{fact.label}:</th>
+                <td>{fact.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -78,6 +176,10 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
                 </ReadMore>
               </div>
             )}
+
+            <div className={style.tripFactsMobile}>
+              {tripFactsContent}
+            </div>
 
             {pkg?.packageFacts && (
               <div className={style.highlightsSection}>
@@ -176,106 +278,40 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({ pkg, children })
 
           {/* Sidebar */}
           <aside className={style.singlePackage__right}>
-            {pkg.price && (
-              <div className={style.priceCard}>
-                <span className={style.priceLabel}>From</span>
-                <span className={style.priceValue}>${pkg.price}</span>
-                <span className={style.priceNote}>per person</span>
-              </div>
-            )}
-            {(pkg.tripDuration ||
-              pkg.tripGrade ||
-              pkg.bestSeason ||
-              pkg.perDayHiking ||
-              pkg.elevation ||
-              pkg.accommodation ||
-              pkg.transportation ||
-              (pkg.customFacts && pkg.customFacts.length > 0)) && (
-              <div className={style.tripFacts}>
-                <h3 className={style.sidebarTitle}>Trip Facts</h3>
-                <div className={style.tripFacts__body}>
-                  <table className={style.tripFacts__table}>
-                    <tbody>
-                      {pkg.tripDuration && (
-                        <tr>
-                          <th>Trip Duration:</th>
-                          <td>{pkg.tripDuration} Days</td>
-                        </tr>
-                      )}
-                      {pkg.tripGrade && (
-                        <tr>
-                          <th>Trip Grade:</th>
-                          <td className={style.capitalize}>{pkg.tripGrade}</td>
-                        </tr>
-                      )}
-                      {pkg.bestSeason && (
-                        <tr>
-                          <th>Best Season:</th>
-                          <td>
-                            {Array.isArray(pkg.bestSeason)
-                              ? pkg.bestSeason
-                                  .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-                                  .join(', ')
-                              : pkg.bestSeason}
-                          </td>
-                        </tr>
-                      )}
-                      {pkg.perDayHiking && (
-                        <tr>
-                          <th>Per Day Hiking:</th>
-                          <td>{pkg.perDayHiking}</td>
-                        </tr>
-                      )}
-                      {pkg.elevation && (
-                        <tr>
-                          <th>Elevation:</th>
-                          <td>{pkg.elevation} Meters</td>
-                        </tr>
-                      )}
-                      {pkg.accommodation && (
-                        <tr>
-                          <th>Accommodation:</th>
-                          <td>{pkg.accommodation}</td>
-                        </tr>
-                      )}
-                      {pkg.transportation && (
-                        <tr>
-                          <th>Transportation:</th>
-                          <td>{pkg.transportation}</td>
-                        </tr>
-                      )}
-                      {pkg.customFacts?.map((fact, index) => (
-                        <tr key={index}>
-                          <th>{fact.label}:</th>
-                          <td>{fact.value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+            <div className={style.tripFactsDesktop}>
+              {tripFactsContent}
+            </div>
             <div className={style.contactGroup}>
-              <Button appearance="primary" size="lg">
+              <Button appearance="primary" size="lg" onClick={() => openPopUp('book')}>
                 Book this package
               </Button>
-              <Button appearance="outlineBlack" size="lg">
+              <Button appearance="outlineBlack" size="lg" onClick={() => openPopUp('enquiry')}>
                 Make an Enquiry
               </Button>
             </div>
           </aside>
         </div>
-
-        {/* <Button
-        appearance="primary"
-        size="sm"
-        iconLeft={<Plane className={CtaStyle.iconPlane} />}
-        onClick={handleOpenModal}
-      >
-        Book Your Flight
-      </Button> */}
         {children}
       </Content>
+
+      {showModal && (
+        <Modal
+          isOpen={showModal}
+          onClose={handleCloseModal}
+          title={activeFormType === 'book' ? `Book ${pkg.title}` : `Enquire about ${pkg.title}`}
+          size={activeFormType === 'enquiry' ? 'sm' : 'lg'}
+        >
+          {formToDisplay ? (
+            <FormBlock 
+              form={formToDisplay} 
+              enableIntro={false} 
+              className={activeFormType === 'book' ? style.bookingForm : style.enquiryForm}
+            />
+          ) : (
+            <p>Form is not available at the moment.</p>
+          )}
+        </Modal>
+      )}
     </>
   )
 }

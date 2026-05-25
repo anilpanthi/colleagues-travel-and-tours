@@ -44,7 +44,7 @@ const jost = Jost({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const siteSettings = await getCachedSiteSettings()
 
-  const { mainNavigation, logos } = siteSettings
+  const { mainNavigation, logos, flightBookingForm } = siteSettings
 
   const footerData = {
     footerColumns: siteSettings?.footerColumns,
@@ -65,7 +65,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Providers>
           <div className="layout-wrapper">
             <ProgressBar />
-            <HeaderClient mainNavigation={mainNavigation} logos={logos} />
+            <HeaderClient mainNavigation={mainNavigation} logos={logos} flightBookingForm={flightBookingForm} />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
           </div>

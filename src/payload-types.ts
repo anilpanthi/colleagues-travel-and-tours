@@ -3016,9 +3016,21 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Select contact form to display in contact page.
+   */
   contactForm?: (number | null) | Form;
+  /**
+   * Select package booking form to display in package booking page.
+   */
   bookingForm?: (number | null) | Form;
+  /**
+   * Select flight booking form to display cta button.
+   */
   flightBookingForm?: (number | null) | Form;
+  /**
+   * Select enquiry form to display in package details page.
+   */
   enquiryForm?: (number | null) | Form;
   updatedAt?: string | null;
   createdAt?: string | null;

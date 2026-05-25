@@ -17,7 +17,7 @@ export type FormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
   enableIntro: boolean
-  form: FormType
+  form: FormType 
   introContent?: DefaultTypedEditorState
 }
 

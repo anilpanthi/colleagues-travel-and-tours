@@ -22,6 +22,8 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
+        console.log(doc)
+
         const { id, title, slug, featuredImage, meta } = doc
 
         // Default to 'packages' if collection is not provided or 'none'
@@ -34,6 +36,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
                 {doc.tripDuration} Days
               </Card.Span>
             )}
+            
 
             <Card.Div className={styles.packageCard__image_wrapper}>
               {meta?.image || featuredImage ? (

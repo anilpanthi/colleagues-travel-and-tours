@@ -14,9 +14,10 @@ import Cta from '../Cta/Cta'
 interface HeaderClientProps {
   mainNavigation: SiteSetting['mainNavigation']
   logos: SiteSetting['logos']
+  flightBookingForm: SiteSetting['flightBookingForm']
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logos }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logos, flightBookingForm }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const [isMounted, setIsMounted] = useState(false)
   const { headerTheme, setHeaderTheme, hasHeroImage, setHasHeroImage } = useHeaderTheme()
@@ -112,8 +113,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
           </div>
 
           <div className={cssClass.header__right}>
-            <div className={cssClass.desktopOnly}>
-              <Cta />
+            <div className={cssClass.ctaContainer}>
+              <Cta flightBookingForm={flightBookingForm} />
             </div>
 
             <button

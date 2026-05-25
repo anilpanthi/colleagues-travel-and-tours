@@ -22,6 +22,14 @@
   }
 }
 
+.ctaContainer {
+  @media (max-width: 1099px) {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .header:global(.noHero) {
   position: sticky;
 }
