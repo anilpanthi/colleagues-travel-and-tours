@@ -27,6 +27,12 @@ wait_for_db() {
 # Run the wait function
 wait_for_db
 
+# Run database migration sync check
+if [ -f "sync-migrations.js" ]; then
+  echo "Running database migration sync check..."
+  su-exec nextjs:nodejs node sync-migrations.js || echo "Warning: Migration sync check failed to run."
+fi
+
 # Fix permissions for the media volume at runtime
 echo "Fixing permissions for /app/media..."
 chown -R nextjs:nodejs /app/media

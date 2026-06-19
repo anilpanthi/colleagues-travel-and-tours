@@ -33,9 +33,9 @@ COPY . .
 ENV PAYLOAD_IGNORE_MIGRATIONS=true
 
 RUN \
-  if [ -f yarn.lock ]; then yarn run generate:importmap && yarn run build; \
-  elif [ -f package-lock.json ]; then npm run generate:importmap && npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run generate:importmap && pnpm run build; \
+  if [ -f yarn.lock ]; then yarn run generate:importmap && node sync-migrations.js && yarn run build; \
+  elif [ -f package-lock.json ]; then npm run generate:importmap && node sync-migrations.js && npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run generate:importmap && node sync-migrations.js && pnpm run build; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -65,6 +65,10 @@ RUN chmod +x entrypoint.sh
 
 # Remove this line if you do not have this folder
 COPY --from=builder /app/public ./public
+
+# Copy migration files and sync script for runtime sync checks
+COPY --from=builder /app/sync-migrations.js ./
+COPY --from=builder /app/src/migrations ./src/migrations
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
