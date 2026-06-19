@@ -60,9 +60,11 @@ async function main() {
     }
 
     const files = fs.readdirSync(migrationsDir);
+    // Filter .json snapshot files — .ts sources are excluded from the production
+    // image to prevent Node.js from attempting to dynamically import TypeScript.
     const migrationsToSync = files
-      .filter(file => file.endsWith('.ts') && file !== 'index.ts')
-      .map(file => file.replace('.ts', ''))
+      .filter(file => file.endsWith('.json'))
+      .map(file => file.replace('.json', ''))
       .sort();
 
     if (migrationsToSync.length === 0) {

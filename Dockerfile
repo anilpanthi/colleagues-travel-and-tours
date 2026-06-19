@@ -66,9 +66,13 @@ RUN chmod +x entrypoint.sh
 # Remove this line if you do not have this folder
 COPY --from=builder /app/public ./public
 
-# Copy migration files and sync script for runtime sync checks
+# Copy sync script and only migration JSON files (not .ts sources)
+# The prodMigrations option in payload.config.ts provides compiled migration
+# functions via the Next.js bundle. Copying .ts files caused Node.js to attempt
+# dynamic import() of TypeScript, which fails in production.
 COPY --from=builder /app/sync-migrations.js ./
-COPY --from=builder /app/src/migrations ./src/migrations
+RUN mkdir -p src/migrations
+COPY --from=builder /app/src/migrations/*.json ./src/migrations/
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
