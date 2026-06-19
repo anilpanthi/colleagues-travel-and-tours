@@ -34,7 +34,7 @@ COPY . .
 # onInit which calls migrate(), but .ts migration files cannot be dynamically
 # imported by Node.js. Migrations will run at container startup (runtime) instead,
 # where only compiled prodMigrations are used and no .ts files exist.
-ENV PAYLOAD_IGNORE_MIGRATIONS=true
+ENV PAYLOAD_IGNORE_MIGRATIONS=false
 
 RUN \
   if [ -f yarn.lock ]; then yarn run generate:importmap && node sync-migrations.js && yarn run build; \
