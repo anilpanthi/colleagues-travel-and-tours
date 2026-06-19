@@ -21,8 +21,8 @@ import {
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 
-// export const dynamic = 'force-static'
-// export const revalidate = 600
+export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 export async function generateStaticParams() {
   const pages = await queryPages()
