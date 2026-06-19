@@ -30,7 +30,11 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-ENV PAYLOAD_IGNORE_MIGRATIONS=false
+# Migrations must NOT run during next build — Next.js static generation triggers
+# onInit which calls migrate(), but .ts migration files cannot be dynamically
+# imported by Node.js. Migrations will run at container startup (runtime) instead,
+# where only compiled prodMigrations are used and no .ts files exist.
+ENV PAYLOAD_IGNORE_MIGRATIONS=true
 
 RUN \
   if [ -f yarn.lock ]; then yarn run generate:importmap && node sync-migrations.js && yarn run build; \
