@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+# This flag is build-only. Ensure Payload runs production migrations at startup,
+# even if the deployment platform carries the build variable into the container.
+unset PAYLOAD_IGNORE_MIGRATIONS
+
 # Function to wait for database
 wait_for_db() {
   if [ -n "$DATABASE_URL" ]; then

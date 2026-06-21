@@ -1,13 +1,14 @@
-import * as migration_20260408_145216_init from './20260408_145216_init';
-import * as migration_20260409_130703_new_collections from './20260409_130703_new_collections';
-import * as migration_20260413_031809_nested_doc from './20260413_031809_nested_doc';
-import * as migration_20260415_085930_cleanup_site_settings from './20260415_085930_cleanup_site_settings';
-import * as migration_20260415_152253_add_placeholder_fields_to_forms from './20260415_152253_add_placeholder_fields_to_forms';
-import * as migration_20260416_162815_package_fields_update from './20260416_162815_package_fields_update';
-import * as migration_20260417_170145_changedTabsPackages from './20260417_170145_changedTabsPackages';
-import * as migration_20260419_125017_changedMapEmbedding from './20260419_125017_changedMapEmbedding';
-import * as migration_20260421_183034_addedNewBlocks from './20260421_183034_addedNewBlocks';
-import * as migration_20260511_104807_packgCollChange from './20260511_104807_packgCollChange';
+import * as migration_20260408_145216_init from './20260408_145216_init'
+import * as migration_20260409_130703_new_collections from './20260409_130703_new_collections'
+import * as migration_20260413_031809_nested_doc from './20260413_031809_nested_doc'
+import * as migration_20260415_085930_cleanup_site_settings from './20260415_085930_cleanup_site_settings'
+import * as migration_20260415_152253_add_placeholder_fields_to_forms from './20260415_152253_add_placeholder_fields_to_forms'
+import * as migration_20260416_162815_package_fields_update from './20260416_162815_package_fields_update'
+import * as migration_20260417_170145_changedTabsPackages from './20260417_170145_changedTabsPackages'
+import * as migration_20260419_125017_changedMapEmbedding from './20260419_125017_changedMapEmbedding'
+import * as migration_20260421_183034_addedNewBlocks from './20260421_183034_addedNewBlocks'
+import * as migration_20260511_104807_packgCollChange from './20260511_104807_packgCollChange'
+import * as migration_20260621_073000_repair_users_name from './20260621_073000_repair_users_name'
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20260511_104807_packgCollChange.up,
     down: migration_20260511_104807_packgCollChange.down,
-    name: '20260511_104807_packgCollChange'
+    name: '20260511_104807_packgCollChange',
   },
-];
+  {
+    up: migration_20260621_073000_repair_users_name.up,
+    down: migration_20260621_073000_repair_users_name.down,
+    name: '20260621_073000_repair_users_name',
+  },
+]
