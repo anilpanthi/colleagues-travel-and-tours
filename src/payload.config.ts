@@ -47,6 +47,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 const sanitizedServerURL = serverURL.replace(/\/$/, '')
+const shouldRunProdMigrations = process.env.PAYLOAD_IGNORE_MIGRATIONS !== 'true'
 
 export default buildConfig({
   admin: {
@@ -83,25 +84,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    prodMigrations: migrations,
+    prodMigrations: shouldRunProdMigrations ? migrations : undefined,
   }),
   sharp,
-  onInit: async (payload) => {
-    if (process.env.NODE_ENV === 'production') {
-      if (process.env.PAYLOAD_IGNORE_MIGRATIONS === 'true') {
-        console.log('PAYLOAD_IGNORE_MIGRATIONS is set to true. Skipping migrations.')
-        return
-      }
-
-      console.log('Production mode detected. Checking for pending migrations...')
-      try {
-        await payload.db.migrate()
-        console.log('Migrations completed successfully.')
-      } catch (error) {
-        console.error('CRITICAL ERROR during migrations:', error)
-      }
-    }
-  },
   // email: nodemailerAdapter({
   //   defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleagues-travel.com',
   //   defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel',
