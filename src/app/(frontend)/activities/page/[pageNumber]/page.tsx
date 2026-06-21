@@ -12,6 +12,7 @@ import styles from '../../page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 import type { PaginatedDocs } from 'payload'
 import type { Activity } from '@/payload-types'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const revalidate = 600
 
@@ -109,6 +110,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 export async function generateStaticParams() {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const { totalDocs } = await payload.count({

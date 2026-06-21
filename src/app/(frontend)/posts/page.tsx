@@ -11,7 +11,7 @@ import PageClient from './page.client'
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 export default async function Page() {

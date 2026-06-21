@@ -5,6 +5,8 @@ import { ExplorePageClient } from './ExplorePage.client'
 import { Metadata } from 'next'
 import { StaticHero } from '@/heros/StaticHero/StaticHero'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Explore Packages | Colleagues Travel And Tours',
   description: 'Search and filter our wide range of travel packages to find your next adventure.',

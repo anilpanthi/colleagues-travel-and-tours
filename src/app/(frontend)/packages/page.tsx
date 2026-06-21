@@ -14,6 +14,8 @@ import containerStyles from '@/Styles/container.module.css'
 import type { PaginatedDocs, Where } from 'payload'
 import type { Package } from '@/payload-types'
 
+export const dynamic = 'force-dynamic'
+
 const tripFactFields = [
 	'tripDuration',
 	'tripGrade',

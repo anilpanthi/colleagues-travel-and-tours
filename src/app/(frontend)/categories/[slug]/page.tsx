@@ -10,11 +10,12 @@ import { PageRange } from '@/components/PageRange'
 import { queryCategoryBySlug } from '../../[...slug]/queries'
 import { draftMode } from 'next/headers'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 type Args = {
@@ -107,6 +108,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 export async function generateStaticParams() {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const categories = await payload.find({

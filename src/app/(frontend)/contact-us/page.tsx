@@ -11,6 +11,8 @@ import { MapPin, Phone, Mail } from 'lucide-react'
 import { getSiteSettings } from '@/utilities/getSiteSettings'
 import styles from './page.module.css'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ContactPage() {
   const { isEnabled: draft } = await draftMode()
   const page = await queryPageBySlug({ slug: 'contact-us' })

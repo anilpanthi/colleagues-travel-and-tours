@@ -22,6 +22,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Tag, User } from 'lucide-react'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 // import styles from './page.module.css'
 import styles from './singlePost.module.scss'
@@ -29,6 +30,10 @@ import Content from '@/components/ui/Content/Index'
 import Row from '@/components/ui/Row'
 
 export async function generateStaticParams() {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const posts = await payload.find({

@@ -2,11 +2,11 @@ import { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { getServerSideURL } from '@/utilities/getURL'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const revalidate = 3600 // Cache sitemap for 1 hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const payload = await getPayload({ config: configPromise })
   const baseURL = getServerSideURL()
 
   // Helper to format URLs
@@ -48,6 +48,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
   ]
+
+  if (isPayloadBuildTime) {
+    return staticRoutes
+  }
+
+  const payload = await getPayload({ config: configPromise })
 
   // 2. Fetch pages
   let pageRoutes: MetadataRoute.Sitemap = []

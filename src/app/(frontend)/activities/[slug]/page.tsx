@@ -15,8 +15,13 @@ import { Pagination } from '@/components/Pagination'
 import { PageRange } from '@/components/PageRange'
 import Cards from '@/components/ui/Card/Cards'
 import containerStyles from '@/Styles/container.module.css'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export async function generateStaticParams() {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const result = await payload.find({

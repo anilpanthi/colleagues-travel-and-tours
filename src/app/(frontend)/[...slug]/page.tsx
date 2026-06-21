@@ -20,11 +20,16 @@ import {
   queryRelatedPackages,
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 export async function generateStaticParams() {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   const pages = await queryPages()
   const packages = await queryPackages()
 

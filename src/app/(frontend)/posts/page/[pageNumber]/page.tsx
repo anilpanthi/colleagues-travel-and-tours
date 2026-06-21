@@ -10,6 +10,7 @@ import PageClient from './page.client'
 import { notFound } from 'next/navigation'
 import type { PaginatedDocs } from 'payload'
 import type { Post } from '@/payload-types'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const revalidate = 600
 
@@ -90,6 +91,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 export async function generateStaticParams() {
+	if (isPayloadBuildTime) {
+		return []
+	}
+
 	try {
 		const payload = await getPayload({ config: configPromise })
 		const { totalDocs } = await payload.count({
