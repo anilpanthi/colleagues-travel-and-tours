@@ -5,47 +5,57 @@ import { draftMode } from 'next/headers'
 import type { Package } from '@/payload-types'
 
 export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  let draft = false
   try {
-    const { isEnabled } = await draftMode()
-    draft = isEnabled
-  } catch (e) {
-    // draftMode() can throw when not called from a server component or during build in some cases
-  }
-  const payload = await getPayload({ config: configPromise })
+    let draft = false
+    try {
+      const { isEnabled } = await draftMode()
+      draft = isEnabled
+    } catch (e) {
+      // draftMode() can throw when not called from a server component or during build in some cases
+    }
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'pages',
-    depth: 5,
-    draft,
-    limit: 1,
-    pagination: false,
-    overrideAccess: draft,
-    where: {
-      slug: {
-        equals: slug,
+    const result = await payload.find({
+      collection: 'pages',
+      depth: 5,
+      draft,
+      limit: 1,
+      pagination: false,
+      overrideAccess: draft,
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  })
+    })
 
-  return result.docs?.[0] || null
+    return result.docs?.[0] || null
+  } catch (error) {
+    console.error(`Error querying page by slug "${slug}":`, error)
+    return null
+  }
 })
 
 export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'packages',
-    limit: 1,
-    pagination: false,
-    where: {
-      slug: {
-        equals: slug,
+    const result = await payload.find({
+      collection: 'packages',
+      limit: 1,
+      pagination: false,
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  })
+    })
 
-  return result.docs?.[0] || null
+    return result.docs?.[0] || null
+  } catch (error) {
+    console.error(`Error querying package by slug "${slug}":`, error)
+    return null
+  }
 })
 
 /** Up to `limit` other packages that share an Activity with `pkg`, newest first. */
