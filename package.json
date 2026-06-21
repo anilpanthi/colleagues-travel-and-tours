@@ -42,6 +42,7 @@
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
+    "drizzle-kit": "0.31.7",
     "framer-motion": "^12.38.0",
     "graphql": "^16.8.1",
     "lucide-react": "^1.7.0",
