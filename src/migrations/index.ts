@@ -9,6 +9,7 @@ import * as migration_20260419_125017_changedMapEmbedding from './20260419_12501
 import * as migration_20260421_183034_addedNewBlocks from './20260421_183034_addedNewBlocks'
 import * as migration_20260511_104807_packgCollChange from './20260511_104807_packgCollChange'
 import * as migration_20260621_073000_repair_users_name from './20260621_073000_repair_users_name'
+import * as migration_20260621_081500_repair_locked_document_relations from './20260621_081500_repair_locked_document_relations'
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260621_073000_repair_users_name.up,
     down: migration_20260621_073000_repair_users_name.down,
     name: '20260621_073000_repair_users_name',
+  },
+  {
+    up: migration_20260621_081500_repair_locked_document_relations.up,
+    down: migration_20260621_081500_repair_locked_document_relations.down,
+    name: '20260621_081500_repair_locked_document_relations',
   },
 ]
