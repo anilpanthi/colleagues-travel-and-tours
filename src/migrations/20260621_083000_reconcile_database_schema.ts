@@ -1,8 +1,8 @@
 import type { MigrateDownArgs, MigrateUpArgs } from '@payloadcms/db-postgres'
-import { pushSchema } from 'drizzle-kit/api'
 
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
   const adapter = payload.db
+  const { pushSchema } = adapter.requireDrizzleKit()
   const schemaFilters = adapter.schemaName ? [adapter.schemaName] : undefined
   const extensionFilters: 'postgis'[] | undefined = adapter.extensions?.postgis
     ? ['postgis']
@@ -10,7 +10,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 
   const { apply, hasDataLoss, warnings } = await pushSchema(
     adapter.schema,
-    adapter.drizzle as unknown as Parameters<typeof pushSchema>[1],
+    adapter.drizzle,
     schemaFilters,
     adapter.tablesFilter,
     extensionFilters,

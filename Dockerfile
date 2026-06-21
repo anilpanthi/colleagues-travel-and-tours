@@ -77,6 +77,10 @@ COPY --from=builder /app/src/migrations/*.json ./src/migrations/
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
+# Payload loads drizzle-kit dynamically for the guarded schema-repair migration,
+# so Next's standalone tracer cannot discover it. Include installed dependencies
+# to make that runtime loader reliable in the production container.
+COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
