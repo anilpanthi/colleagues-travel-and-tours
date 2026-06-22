@@ -2,7 +2,7 @@
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/Button'
@@ -12,12 +12,14 @@ import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import classes from './index.module.scss'
 import { cn } from '@/utilities/ui'
+import { Turnstile } from '@/components/Turnstile'
+import { isTurnstileRequired } from '@/utilities/turnstileConfig'
 
 export type FormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
   enableIntro: boolean
-  form: FormType 
+  form: FormType
   introContent?: DefaultTypedEditorState
 }
 
@@ -27,6 +29,7 @@ export const FormBlock: React.FC<
     className?: string
   } & FormBlockType
 > = (props) => {
+  const turnstileRequired = isTurnstileRequired()
   const {
     enableIntro,
     form: formFromProps,
@@ -48,6 +51,9 @@ export const FormBlock: React.FC<
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileKey, setTurnstileKey] = useState(0)
+  const honeypotRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
   const onSubmit = useCallback(
@@ -55,6 +61,11 @@ export const FormBlock: React.FC<
       let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
+
+        if (turnstileRequired && !turnstileToken) {
+          setError({ message: 'Please complete the security verification.', status: '400' })
+          return
+        }
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
@@ -67,10 +78,12 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+          const req = await fetch(`${getClientSideURL()}/api/form-submit`, {
             body: JSON.stringify({
               form: formID,
+              companyWebsite: honeypotRef.current?.value || '',
               submissionData: dataToSend,
+              turnstileToken,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -109,12 +122,15 @@ export const FormBlock: React.FC<
           setError({
             message: 'Something went wrong.',
           })
+        } finally {
+          setTurnstileToken(null)
+          setTurnstileKey((key) => key + 1)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [router, formID, redirect, confirmationType, turnstileRequired, turnstileToken],
   )
 
   return (
@@ -127,10 +143,28 @@ export const FormBlock: React.FC<
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
             <RichText data={confirmationMessage} />
           )}
-          {isLoading && !hasSubmitted && <p className={classes.formBlock__loading}>Loading, please wait...</p>}
-          {error && <div className={classes.formBlock__errorMessage}>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {isLoading && !hasSubmitted && (
+            <p className={classes.formBlock__loading}>Loading, please wait...</p>
+          )}
+          {error && (
+            <div
+              className={classes.formBlock__errorMessage}
+            >{`${error.status || '500'}: ${error.message || ''}`}</div>
+          )}
           {!hasSubmitted && (
             <form id={formID} className={classes.formBlock__form} onSubmit={handleSubmit(onSubmit)}>
+              <div aria-hidden="true" className={classes.formBlock__honeypot}>
+                <label htmlFor={`${formID}-company-website`}>Leave this field blank</label>
+                <input
+                  autoComplete="off"
+                  id={`${formID}-company-website`}
+                  name="companyWebsite"
+                  ref={honeypotRef}
+                  tabIndex={-1}
+                  type="text"
+                />
+              </div>
+
               <div className={classes.formBlock__fieldsGroup}>
                 {formFromProps &&
                   formFromProps.fields &&
@@ -155,8 +189,14 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
+              {turnstileRequired && (
+                <div className={classes.formBlock__turnstile}>
+                  <Turnstile key={turnstileKey} onTokenChange={setTurnstileToken} />
+                </div>
+              )}
+
               <div className={classes.formBlock__submit}>
-                <Button form={formID} type="submit">
+                <Button disabled={turnstileRequired && !turnstileToken} form={formID} type="submit">
                   {submitButtonLabel}
                 </Button>
               </div>

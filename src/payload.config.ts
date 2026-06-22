@@ -153,6 +153,9 @@ export default buildConfig({
       // see below for a list of available options
     }),
     formBuilderPlugin({
+      fields: {
+        date: true,
+      },
       formOverrides: {
         fields: ({ defaultFields }) => {
           return defaultFields.map((field) => {
@@ -184,6 +187,11 @@ export default buildConfig({
             }
             return field
           })
+        },
+      },
+      formSubmissionOverrides: {
+        access: {
+          create: ({ req: { user } }) => Boolean(user),
         },
       },
     }),
