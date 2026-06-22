@@ -52,8 +52,25 @@ const shouldRunProdMigrations = process.env.PAYLOAD_IGNORE_MIGRATIONS !== 'true'
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      graphics: {
+        Icon: '/components/Graphics/Icon#AdminIcon',
+        Logo: '/components/Graphics/Logo#AdminLogo',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    meta: {
+      titleSuffix: ' | Colleagues Travel and Tours',
+      icons: {
+        apple: '/apple-touch-icon.png',
+        icon: [
+          { url: '/favicon.ico' },
+          { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+          { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        ],
+      },
     },
   },
   i18n: {
