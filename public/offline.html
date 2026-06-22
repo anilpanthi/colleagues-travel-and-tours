@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f4c5c" />
+    <title>You're offline | Colleagues Travel and Tours</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        align-items: center;
+        background: #f4f8f9;
+        color: #17343b;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        min-height: 100vh;
+        padding: 24px;
+        text-align: center;
+      }
+
+      main {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgb(15 76 92 / 12%);
+        max-width: 480px;
+        padding: 40px 32px;
+      }
+
+      img {
+        height: 96px;
+        width: 96px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        margin: 24px 0 12px;
+      }
+
+      p {
+        line-height: 1.6;
+        margin: 0 0 24px;
+      }
+
+      button {
+        background: #0f4c5c;
+        border: 0;
+        border-radius: 8px;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700;
+        padding: 12px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/android-chrome-192x192.png" alt="Colleagues Travel and Tours" />
+      <h1>You're offline</h1>
+      <p>
+        Please check your internet connection. Pages you have already visited may still be
+        available.
+      </p>
+      <button type="button" onclick="window.location.reload()">Try again</button>
+    </main>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -11,6 +11,7 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import './global.css'
 
 import { ProgressBar } from '@/components/ProgressBar'
+import { ServiceWorkerRegistration } from '@/components/PWA/ServiceWorkerRegistration'
 
 import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
@@ -23,6 +24,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),
   manifest: '/site.webmanifest',
+  applicationName: 'Colleagues Travel and Tours',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Colleagues',
+  },
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -35,6 +42,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     creator: '@payloadcms',
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#0f4c5c',
 }
 
 const inter = Inter({
@@ -67,10 +78,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
       </head>
       <body suppressHydrationWarning>
+        <ServiceWorkerRegistration />
         <Providers>
           <div className="layout-wrapper">
             <ProgressBar />
-            <HeaderClient mainNavigation={mainNavigation} logos={logos} flightBookingForm={flightBookingForm} />
+            <HeaderClient
+              mainNavigation={mainNavigation}
+              logos={logos}
+              flightBookingForm={flightBookingForm}
+            />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
           </div>

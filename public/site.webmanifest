@@ -1,6 +1,10 @@
 {
   "name": "Colleagues Travel And Tours",
   "short_name": "Colleagues",
+  "description": "Plan tours, activities, and travel with Colleagues Travel and Tours.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +17,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "theme_color": "#0f4c5c",
+  "background_color": "#f4f8f9",
+  "display": "standalone",
+  "orientation": "portrait-primary"
 }
