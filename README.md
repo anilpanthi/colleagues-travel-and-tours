@@ -27,8 +27,6 @@ Powered by: https://antiqcode.com
 - PWA features
 - Offline support
 - Push notifications
-- Single sign on with Google
 
-## Quick start
 
-Follow this guide if you want to setup the project locally. If you are just deploying the project, follow the [deployment guide](DEPLOYMENT_GUIDE.md).
+
