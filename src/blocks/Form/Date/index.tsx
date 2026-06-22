@@ -3,7 +3,7 @@ import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-f
 
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
@@ -28,7 +28,9 @@ export const DatePicker: React.FC<
     register: UseFormRegister<FieldValues>
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
-  const { ref, ...dateInputProps } = register(name, {
+  const initialValue = getDateInputValue(defaultValue)
+  const [hasValue, setHasValue] = useState(Boolean(initialValue && initialValue >= getLocalToday()))
+  const { onChange, ref, ...dateInputProps } = register(name, {
     required,
     validate: (value) => {
       if (!value) return !required || 'This field is required'
@@ -52,8 +54,13 @@ export const DatePicker: React.FC<
         )}
       </Label>
       <Input
-        defaultValue={getDateInputValue(defaultValue)}
+        data-empty={!hasValue}
+        defaultValue={initialValue}
         id={name}
+        onChange={(event) => {
+          setHasValue(Boolean(event.currentTarget.value))
+          void onChange(event)
+        }}
         ref={(element) => {
           if (element) {
             const today = getLocalToday()

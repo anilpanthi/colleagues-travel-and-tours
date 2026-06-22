@@ -91,10 +91,10 @@ body {
 
 input::placeholder {
   font-family: var(--font-jost);
-  color: #dfdcdc;
+  color: #000000;
   font-style: italic;
   font-size: 1.4rem;
-  opacity: 0.3;
+  /* opacity:; */
 }
 
 textarea::placeholder {

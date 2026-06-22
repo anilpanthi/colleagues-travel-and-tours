@@ -7,7 +7,9 @@
   background-color: var(--color-background);
   padding: 0.8rem 1.2rem;
   font-size: 1.6rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &::file-selector-button {
     border: 0;
@@ -17,7 +19,54 @@
   }
 
   &::placeholder {
-    color: var(--text-color);
+    font-family: var(--font-jost);
+    color: #dfdcdc;
+    font-style: italic;
+    font-size: 1.4rem;
+    opacity: 0.3;
+  }
+
+  &[type='date'] {
+    display: block;
+    font-family: var(--font-jost);
+    padding-right: 4rem;
+    position: relative;
+
+    &::-webkit-datetime-edit {
+      text-align: left;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      height: 1.8rem;
+      margin: 0;
+      position: absolute;
+      right: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.8rem;
+    }
+
+    &[data-empty='true'] {
+      color: rgba(223, 220, 220, 0.3);
+      font-size: 1.4rem;
+      font-style: italic;
+
+      &::-webkit-datetime-edit {
+        color: #dfdcdc;
+        font-family: var(--font-jost);
+        font-size: 1.4rem;
+        font-style: italic;
+        opacity: 0.3;
+      }
+
+      &::-webkit-datetime-edit-day-field,
+      &::-webkit-datetime-edit-month-field,
+      &::-webkit-datetime-edit-year-field,
+      &::-webkit-datetime-edit-text {
+        color: #dfdcdc;
+      }
+    }
   }
 
   &:focus-visible {
