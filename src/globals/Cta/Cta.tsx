@@ -40,7 +40,7 @@ export default function Cta({ flightBookingForm }: CtaProps) {
         <Modal
           isOpen={showModal}
           onClose={handleCloseModal}
-          title="Enter your flight details below to complete your reservation."
+          title="Enter your flight details below to make your reservation."
           size="lg"
         >
           {form ? (

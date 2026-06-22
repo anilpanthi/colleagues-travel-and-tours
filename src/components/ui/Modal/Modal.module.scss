@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 10;
   animation: fadeIn 0.2s ease forwards;
   padding: 1rem;
 }
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   border-bottom: 0.1px solid #ebebeb;
 }
 
