@@ -1,7 +1,10 @@
 'use client'
 
 import Script from 'next/script'
+import { ShieldCheck } from 'lucide-react'
 import { useCallback, useEffect, useRef } from 'react'
+
+import classes from './index.module.scss'
 
 type TurnstileAPI = {
   remove: (widgetID: string) => void
@@ -9,6 +12,7 @@ type TurnstileAPI = {
     container: HTMLElement,
     options: {
       action: string
+      appearance: 'always'
       callback: (token: string) => void
       'error-callback': () => void
       'expired-callback': () => void
@@ -40,6 +44,7 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
 
     widgetIDRef.current = window.turnstile.render(containerRef.current, {
       action: 'form_submission',
+      appearance: 'always',
       callback: (token) => onTokenChange(token),
       'error-callback': () => onTokenChange(null),
       'expired-callback': () => onTokenChange(null),
@@ -61,7 +66,14 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
   }, [renderWidget])
 
   if (!siteKey) {
-    return <p role="alert">Security verification is not configured. Please contact support.</p>
+    return (
+      <div className={classes.securityCard}>
+        <SecurityHeader />
+        <p className={classes.configurationError} role="alert">
+          Security verification is not configured. Please contact support.
+        </p>
+      </div>
+    )
   }
 
   return (
@@ -72,7 +84,24 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive"
       />
-      <div ref={containerRef} />
+      <div className={classes.securityCard}>
+        <SecurityHeader />
+        <div className={classes.widget} ref={containerRef} />
+      </div>
     </>
+  )
+}
+
+function SecurityHeader() {
+  return (
+    <div className={classes.header}>
+      <span className={classes.icon}>
+        <ShieldCheck aria-hidden="true" />
+      </span>
+      <div className={classes.copy}>
+        <p className={classes.title}>Secure submission</p>
+        <p className={classes.description}>Please verify that you are human before submitting.</p>
+      </div>
+    </div>
   )
 }
