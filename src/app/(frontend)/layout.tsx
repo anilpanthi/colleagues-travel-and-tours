@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0f4c5c',
+  themeColor: '#f59e0b',
 }
 
 const inter = Inter({

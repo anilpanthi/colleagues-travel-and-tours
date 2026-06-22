@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'colleagues-v1'
+const CACHE_VERSION = 'colleagues-v2'
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 const OFFLINE_URL = '/offline.html'
