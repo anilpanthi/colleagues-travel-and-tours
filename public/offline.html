@@ -1,275 +1,278 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f59e0b" />
-    <title>You're offline | Colleagues Travel and Tours</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --color-primary: #f59e0b;
-        --color-primary-dark: #d97706;
-        --color-primary-foreground: #1f2937;
-        --color-gray-100: #f3f4f6;
-        --color-gray-300: #d1d5db;
-        --color-gray-800: #1f2937;
-        --text-color: #4a5568;
-      }
 
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f59e0b" />
+  <title>You're offline | Colleagues Travel and Tours</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --color-primary: #f59e0b;
+      --color-primary-dark: #d97706;
+      --color-primary-foreground: #1f2937;
+      --color-gray-100: #f3f4f6;
+      --color-gray-300: #d1d5db;
+      --color-gray-800: #1f2937;
+      --text-color: #4a5568;
+    }
 
-      html,
-      body {
-        margin: 0;
-        min-height: 100%;
-      }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
 
-      body {
-        background: #f0eff5;
-        color: var(--color-gray-800);
-        display: flex;
-        flex-direction: column;
-        font-family: Inter, Arial, sans-serif;
-        min-height: 100vh;
-      }
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
 
+    body {
+      background: #f0eff5;
+      color: var(--color-gray-800);
+      display: flex;
+      flex-direction: column;
+      font-family: Inter, Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      align-items: center;
+      background: #f9fafb;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%);
+      display: flex;
+      min-height: 80px;
+      padding: 12px clamp(24px, 6vw, 80px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      align-items: center;
+      color: var(--color-gray-800);
+      display: inline-flex;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      border-radius: 10px;
+      height: 50px;
+      width: 50px;
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-tagline {
+      color: var(--text-color);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .offline-wrapper {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      min-height: calc(100vh - 80px);
+      overflow: hidden;
+      padding: 48px 24px;
+      position: relative;
+      text-align: center;
+    }
+
+    .background-text {
+      color: var(--color-gray-300);
+      font-size: clamp(90px, 25vw, 320px);
+      font-weight: 900;
+      left: 50%;
+      line-height: 1;
+      opacity: 0.32;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .content {
+      max-width: 640px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-icon {
+      align-items: center;
+      background: var(--color-primary);
+      border-radius: 50%;
+      box-shadow: 0 12px 30px rgb(245 158 11 / 30%);
+      color: var(--color-primary-foreground);
+      display: inline-flex;
+      height: 64px;
+      justify-content: center;
+      margin-bottom: 24px;
+      width: 64px;
+    }
+
+    .status-icon svg {
+      height: 30px;
+      width: 30px;
+    }
+
+    h1 {
+      font-family: Jost, Inter, Arial, sans-serif;
+      font-size: clamp(36px, 7vw, 52px);
+      line-height: 1.15;
+      margin: 0 0 16px;
+    }
+
+    .description {
+      color: var(--text-color);
+      font-size: 18px;
+      line-height: 1.65;
+      margin: 0 auto 36px;
+      max-width: 560px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .button {
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      justify-content: center;
+      padding: 12px 30px;
+      text-decoration: none;
+      transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--color-primary);
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary-foreground);
+    }
+
+    .button-primary:hover {
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
+    }
+
+    .button-secondary {
+      background: transparent;
+      border: 2px solid var(--color-gray-300);
+      color: var(--color-gray-800);
+    }
+
+    .button-secondary:hover {
+      background: var(--color-gray-100);
+      border-color: var(--color-gray-800);
+    }
+
+    @media (max-width: 520px) {
       .site-header {
-        align-items: center;
-        background: #f9fafb;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%);
-        display: flex;
-        min-height: 80px;
-        padding: 12px clamp(24px, 6vw, 80px);
-        position: relative;
-        z-index: 2;
-      }
-
-      .brand {
-        align-items: center;
-        color: var(--color-gray-800);
-        display: inline-flex;
-        gap: 12px;
-        text-decoration: none;
+        min-height: 72px;
+        padding: 11px 20px;
       }
 
       .brand img {
-        border-radius: 10px;
-        height: 50px;
-        width: 50px;
-      }
-
-      .brand-copy {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.05;
+        height: 44px;
+        width: 44px;
       }
 
       .brand-name {
-        font-size: 18px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
+        font-size: 15px;
       }
 
       .brand-tagline {
-        color: var(--text-color);
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        margin-top: 5px;
-        text-transform: uppercase;
+        font-size: 9px;
       }
 
       .offline-wrapper {
-        align-items: center;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        min-height: calc(100vh - 80px);
-        overflow: hidden;
-        padding: 48px 24px;
-        position: relative;
-        text-align: center;
-      }
-
-      .background-text {
-        color: var(--color-gray-300);
-        font-size: clamp(90px, 25vw, 320px);
-        font-weight: 900;
-        left: 50%;
-        line-height: 1;
-        opacity: 0.32;
-        pointer-events: none;
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        user-select: none;
-        white-space: nowrap;
-      }
-
-      .content {
-        max-width: 640px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .status-icon {
-        align-items: center;
-        background: var(--color-primary);
-        border-radius: 50%;
-        box-shadow: 0 12px 30px rgb(245 158 11 / 30%);
-        color: var(--color-primary-foreground);
-        display: inline-flex;
-        height: 64px;
-        justify-content: center;
-        margin-bottom: 24px;
-        width: 64px;
-      }
-
-      .status-icon svg {
-        height: 30px;
-        width: 30px;
-      }
-
-      h1 {
-        font-family: Jost, Inter, Arial, sans-serif;
-        font-size: clamp(36px, 7vw, 52px);
-        line-height: 1.15;
-        margin: 0 0 16px;
-      }
-
-      .description {
-        color: var(--text-color);
-        font-size: 18px;
-        line-height: 1.65;
-        margin: 0 auto 36px;
-        max-width: 560px;
+        min-height: calc(100vh - 72px);
       }
 
       .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: center;
+        flex-direction: column;
       }
 
       .button {
-        border-radius: 8px;
-        cursor: pointer;
-        display: inline-flex;
-        font: inherit;
-        font-size: 16px;
-        font-weight: 600;
-        justify-content: center;
-        padding: 12px 30px;
-        text-decoration: none;
-        transition:
-          background-color 0.2s ease,
-          border-color 0.2s ease,
-          transform 0.2s ease;
+        width: 100%;
       }
+    }
 
-      .button:hover {
-        transform: translateY(-2px);
+    @media (prefers-reduced-motion: reduce) {
+      .button {
+        transition: none;
       }
+    }
+  </style>
+</head>
 
-      .button-primary {
-        background: var(--color-primary);
-        border: 2px solid var(--color-primary);
-        color: var(--color-primary-foreground);
-      }
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Colleagues Travel and Tours home">
+      <!-- <img src="/android-chrome-192x192.png" alt="" /> -->
+      <span class="brand-copy">
+        <span class="brand-name">COLLEAGUES</span>
+        <span class="brand-tagline">Travel &amp; Tours</span>
+      </span>
+    </a>
+  </header>
 
-      .button-primary:hover {
-        background: var(--color-primary-dark);
-        border-color: var(--color-primary-dark);
-      }
-
-      .button-secondary {
-        background: transparent;
-        border: 2px solid var(--color-gray-300);
-        color: var(--color-gray-800);
-      }
-
-      .button-secondary:hover {
-        background: var(--color-gray-100);
-        border-color: var(--color-gray-800);
-      }
-
-      @media (max-width: 520px) {
-        .site-header {
-          min-height: 72px;
-          padding: 11px 20px;
-        }
-
-        .brand img {
-          height: 44px;
-          width: 44px;
-        }
-
-        .brand-name {
-          font-size: 15px;
-        }
-
-        .brand-tagline {
-          font-size: 9px;
-        }
-
-        .offline-wrapper {
-          min-height: calc(100vh - 72px);
-        }
-
-        .actions {
-          flex-direction: column;
-        }
-
-        .button {
-          width: 100%;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .button {
-          transition: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="Colleagues Travel and Tours home">
-        <img src="/android-chrome-192x192.png" alt="" />
-        <span class="brand-copy">
-          <span class="brand-name">COLLEAGUES</span>
-          <span class="brand-tagline">Travel &amp; Tours</span>
-        </span>
-      </a>
-    </header>
-
-    <main class="offline-wrapper">
-      <div class="background-text" aria-hidden="true">OFFLINE</div>
-      <div class="content">
-        <div class="status-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M2 8.8a15 15 0 0 1 4.1-2.6M22 8.8a15 15 0 0 0-11.2-3.7" />
-            <path d="M5 12.5a10 10 0 0 1 4.1-2M19 12.5a10 10 0 0 0-4.2-2" />
-            <path d="M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18" />
-          </svg>
-        </div>
-        <h1>Your journey is paused</h1>
-        <p class="description">
-          It looks like you have lost your internet connection. Reconnect and try again, or visit a
-          page that may already be saved on your device.
-        </p>
-        <div class="actions">
-          <button class="button button-primary" type="button" onclick="window.location.reload()">
-            Try Again
-          </button>
-          <a class="button button-secondary" href="/">Back to Home</a>
-        </div>
+  <main class="offline-wrapper">
+    <div class="background-text" aria-hidden="true">OFFLINE</div>
+    <div class="content">
+      <div class="status-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 8.8a15 15 0 0 1 4.1-2.6M22 8.8a15 15 0 0 0-11.2-3.7" />
+          <path d="M5 12.5a10 10 0 0 1 4.1-2M19 12.5a10 10 0 0 0-4.2-2" />
+          <path d="M8.5 16a5 5 0 0 1 7 0M12 20h.01M3 3l18 18" />
+        </svg>
       </div>
-    </main>
-  </body>
+      <h1>Your journey is paused</h1>
+      <p class="description">
+        It looks like you have lost your internet connection. Reconnect and try again, or visit a
+        page that may already be saved on your device.
+      </p>
+      <div class="actions">
+        <button class="button button-primary" type="button" onclick="window.location.reload()">
+          Try Again
+        </button>
+        <a class="button button-secondary" href="https://colleaguestravel.com">Back to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+
 </html>
