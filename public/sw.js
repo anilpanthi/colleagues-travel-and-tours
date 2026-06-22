@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'colleagues-v2'
+const CACHE_VERSION = 'colleagues-v3'
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 const OFFLINE_URL = '/offline.html'
@@ -9,6 +9,8 @@ const APP_SHELL = [
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png',
+  '/colleagues-original-logo.svg',
+  '/colleagues-white-logo.svg',
 ]
 
 self.addEventListener('install', (event) => {
@@ -37,9 +39,49 @@ const isCacheableFrontendRequest = (request, url) => {
   return !url.pathname.startsWith('/admin') && !url.pathname.startsWith('/api')
 }
 
+const isPublicMediaRequest = (request, url) =>
+  request.method === 'GET' &&
+  url.origin === self.location.origin &&
+  url.pathname.startsWith('/api/media/file/')
+
+const cacheMediaRequest = async (request) => {
+  const cachedResponse = await caches.match(request)
+
+  try {
+    const response = await fetch(request)
+    if (response.ok) {
+      const cache = await caches.open(RUNTIME_CACHE)
+      await cache.put(request, response.clone())
+    }
+
+    return response
+  } catch {
+    return cachedResponse
+  }
+}
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type !== 'CACHE_PUBLIC_MEDIA' || !Array.isArray(event.data.urls)) return
+
+  const requests = event.data.urls
+    .filter((value) => typeof value === 'string')
+    .map((value) => new URL(value, self.location.origin))
+    .filter(
+      (url) => url.origin === self.location.origin && url.pathname.startsWith('/api/media/file/'),
+    )
+    .map((url) => new Request(url.href, { credentials: 'same-origin' }))
+
+  event.waitUntil(Promise.all(requests.map((request) => cacheMediaRequest(request))))
+})
+
 self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
+
+  if (isPublicMediaRequest(request, url)) {
+    event.respondWith(cacheMediaRequest(request))
+    return
+  }
 
   if (!isCacheableFrontendRequest(request, url)) return
 

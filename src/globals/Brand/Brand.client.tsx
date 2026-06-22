@@ -5,7 +5,7 @@ import type { SiteSetting } from '@/payload-types'
 import Link from 'next/link'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import styles from './Brand.module.scss'
-import Image from 'next/image'
+import { BrandImage } from '@/components/BrandImage'
 
 interface BrandClientProps {
   logos: SiteSetting['logos']
@@ -14,9 +14,13 @@ interface BrandClientProps {
 }
 
 export const BrandClient: React.FC<BrandClientProps> = ({ logos, isScrolled }) => {
-  const logo = isScrolled ? logos?.logoLight : logos?.logoDark
-  const logoObj = typeof logo === 'object' ? logo : null
-  const src = logoObj?.url ? getMediaUrl(logoObj.url, logoObj.updatedAt) : null
+  const lightLogo = typeof logos?.logoLight === 'object' ? logos.logoLight : null
+  const darkLogo = typeof logos?.logoDark === 'object' ? logos.logoDark : null
+  const lightSrc = lightLogo?.url ? getMediaUrl(lightLogo.url, lightLogo.updatedAt) : null
+  const darkSrc = darkLogo?.url ? getMediaUrl(darkLogo.url, darkLogo.updatedAt) : null
+  const src = isScrolled ? lightSrc : darkSrc
+  const alternateSrc = isScrolled ? darkSrc : lightSrc
+  const fallbackSrc = isScrolled ? '/colleagues-original-logo.svg' : '/colleagues-white-logo.svg'
 
   return (
     <div className={styles.brandLinkyyy} style={{ marginTop: '1px' }}>
@@ -24,8 +28,7 @@ export const BrandClient: React.FC<BrandClientProps> = ({ logos, isScrolled }) =
         {src && <h2>Brandthenamesof test</h2>}
       </Link> */}
       <Link href={'/'}>
-        {/* <img src={src} alt="logo" height="57px" width="100px" /> */}
-        {src && <Image src={src} alt="logo" height={57} width={100} loading="eager" />}
+        <BrandImage alternateSrc={alternateSrc} fallbackSrc={fallbackSrc} src={src} />
       </Link>
     </div>
   )

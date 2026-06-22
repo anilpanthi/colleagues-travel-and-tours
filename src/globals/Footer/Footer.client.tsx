@@ -12,7 +12,7 @@ import { Media } from '@/components/Media'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { generatePath } from '@/utilities/generatePath'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import Image from 'next/image'
+import { BrandImage } from '@/components/BrandImage'
 
 interface FooterClientProps {
   footerColumns: SiteSetting['footerColumns']
@@ -35,7 +35,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
 }) => {
   const logoObj = typeof logos === 'object' ? logos : null
   const src = logoObj?.url ? getMediaUrl(logoObj.url, logoObj.updatedAt) : null
-  
+
   return (
     <footer className={styles.footer}>
       <Container>
@@ -44,13 +44,9 @@ export const FooterClient: React.FC<FooterClientProps> = ({
             if (col.type === 'brand') {
               return (
                 <div key={index} className={styles.footerCol}>
-                  {logos && (
-                    <Link href="/" className={styles.footerBrand}>
-                      {src && (
-                        <Image src={src} alt="logo" height={57} width={100} loading="eager" />
-                      )}
-                    </Link>
-                  )}
+                  <Link href="/" className={styles.footerBrand}>
+                    <BrandImage fallbackSrc="/colleagues-white-logo.svg" src={src} />
+                  </Link>
                   {col.description && <p className={styles.footerDesc}>{col.description}</p>}
                   {socialLinks && socialLinks.length > 0 && (
                     <div className={styles.socialLinks}>
