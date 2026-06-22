@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'colleagues-v3'
+const CACHE_VERSION = 'colleagues-v4'
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 const OFFLINE_URL = '/offline.html'
@@ -49,9 +49,13 @@ const cacheMediaRequest = async (request) => {
 
   try {
     const response = await fetch(request)
-    if (response.ok) {
-      const cache = await caches.open(RUNTIME_CACHE)
-      await cache.put(request, response.clone())
+    if (response.status === 200) {
+      try {
+        const cache = await caches.open(RUNTIME_CACHE)
+        await cache.put(request, response.clone())
+      } catch {
+        // A cache write failure must not discard a valid network response.
+      }
     }
 
     return response
@@ -77,6 +81,9 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
+
+  // Video playback relies on partial Range responses, which Cache Storage cannot store.
+  if (request.destination === 'video' || request.headers.has('range')) return
 
   if (isPublicMediaRequest(request, url)) {
     event.respondWith(cacheMediaRequest(request))
