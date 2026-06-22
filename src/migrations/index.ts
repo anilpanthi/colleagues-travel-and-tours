@@ -11,6 +11,7 @@ import * as migration_20260511_104807_packgCollChange from './20260511_104807_pa
 import * as migration_20260621_073000_repair_users_name from './20260621_073000_repair_users_name'
 import * as migration_20260621_081500_repair_locked_document_relations from './20260621_081500_repair_locked_document_relations'
 import * as migration_20260621_083000_reconcile_database_schema from './20260621_083000_reconcile_database_schema'
+import * as migration_20260622_103515_add_date_field_to_forms from './20260622_103515_add_date_field_to_forms'
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20260621_083000_reconcile_database_schema.up,
     down: migration_20260621_083000_reconcile_database_schema.down,
     name: '20260621_083000_reconcile_database_schema',
+  },
+  {
+    up: migration_20260622_103515_add_date_field_to_forms.up,
+    down: migration_20260622_103515_add_date_field_to_forms.down,
+    name: '20260622_103515_add_date_field_to_forms',
   },
 ]
