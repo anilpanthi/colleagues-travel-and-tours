@@ -1,7 +1,6 @@
 'use client'
 
 import Script from 'next/script'
-import { ShieldCheck } from 'lucide-react'
 import { useCallback, useEffect, useRef } from 'react'
 
 import classes from './index.module.scss'
@@ -66,14 +65,7 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
   }, [renderWidget])
 
   if (!siteKey) {
-    return (
-      <div className={classes.securityCard}>
-        <SecurityHeader />
-        <p className={classes.configurationError} role="alert">
-          Security verification is not configured. Please contact support.
-        </p>
-      </div>
-    )
+    return null
   }
 
   return (
@@ -84,24 +76,7 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive"
       />
-      <div className={classes.securityCard}>
-        <SecurityHeader />
-        <div className={classes.widget} ref={containerRef} />
-      </div>
+      <div className={classes.widget} ref={containerRef} />
     </>
-  )
-}
-
-function SecurityHeader() {
-  return (
-    <div className={classes.header}>
-      <span className={classes.icon}>
-        <ShieldCheck aria-hidden="true" />
-      </span>
-      <div className={classes.copy}>
-        <p className={classes.title}>Secure submission</p>
-        <p className={classes.description}>Please verify that you are human before submitting.</p>
-      </div>
-    </div>
   )
 }

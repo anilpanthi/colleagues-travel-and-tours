@@ -20,7 +20,7 @@
 
   &::placeholder {
     font-family: var(--font-jost);
-    color: #dfdcdc;
+    color: #000000;
     font-style: italic;
     font-size: 1.4rem;
     opacity: 0.3;
@@ -45,15 +45,16 @@
       top: 50%;
       transform: translateY(-50%);
       width: 1.8rem;
+      // filter: invert(20%) sepia(90%) saturate(3000%) hue-rotate(21deg) brightness(90%) contrast(100%);
     }
 
     &[data-empty='true'] {
-      color: rgba(223, 220, 220, 0.3);
+      color: rgb(0, 0, 0);
       font-size: 1.4rem;
       font-style: italic;
 
       &::-webkit-datetime-edit {
-        color: #dfdcdc;
+        color: #000000;
         font-family: var(--font-jost);
         font-size: 1.4rem;
         font-style: italic;
@@ -64,7 +65,7 @@
       &::-webkit-datetime-edit-month-field,
       &::-webkit-datetime-edit-year-field,
       &::-webkit-datetime-edit-text {
-        color: #dfdcdc;
+        color: #000000;
       }
     }
   }

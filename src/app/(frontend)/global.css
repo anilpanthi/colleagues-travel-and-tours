@@ -1,4 +1,5 @@
-:root {
+:root
+{
 
   /* Colors */
   --color-primary: #f59e0b;
@@ -48,14 +49,16 @@
 
 *,
 *::before,
-*::after {
+*::after
+{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html,
-body {
+body
+{
   margin: 0;
   padding: 0;
   background: #000;
@@ -63,12 +66,14 @@ body {
 }
 
 
-html {
+html
+{
   box-sizing: border-box;
   font-size: 62.5%;
 }
 
-body {
+body
+{
   font-family: var(--font-primary);
   font-size: var(--font-sm);
   background: #f0eff5;
@@ -76,28 +81,25 @@ body {
 }
 
 /* --- Layout Wrapper (Sticky Footer) --- */
-.layout-wrapper {
+.layout-wrapper
+{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.main-content {
+.main-content
+{
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 
-input::placeholder {
-  font-family: var(--font-jost);
-  color: #000000;
-  font-style: italic;
-  font-size: 1.4rem;
-  /* opacity:; */
-}
 
-textarea::placeholder {
+ 
+textarea::placeholder
+{
   font-family: var(--font-jost);
   color: #dfdcdc;
   font-style: italic;
@@ -105,9 +107,21 @@ textarea::placeholder {
   opacity: 0.3;
 }
 
-.payload-richtext {
 
-  h2 {
+input::placeholder
+{
+  font-family: var(--font-jost);
+  color: #dfdcdc;
+  font-style: italic;
+  font-size: 1.4rem;
+  opacity: 0.3;
+} 
+
+.payload-richtext
+{
+
+  h2
+  {
     color: #1a202c;
     margin-bottom: 2rem;
     font-size: 2.4rem;
@@ -116,7 +130,8 @@ textarea::placeholder {
 
   }
 
-  h1 {
+  h1
+  {
     color: #1a202c;
     margin-bottom: 2.5rem;
     font-size: 2.8rem;
@@ -126,7 +141,8 @@ textarea::placeholder {
 
 
 
-  .msc p {
+  .msc p
+  {
     color: #4a5568;
     font-size: 1.8rem;
     line-height: 1.8;
@@ -136,12 +152,14 @@ textarea::placeholder {
 
 
 
-  .list-check {
+  .list-check
+  {
     padding: 0;
     margin: 1rem 0;
   }
 
-  .list-check li {
+  .list-check li
+  {
     display: flex;
     align-items: flex-start;
     gap: .8rem;
@@ -150,7 +168,8 @@ textarea::placeholder {
   }
 
   /* Hide default checkbox */
-  .list-check input[type="checkbox"] {
+  .list-check input[type="checkbox"]
+  {
     appearance: none;
     -webkit-appearance: none;
     width: 18px;
@@ -165,13 +184,15 @@ textarea::placeholder {
   }
 
   /* Checked state */
-  .list-check input[type="checkbox"]:checked {
+  .list-check input[type="checkbox"]:checked
+  {
     background-color: var(--color-primary);
     /* border-color: #228be6; */
   }
 
   /* Check icon */
-  .list-check input[type="checkbox"]:checked::after {
+  .list-check input[type="checkbox"]:checked::after
+  {
     content: "";
     position: absolute;
     top: 3px;
@@ -184,7 +205,8 @@ textarea::placeholder {
   }
 
   /* Label styling */
-  .list-check label {
+  .list-check label
+  {
     font-size: 15px;
     color: #374151;
     line-height: 1.5;
@@ -192,17 +214,20 @@ textarea::placeholder {
   }
 
   /* Completed item */
-  .list-item-checkbox-checked label {
+  .list-item-checkbox-checked label
+  {
     /* text-decoration: line-through;
     color: #9ca3af; */
   }
 
-  .list-check br {
+  .list-check br
+  {
     display: none;
   }
 
   img,
-  video {
+  video
+  {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
@@ -211,7 +236,8 @@ textarea::placeholder {
 }
 
 /* .msc styles — sits outside .payload-richtext because the DOM is: .msc > .payload-richtext > content */
-.msc .list-bullet {
+.msc .list-bullet
+{
   margin: 1rem 0;
   padding-left: 1.2rem;
   list-style-type: none;
@@ -219,7 +245,8 @@ textarea::placeholder {
   font-size: 1.8rem;
 }
 
-.msc .list-bullet li {
+.msc .list-bullet li
+{
   color: #4a5568;
   font-size: 1.8rem;
   line-height: 1.5;
@@ -229,7 +256,8 @@ textarea::placeholder {
 }
 
 /* Custom minimal bullet */
-.msc .list-bullet li::before {
+.msc .list-bullet li::before
+{
   content: "";
   position: absolute;
   left: 0;
