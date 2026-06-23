@@ -16,6 +16,7 @@ export interface ModalProps {
   closeOnBackdropClick?: boolean
   closeOnEscape?: boolean
   showCloseButton?: boolean
+  closeButtonClassName?: string
   className?: string
   overlayClassName?: string
   preventScroll?: boolean
@@ -32,6 +33,7 @@ const Modal: React.FC<ModalProps> = ({
   closeOnBackdropClick = true,
   closeOnEscape = true,
   showCloseButton = true,
+  closeButtonClassName = '',
   className = '',
   overlayClassName = '',
   preventScroll = true,
@@ -148,7 +150,7 @@ const Modal: React.FC<ModalProps> = ({
         {showCloseButton && (
           <button
             type="button"
-            className={styles.closeButton}
+            className={`${styles.closeButton} ${closeButtonClassName}`}
             onClick={onClose}
             aria-label="Close modal"
           >

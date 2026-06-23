@@ -1,14 +1,48 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import type { Page } from '@/payload-types'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import cssClass from './index.module.css'
 import containerStyle from '@/Styles/container.module.css'
 import { icons, MapPin, ArrowRight, Play } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/Button/Button'
 import { generatePath } from '@/utilities/generatePath'
+import Modal from '@/components/ui/Modal/Modal'
+
+type ActiveVideo = {
+  embedUrl: string | null
+  title: string
+}
+
+const getYouTubeEmbedUrl = (url: string): string | null => {
+  try {
+    const urlWithProtocol = /^https?:\/\//i.test(url) ? url : `https://${url}`
+    const parsedUrl = new URL(urlWithProtocol)
+    const hostname = parsedUrl.hostname.replace(/^www\./, '')
+    let videoId = ''
+
+    if (hostname === 'youtu.be') {
+      videoId = parsedUrl.pathname.split('/').filter(Boolean)[0] ?? ''
+    } else if (hostname === 'youtube.com' || hostname === 'm.youtube.com') {
+      if (parsedUrl.pathname === '/watch') {
+        videoId = parsedUrl.searchParams.get('v') ?? ''
+      } else if (parsedUrl.pathname.startsWith('/embed/')) {
+        videoId = parsedUrl.pathname.split('/').filter(Boolean)[1] ?? ''
+      } else if (parsedUrl.pathname.startsWith('/shorts/')) {
+        videoId = parsedUrl.pathname.split('/').filter(Boolean)[1] ?? ''
+      }
+    }
+
+    if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return null
+
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+  } catch {
+    return null
+  }
+}
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   backgroundVideo,
@@ -19,6 +53,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   tagline,
   title,
 }) => {
+  const [activeVideo, setActiveVideo] = useState<ActiveVideo | null>(null)
+
   return (
     <section className={cssClass.heroSection}>
       {/* Background Video */}
@@ -52,11 +88,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {Array.isArray(links) && links.length > 0 && (
             <div className={cssClass.heroActions}>
               {links.map(({ link }, i) => {
-                const appearance = link?.appearance === 'default' ? 'primary' : 'outline'
-                const iconProps =
-                  link?.appearance === 'default'
-                    ? { iconRight: <ArrowRight className={cssClass.iconArrowRight} /> }
-                    : { iconLeft: <Play className={cssClass.iconPlay} /> }
+                const isPrimary = link?.appearance === 'default'
+                const appearance = isPrimary ? 'primary' : 'outline'
+                const iconProps = isPrimary
+                  ? { iconRight: <ArrowRight className={cssClass.iconArrowRight} /> }
+                  : { iconLeft: <Play className={cssClass.iconPlay} /> }
 
                 let btnLink: string = ''
                 if (link.type === 'reference') {
@@ -75,6 +111,28 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   btnLink = '#'
                 }
 
+                if (!isPrimary) {
+                  const embedUrl = getYouTubeEmbedUrl(btnLink)
+
+                  return (
+                    <Button
+                      appearance={appearance}
+                      size="lg"
+                      key={i}
+                      type="button"
+                      onClick={() =>
+                        setActiveVideo({
+                          embedUrl,
+                          title: link?.label ?? 'Video',
+                        })
+                      }
+                      {...iconProps}
+                    >
+                      {link?.label}
+                    </Button>
+                  )
+                }
+
                 return (
                   <Button href={btnLink} appearance={appearance} size="lg" key={i} {...iconProps}>
                     {link?.label}
@@ -88,7 +146,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             <div className={cssClass.heroFeatures}>
               {features.map((feature, i) => {
                 const IconComponent =
-                  typeof feature?.icon === 'string' ? (icons as any)[feature.icon] : null
+                  typeof feature?.icon === 'string'
+                    ? (icons as Record<string, LucideIcon>)[feature.icon]
+                    : null
 
                 return (
                   <div key={i} className={cssClass.featureCard}>
@@ -120,6 +180,31 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={Boolean(activeVideo)}
+        onClose={() => setActiveVideo(null)}
+        size="xl"
+        ariaLabel={activeVideo?.title ?? 'Video modal'}
+        className={cssClass.videoModal}
+        closeButtonClassName={cssClass.videoModalCloseButton}
+      >
+        {activeVideo && (
+          <div className={cssClass.videoFrame}>
+            {activeVideo.embedUrl ? (
+              <iframe
+                src={activeVideo.embedUrl}
+                title={activeVideo.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <div className={cssClass.videoFallback}>
+                Add a YouTube URL to this outline button in the hero links.
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
     </section>
   )
 }
