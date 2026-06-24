@@ -20,6 +20,7 @@
   transform: translateZ(0);
   transition: all 0.3s ease;
   line-height: 1.25;
+
   &[data-state='open'] {
     // border-color: var(--primary, #3b82f6);
     // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -51,13 +52,14 @@
     text-align: left;
     display: flex;
     gap: 3rem;
+
     .day {
       color: #fff;
-      font-size: 1.8rem;
-      background: var(--color-primary);
+      font-size: 1.6rem;
+      background: #48454291;
       padding: 2rem 1.2rem;
       margin: -2rem 0.6rem -2rem -2.4rem;
-      display: inline-block;
+      display: inline;
       border-radius: 8px 0 0 8px !important; // Always rounded on the left
     }
   }

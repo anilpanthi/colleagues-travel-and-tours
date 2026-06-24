@@ -74,6 +74,17 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
   const formToDisplay =
     activeForm && typeof activeForm === 'object' ? (activeForm as unknown as FormType) : null
 
+  const renderContactButtons = () => (
+    <React.Fragment>
+      <Button appearance="primary" size="lg" onClick={() => openPopUp('book')}>
+        Book this package
+      </Button>
+      <Button appearance="outlineBlack" size="lg" onClick={() => openPopUp('enquiry')}>
+        Make an Enquiry
+      </Button>
+    </React.Fragment>
+  )
+
   const tripFactsContent = (pkg.tripDuration ||
     pkg.tripGrade ||
     pkg.bestSeason ||
@@ -275,18 +286,17 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
           {/* Sidebar */}
           <aside className={style.singlePackage__right}>
             <div className={style.tripFactsDesktop}>{tripFactsContent}</div>
-            <div className={style.contactGroup}>
-              <Button appearance="primary" size="lg" onClick={() => openPopUp('book')}>
-                Book this package
-              </Button>
-              <Button appearance="outlineBlack" size="lg" onClick={() => openPopUp('enquiry')}>
-                Make an Enquiry
-              </Button>
+            <div className={`${style.contactGroup} ${style.contactGroupDesktop}`}>
+              {renderContactButtons()}
             </div>
           </aside>
         </div>
         {children}
       </Content>
+
+      <div className={`${style.contactGroup} ${style.contactGroupMobile}`}>
+        {renderContactButtons()}
+      </div>
 
       {showModal && (
         <Modal

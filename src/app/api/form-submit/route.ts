@@ -14,6 +14,45 @@ type SubmissionField = {
 const errorResponse = (message: string, status: number) =>
   Response.json({ errors: [{ message }], status: String(status) }, { status })
 
+const addHostnameVariants = (hostnames: Set<string>, value: string | null) => {
+  if (!value) return
+
+  const hostname = value.split(',')[0]?.trim().split(':')[0]?.toLowerCase()
+  if (!hostname) return
+
+  hostnames.add(hostname)
+
+  if (hostname.startsWith('www.')) {
+    hostnames.add(hostname.slice(4))
+  } else {
+    hostnames.add(`www.${hostname}`)
+  }
+}
+
+const addURLHostname = (hostnames: Set<string>, value: string | null) => {
+  if (!value) return
+
+  try {
+    addHostnameVariants(hostnames, new URL(value).hostname)
+  } catch {
+    addHostnameVariants(hostnames, value)
+  }
+}
+
+const getExpectedHostnames = (request: Request): string[] => {
+  const hostnames = new Set<string>()
+  const headers = request.headers
+
+  addURLHostname(hostnames, request.url)
+  addHostnameVariants(hostnames, headers.get('host'))
+  addHostnameVariants(hostnames, headers.get('x-forwarded-host'))
+  addURLHostname(hostnames, headers.get('origin'))
+  addURLHostname(hostnames, headers.get('referer'))
+  addURLHostname(hostnames, process.env.NEXT_PUBLIC_SERVER_URL || null)
+
+  return [...hostnames]
+}
+
 const parseSubmissionData = (value: unknown): SubmissionField[] | null => {
   if (!Array.isArray(value) || value.length === 0 || value.length > 100) return null
 
@@ -72,7 +111,7 @@ export async function POST(request: Request) {
 
     const verification = await verifyRecaptchaToken(
       recaptchaToken,
-      new URL(request.url).hostname,
+      getExpectedHostnames(request),
       RECAPTCHA_ACTION,
     )
     if (!verification.success) {

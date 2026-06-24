@@ -15,11 +15,11 @@ export type RecaptchaVerificationResult = {
 
 export async function verifyRecaptchaToken(
   token: string,
-  expectedHostname: string,
+  expectedHostnames: string[],
   expectedAction: string,
 ): Promise<RecaptchaVerificationResult> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY
-  const minimumScore = Number(process.env.RECAPTCHA_MIN_SCORE || 0.5)
+  const minimumScore = Number(process.env.RECAPTCHA_MIN_SCORE || 0.3)
 
   if (!secretKey) {
     console.error('RECAPTCHA_SECRET_KEY is not configured')
@@ -50,7 +50,7 @@ export async function verifyRecaptchaToken(
 
     const result = (await response.json()) as RecaptchaVerificationResponse
     const actionMatches = result.action === expectedAction
-    const hostnameMatches = result.hostname === expectedHostname
+    const hostnameMatches = Boolean(result.hostname && expectedHostnames.includes(result.hostname))
     const scoreMatches = typeof result.score === 'number' && result.score >= minimumScore
     const verificationMatches = actionMatches && hostnameMatches && scoreMatches
 
