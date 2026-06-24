@@ -267,7 +267,7 @@
   flex-direction: column;
   gap: 1.5rem;
 
-  & > * {
+  &>* {
     width: 100%;
   }
 }
@@ -295,7 +295,7 @@
     box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.14);
     isolation: isolate;
 
-    & > * {
+    &>* {
       flex: 1;
       width: 100%;
     }
@@ -421,11 +421,11 @@
 .bookingForm,
 .enquiryForm {
   max-width: none !important;
-  padding: 1rem 2rem;
+  // padding: 1rem;
 
-  & > div {
+  &>div {
     border: none;
-    padding: 1rem 4rem;
+    // padding: 1rem ;
   }
 
   input:focus,
@@ -445,12 +445,12 @@
     row-gap: 1rem;
   }
 
-  [class*='formBlock__fieldsGroup'] > * {
+  [class*='formBlock__fieldsGroup']>* {
     grid-column: 1 / -1;
     width: 100%;
   }
 
-  [class*='formBlock__field'] > div {
+  [class*='formBlock__field']>div {
     max-width: 100% !important;
     width: 100%;
   }
@@ -458,7 +458,7 @@
   @media (max-width: 640px) {
     padding: 1.5rem 0;
 
-    & > div {
+    &>div {
       padding: 0.5rem 1rem;
     }
 
