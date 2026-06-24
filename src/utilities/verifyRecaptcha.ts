@@ -1,30 +1,28 @@
-const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
-const TURNSTILE_ACTION = 'form_submission'
+const SITEVERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 
-type TurnstileVerificationResponse = {
-  action?: string
+type RecaptchaVerificationResponse = {
   'error-codes'?: string[]
   hostname?: string
   success: boolean
 }
 
-export type TurnstileVerificationResult = {
+export type RecaptchaVerificationResult = {
   errorCodes: string[]
   success: boolean
 }
 
-export async function verifyTurnstileToken(
+export async function verifyRecaptchaToken(
   token: string,
   expectedHostname: string,
-): Promise<TurnstileVerificationResult> {
-  const secretKey = process.env.TURNSTILE_SECRET_KEY
+): Promise<RecaptchaVerificationResult> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY
 
   if (!secretKey) {
-    console.error('TURNSTILE_SECRET_KEY is not configured')
+    console.error('RECAPTCHA_SECRET_KEY is not configured')
     return { errorCodes: ['missing-secret-key'], success: false }
   }
 
-  if (!token || token.length > 2048) {
+  if (!token || token.length > 4096) {
     return { errorCodes: ['invalid-input-response'], success: false }
   }
 
@@ -35,7 +33,6 @@ export async function verifyTurnstileToken(
     const body = new FormData()
     body.set('secret', secretKey)
     body.set('response', token)
-    body.set('idempotency_key', crypto.randomUUID())
 
     const response = await fetch(SITEVERIFY_URL, {
       body,
@@ -47,19 +44,15 @@ export async function verifyTurnstileToken(
       return { errorCodes: ['siteverify-request-failed'], success: false }
     }
 
-    const result = (await response.json()) as TurnstileVerificationResponse
-    const actionMatches = result.action === TURNSTILE_ACTION
+    const result = (await response.json()) as RecaptchaVerificationResponse
     const hostnameMatches = result.hostname === expectedHostname
-    const verificationMatches = actionMatches && hostnameMatches
 
     return {
-      errorCodes: verificationMatches
-        ? result['error-codes'] || []
-        : [actionMatches ? 'hostname-mismatch' : 'action-mismatch'],
-      success: result.success && verificationMatches,
+      errorCodes: hostnameMatches ? result['error-codes'] || [] : ['hostname-mismatch'],
+      success: result.success && hostnameMatches,
     }
   } catch (error) {
-    console.error('Turnstile verification failed', error)
+    console.error('reCAPTCHA verification failed', error)
     return { errorCodes: ['internal-error'], success: false }
   } finally {
     clearTimeout(timeout)

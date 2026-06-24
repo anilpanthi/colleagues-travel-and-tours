@@ -104,9 +104,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                 <th>Best Season:</th>
                 <td>
                   {Array.isArray(pkg.bestSeason)
-                    ? pkg.bestSeason
-                        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-                        .join(', ')
+                    ? pkg.bestSeason.map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')
                     : pkg.bestSeason}
                 </td>
               </tr>
@@ -177,9 +175,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
               </div>
             )}
 
-            <div className={style.tripFactsMobile}>
-              {tripFactsContent}
-            </div>
+            <div className={style.tripFactsMobile}>{tripFactsContent}</div>
 
             {pkg?.packageFacts && (
               <div className={style.highlightsSection}>
@@ -278,9 +274,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
 
           {/* Sidebar */}
           <aside className={style.singlePackage__right}>
-            <div className={style.tripFactsDesktop}>
-              {tripFactsContent}
-            </div>
+            <div className={style.tripFactsDesktop}>{tripFactsContent}</div>
             <div className={style.contactGroup}>
               <Button appearance="primary" size="lg" onClick={() => openPopUp('book')}>
                 Book this package
@@ -299,12 +293,12 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
           isOpen={showModal}
           onClose={handleCloseModal}
           title={activeFormType === 'book' ? `Book ${pkg.title}` : `Enquire about ${pkg.title}`}
-          size={activeFormType === 'enquiry' ? 'sm' : 'lg'}
+          size={activeFormType === 'enquiry' ? 'md' : 'lg'}
         >
           {formToDisplay ? (
-            <FormBlock 
-              form={formToDisplay} 
-              enableIntro={false} 
+            <FormBlock
+              form={formToDisplay}
+              enableIntro={false}
               className={activeFormType === 'book' ? style.bookingForm : style.enquiryForm}
             />
           ) : (

@@ -63,7 +63,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
               <Card.Div className={styles.packageCard__content_top_facts}>
                 {doc?.elevation && (
                   <Card.Div className={styles.packageCard__content_top_facts_elevation}>
-                    <Mountain size={18} /> <Card.Span>{doc.elevation} m</Card.Span>
+                    <Mountain size={18} /> <Card.Span>{doc.elevation}m</Card.Span>
                   </Card.Div>
                 )}
                 {doc?.Activity &&

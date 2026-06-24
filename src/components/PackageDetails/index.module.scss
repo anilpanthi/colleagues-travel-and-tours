@@ -400,3 +400,53 @@
   margin: 0 0 1rem;
   font-family: var(--font-inter), system-ui, sans-serif;
 }
+
+.bookingForm,
+.enquiryForm {
+  max-width: none !important;
+  padding: 4rem 2rem;
+
+  & > div {
+    border: none;
+    padding: 1rem 4rem;
+  }
+
+  input:focus,
+  textarea:focus {
+    border: 0.5px solid #000000 !important;
+    box-shadow: none;
+    outline: none;
+  }
+
+  [class*='formBlock__submit'] {
+    font-size: 1.6rem;
+  }
+
+  [class*='formBlock__fieldsGroup'] {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+  }
+
+  [class*='formBlock__fieldsGroup'] > * {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  [class*='formBlock__field'] > div {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1.5rem 0;
+
+    & > div {
+      padding: 0.5rem 1rem;
+    }
+
+    [class*='formBlock__fieldsGroup'] {
+      row-gap: 0.8rem;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import { verifyTurnstileToken } from '@/utilities/verifyTurnstile'
-import { isTurnstileRequired } from '@/utilities/turnstileConfig'
+import { isRecaptchaRequired } from '@/utilities/recaptchaConfig'
+import { verifyRecaptchaToken } from '@/utilities/verifyRecaptcha'
 
 type SubmissionField = {
   field: string
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
   const form = 'form' in body ? body.form : null
   const companyWebsite = 'companyWebsite' in body ? body.companyWebsite : null
-  const turnstileToken = 'turnstileToken' in body ? body.turnstileToken : null
+  const recaptchaToken = 'recaptchaToken' in body ? body.recaptchaToken : null
   const submissionData = parseSubmissionData('submissionData' in body ? body.submissionData : null)
 
   if (typeof form !== 'number' || !Number.isInteger(form) || form <= 0 || !submissionData) {
@@ -63,14 +63,14 @@ export async function POST(request: Request) {
     return Response.json({ success: true }, { status: 201 })
   }
 
-  if (isTurnstileRequired()) {
-    if (typeof turnstileToken !== 'string') {
+  if (isRecaptchaRequired()) {
+    if (typeof recaptchaToken !== 'string') {
       return errorResponse('Please complete the security verification.', 400)
     }
 
-    const verification = await verifyTurnstileToken(turnstileToken, new URL(request.url).hostname)
+    const verification = await verifyRecaptchaToken(recaptchaToken, new URL(request.url).hostname)
     if (!verification.success) {
-      console.warn('Turnstile rejected a form submission', verification.errorCodes)
+      console.warn('reCAPTCHA rejected a form submission', verification.errorCodes)
       return errorResponse('Security verification failed. Please try again.', 403)
     }
   }

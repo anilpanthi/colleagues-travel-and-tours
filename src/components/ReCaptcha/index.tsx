@@ -5,64 +5,63 @@ import { useCallback, useEffect, useRef } from 'react'
 
 import classes from './index.module.scss'
 
-type TurnstileAPI = {
-  remove: (widgetID: string) => void
+type ReCaptchaAPI = {
   render: (
     container: HTMLElement,
     options: {
-      action: string
-      appearance: 'always'
       callback: (token: string) => void
       'error-callback': () => void
       'expired-callback': () => void
       sitekey: string
-      size: 'flexible'
-      theme: 'auto'
+      size: 'normal'
+      theme: 'light'
     },
-  ) => string
+  ) => number
+  reset: (widgetID?: number) => void
 }
 
 declare global {
   interface Window {
-    turnstile?: TurnstileAPI
+    grecaptcha?: ReCaptchaAPI
   }
 }
 
-interface TurnstileProps {
+interface ReCaptchaProps {
   onTokenChange: (token: string | null) => void
 }
 
-const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 
-export function Turnstile({ onTokenChange }: TurnstileProps) {
+export function ReCaptcha({ onTokenChange }: ReCaptchaProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const widgetIDRef = useRef<string | null>(null)
+  const widgetIDRef = useRef<number | null>(null)
 
   const renderWidget = useCallback(() => {
-    if (!siteKey || !containerRef.current || !window.turnstile || widgetIDRef.current) return
+    if (!siteKey || !containerRef.current || !window.grecaptcha || widgetIDRef.current !== null) {
+      return
+    }
 
-    widgetIDRef.current = window.turnstile.render(containerRef.current, {
-      action: 'form_submission',
-      appearance: 'always',
+    widgetIDRef.current = window.grecaptcha.render(containerRef.current, {
       callback: (token) => onTokenChange(token),
       'error-callback': () => onTokenChange(null),
       'expired-callback': () => onTokenChange(null),
       sitekey: siteKey,
-      size: 'flexible',
-      theme: 'auto',
+      size: 'normal',
+      theme: 'light',
     })
   }, [onTokenChange])
 
   useEffect(() => {
     renderWidget()
+  }, [renderWidget])
 
+  useEffect(() => {
     return () => {
-      if (widgetIDRef.current && window.turnstile) {
-        window.turnstile.remove(widgetIDRef.current)
-        widgetIDRef.current = null
+      if (widgetIDRef.current !== null && window.grecaptcha) {
+        window.grecaptcha.reset(widgetIDRef.current)
       }
     }
-  }, [renderWidget])
+  }, [])
 
   if (!siteKey) {
     return null
@@ -71,9 +70,9 @@ export function Turnstile({ onTokenChange }: TurnstileProps) {
   return (
     <>
       <Script
-        id="cloudflare-turnstile"
+        id="google-recaptcha"
         onLoad={renderWidget}
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        src="https://www.google.com/recaptcha/api.js?render=explicit"
         strategy="afterInteractive"
       />
       <div className={classes.widget} ref={containerRef} />

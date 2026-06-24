@@ -43,9 +43,9 @@ export default async function ExplorePage() {
         subtitle="Search and filter our curated travel packages to find your next adventure."
         scrollDot={false}
       />
-      <ExplorePageClient 
-        initialPackages={packagesRes.docs} 
-        activities={activitiesRes.docs} 
+      <ExplorePageClient
+        initialPackages={packagesRes.docs}
+        activities={activitiesRes.docs}
       />
     </>
   )

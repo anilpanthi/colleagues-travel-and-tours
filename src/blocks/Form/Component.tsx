@@ -12,8 +12,8 @@ import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import classes from './index.module.scss'
 import { cn } from '@/utilities/ui'
-import { Turnstile } from '@/components/Turnstile'
-import { isTurnstileRequired } from '@/utilities/turnstileConfig'
+import { ReCaptcha } from '@/components/ReCaptcha'
+import { isRecaptchaRequired } from '@/utilities/recaptchaConfig'
 
 export type FormBlockType = {
   blockName?: string
@@ -29,7 +29,7 @@ export const FormBlock: React.FC<
     className?: string
   } & FormBlockType
 > = (props) => {
-  const turnstileRequired = isTurnstileRequired()
+  const recaptchaRequired = isRecaptchaRequired()
   const {
     enableIntro,
     form: formFromProps,
@@ -51,8 +51,8 @@ export const FormBlock: React.FC<
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const [turnstileKey, setTurnstileKey] = useState(0)
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  const [recaptchaKey, setRecaptchaKey] = useState(0)
   const honeypotRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -62,7 +62,7 @@ export const FormBlock: React.FC<
       const submitForm = async () => {
         setError(undefined)
 
-        if (turnstileRequired && !turnstileToken) {
+        if (recaptchaRequired && !recaptchaToken) {
           setError({ message: 'Please complete the security verification.', status: '400' })
           return
         }
@@ -83,7 +83,7 @@ export const FormBlock: React.FC<
               form: formID,
               companyWebsite: honeypotRef.current?.value || '',
               submissionData: dataToSend,
-              turnstileToken,
+              recaptchaToken,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -123,14 +123,14 @@ export const FormBlock: React.FC<
             message: 'Something went wrong.',
           })
         } finally {
-          setTurnstileToken(null)
-          setTurnstileKey((key) => key + 1)
+          setRecaptchaToken(null)
+          setRecaptchaKey((key) => key + 1)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, turnstileRequired, turnstileToken],
+    [router, formID, redirect, confirmationType, recaptchaRequired, recaptchaToken],
   )
 
   return (
@@ -189,14 +189,14 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              {turnstileRequired && (
-                <div className={classes.formBlock__turnstile}>
-                  <Turnstile key={turnstileKey} onTokenChange={setTurnstileToken} />
+              {recaptchaRequired && (
+                <div className={classes.formBlock__recaptcha}>
+                  <ReCaptcha key={recaptchaKey} onTokenChange={setRecaptchaToken} />
                 </div>
               )}
 
               <div className={classes.formBlock__submit}>
-                <Button disabled={turnstileRequired && !turnstileToken} form={formID} type="submit">
+                <Button disabled={recaptchaRequired && !recaptchaToken} form={formID} type="submit">
                   {submitButtonLabel}
                 </Button>
               </div>

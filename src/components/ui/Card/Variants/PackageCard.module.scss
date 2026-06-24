@@ -77,7 +77,7 @@
 
   &__image_wrapper {
     position: relative;
-    height: 240px;
+    height: 210px;
     width: 100%;
     overflow: hidden;
     border-radius: 10px;
@@ -148,6 +148,7 @@
       gap: 1rem;
       color: #878787;
       text-transform: capitalize;
+      font-size: 1rem;
 
       &_btn {
         padding: 0 0 !important;

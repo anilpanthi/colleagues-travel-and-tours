@@ -30,6 +30,7 @@ export default function Cta({ flightBookingForm }: CtaProps) {
       <Button
         appearance="primary"
         size="sm"
+        className={CtaStyle.ctaButton}
         iconLeft={<Plane className={CtaStyle.iconPlane} />}
         onClick={handleOpenModal}
       >
@@ -41,7 +42,7 @@ export default function Cta({ flightBookingForm }: CtaProps) {
           isOpen={showModal}
           onClose={handleCloseModal}
           title="Enter your flight details below to make your reservation."
-          size="lg"
+          size="xl"
         >
           {form ? (
             <FormBlock form={form} enableIntro={false} className={CtaStyle.reservationForm} />

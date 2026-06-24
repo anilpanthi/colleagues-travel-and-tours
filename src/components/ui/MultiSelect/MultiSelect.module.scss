@@ -20,8 +20,8 @@
 
   &:focus {
     outline: none;
-    border-color: #0f5a9c;
-    box-shadow: 0 0 0 3px rgba(15, 90, 156, 0.14);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
   }
 }
 
@@ -82,7 +82,7 @@
 .checkbox {
   width: 1.55rem;
   height: 1.55rem;
-  accent-color: #0f5a9c;
+  accent-color: var(--color-primary);
   cursor: pointer;
 }
 

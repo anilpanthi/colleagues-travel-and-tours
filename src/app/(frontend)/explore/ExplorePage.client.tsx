@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Activity, Package } from '@/payload-types'
-import { Search, Filter, X, SlidersHorizontal } from 'lucide-react'
+import { Filter, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import Content from '@/components/ui/Content/Index'
 import Cards from '@/components/ui/Card/Cards'
@@ -24,15 +24,17 @@ interface ExplorePageClientProps {
   activities: Activity[]
 }
 
-const TRIP_GRADES = [
+type TripGrade = NonNullable<Package['tripGrade']>
+type BestSeason = NonNullable<Package['bestSeason']>[number]
+
+const TRIP_GRADES: { label: string; value: TripGrade }[] = [
   { label: 'Easy', value: 'easy' },
   { label: 'Moderate', value: 'moderate' },
   { label: 'Difficult', value: 'difficult' },
   { label: 'Strenuous', value: 'strenuous' },
 ]
 
-const SEASONS = [
-  { label: 'Any', value: 'any' },
+const SEASONS: { label: string; value: BestSeason }[] = [
   { label: 'January', value: 'january' },
   { label: 'February', value: 'february' },
   { label: 'March', value: 'march' },
@@ -53,10 +55,10 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
-  const [selectedGrades, setSelectedGrades] = useState<string[]>([])
+  const [selectedGrades, setSelectedGrades] = useState<TripGrade[]>([])
   const [maxDuration, setMaxDuration] = useState<number | null>(null)
   const [maxElevation, setMaxElevation] = useState<number | null>(null)
-  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([])
+  const [selectedSeasons, setSelectedSeasons] = useState<BestSeason[]>([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   
@@ -75,6 +77,9 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
     return Array.from(new Set(all)).sort((a, b) => a - b)
   }, [initialPackages])
 
+  const maxTripDuration = durations[durations.length - 1]
+  const maxTripElevation = elevations[elevations.length - 1]
+
   const filteredPackages = useMemo(() => {
     return initialPackages.filter(pkg => {
       const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -88,7 +93,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
       const matchesElevation = maxElevation === null || 
         (pkg.elevation !== undefined && pkg.elevation !== null && pkg.elevation <= maxElevation)
       const matchesSeason = selectedSeasons.length === 0 || 
-        (pkg.bestSeason && selectedSeasons.some(season => pkg.bestSeason!.includes(season as any)))
+        (pkg.bestSeason && selectedSeasons.some(season => pkg.bestSeason?.includes(season)))
 
       return matchesSearch && matchesActivity && matchesGrade && matchesDuration && matchesElevation && matchesSeason
     })
@@ -131,9 +136,36 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
   return (
     <div className={style.explore}>
       <Content>
+        <div className={cn(containerStyles.container, style.intro)}>
+          <div>
+            <span className={style.eyebrow}>
+              <Sparkles size={16} />
+              Find your fit
+            </span>
+            <h2 className={style.introTitle}>Choose the journey that matches your pace.</h2>
+            <p className={style.introText}>
+              Compare routes, seasons, difficulty, and duration from one focused explorer.
+            </p>
+          </div>
+          <div className={style.stats}>
+            <div className={style.stat}>
+              <strong>{initialPackages.length}</strong>
+              <span>Packages</span>
+            </div>
+            <div className={style.stat}>
+              <strong>{activities.length}</strong>
+              <span>Activities</span>
+            </div>
+            <div className={style.stat}>
+              <strong>{maxTripDuration ? `${maxTripDuration}` : 'Any'}</strong>
+              <span>Max days</span>
+            </div>
+          </div>
+        </div>
+
         <div className={cn(containerStyles.container, style.layout)}>
           {/* Mobile Toggle */}
-          <button 
+          <button
             className={style.mobileFilterBtn}
             onClick={() => setIsSidebarOpen(true)}
           >
@@ -160,6 +192,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
               <div className={style.formGroup}>
                 <p className={style.groupLabel}>Search</p>
                 <div className={style.searchBar}>
+                  <Search size={17} className={style.searchIcon} />
                   <input
                     type="text"
                     placeholder="Search trip name..."
@@ -205,9 +238,9 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
               <div className={style.formGroup}>
                 <p className={style.groupLabel}>Best Season</p>
                 <MultiSelect
-                  options={SEASONS.filter(s => s.value !== 'any')}
+                  options={SEASONS}
                   selectedValues={selectedSeasons}
-                  onChange={(val) => toggleFilter(val as string, selectedSeasons, setSelectedSeasons)}
+                  onChange={(val) => toggleFilter(val as BestSeason, selectedSeasons, setSelectedSeasons)}
                   placeholder="Select seasons..."
                 />
               </div>
@@ -224,8 +257,8 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                   <input
                     type="range"
                     min={1}
-                    max={Math.max(2, durations[durations.length - 1] || 2)}
-                    value={maxDuration === null ? (durations[durations.length - 1] || 2) : maxDuration}
+                    max={Math.max(2, maxTripDuration || 2)}
+                    value={maxDuration === null ? (maxTripDuration || 2) : maxDuration}
                     onChange={(e) => {
                       setMaxDuration(Number(e.target.value))
                       setCurrentPage(1)
@@ -247,9 +280,9 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                   <input
                     type="range"
                     min={0}
-                    max={Math.max(100, elevations[elevations.length - 1] || 100)}
+                    max={Math.max(100, maxTripElevation || 100)}
                     step={100}
-                    value={maxElevation === null ? (elevations[elevations.length - 1] || 100) : maxElevation}
+                    value={maxElevation === null ? (maxTripElevation || 100) : maxElevation}
                     onChange={(e) => {
                       setMaxElevation(Number(e.target.value))
                       setCurrentPage(1)
@@ -295,7 +328,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                   collection="packages"
                   selectedItems={paginatedItems}
                   variant="packagesCard"
-                  columns="2"
+                  columns="3"
                 />
                 
                 {totalPages > 1 && (
