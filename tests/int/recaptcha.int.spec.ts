@@ -23,9 +23,9 @@ describe('reCAPTCHA verification', () => {
 
   it('accepts a valid token for the expected hostname', async () => {
     vi.stubEnv('RECAPTCHA_SECRET_KEY', 'test-secret')
-    mockSiteverify({ hostname: 'example.com', success: true })
+    mockSiteverify({ action: 'form_submit', hostname: 'example.com', score: 0.9, success: true })
 
-    await expect(verifyRecaptchaToken('valid-token', 'example.com')).resolves.toEqual({
+    await expect(verifyRecaptchaToken('valid-token', 'example.com', 'form_submit')).resolves.toEqual({
       errorCodes: [],
       success: true,
     })
@@ -43,11 +43,40 @@ describe('reCAPTCHA verification', () => {
 
   it('rejects tokens with a mismatched hostname', async () => {
     vi.stubEnv('RECAPTCHA_SECRET_KEY', 'test-secret')
-    mockSiteverify({ hostname: 'other.example.com', success: true })
+    mockSiteverify({
+      action: 'form_submit',
+      hostname: 'other.example.com',
+      score: 0.9,
+      success: true,
+    })
 
-    await expect(verifyRecaptchaToken('valid-token', 'example.com')).resolves.toEqual({
+    await expect(verifyRecaptchaToken('valid-token', 'example.com', 'form_submit')).resolves.toEqual({
       errorCodes: ['hostname-mismatch'],
       success: false,
     })
+  })
+
+  it('rejects tokens with a mismatched action', async () => {
+    vi.stubEnv('RECAPTCHA_SECRET_KEY', 'test-secret')
+    mockSiteverify({ action: 'other_action', hostname: 'example.com', score: 0.9, success: true })
+
+    await expect(verifyRecaptchaToken('valid-token', 'example.com', 'form_submit')).resolves.toEqual(
+      {
+        errorCodes: ['action-mismatch'],
+        success: false,
+      },
+    )
+  })
+
+  it('rejects tokens below the minimum score', async () => {
+    vi.stubEnv('RECAPTCHA_SECRET_KEY', 'test-secret')
+    mockSiteverify({ action: 'form_submit', hostname: 'example.com', score: 0.1, success: true })
+
+    await expect(verifyRecaptchaToken('valid-token', 'example.com', 'form_submit')).resolves.toEqual(
+      {
+        errorCodes: ['score-too-low'],
+        success: false,
+      },
+    )
   })
 })

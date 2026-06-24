@@ -1,8 +1,10 @@
 const SITEVERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 
 type RecaptchaVerificationResponse = {
+  action?: string
   'error-codes'?: string[]
   hostname?: string
+  score?: number
   success: boolean
 }
 
@@ -14,8 +16,10 @@ export type RecaptchaVerificationResult = {
 export async function verifyRecaptchaToken(
   token: string,
   expectedHostname: string,
+  expectedAction: string,
 ): Promise<RecaptchaVerificationResult> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY
+  const minimumScore = Number(process.env.RECAPTCHA_MIN_SCORE || 0.5)
 
   if (!secretKey) {
     console.error('RECAPTCHA_SECRET_KEY is not configured')
@@ -45,11 +49,20 @@ export async function verifyRecaptchaToken(
     }
 
     const result = (await response.json()) as RecaptchaVerificationResponse
+    const actionMatches = result.action === expectedAction
     const hostnameMatches = result.hostname === expectedHostname
+    const scoreMatches = typeof result.score === 'number' && result.score >= minimumScore
+    const verificationMatches = actionMatches && hostnameMatches && scoreMatches
 
     return {
-      errorCodes: hostnameMatches ? result['error-codes'] || [] : ['hostname-mismatch'],
-      success: result.success && hostnameMatches,
+      errorCodes: verificationMatches
+        ? result['error-codes'] || []
+        : [
+            ...(actionMatches ? [] : ['action-mismatch']),
+            ...(hostnameMatches ? [] : ['hostname-mismatch']),
+            ...(scoreMatches ? [] : ['score-too-low']),
+          ],
+      success: result.success && verificationMatches,
     }
   } catch (error) {
     console.error('reCAPTCHA verification failed', error)

@@ -4,6 +4,8 @@ import { getPayload } from 'payload'
 import { isRecaptchaRequired } from '@/utilities/recaptchaConfig'
 import { verifyRecaptchaToken } from '@/utilities/verifyRecaptcha'
 
+const RECAPTCHA_ACTION = 'form_submit'
+
 type SubmissionField = {
   field: string
   value: string
@@ -68,7 +70,11 @@ export async function POST(request: Request) {
       return errorResponse('Please complete the security verification.', 400)
     }
 
-    const verification = await verifyRecaptchaToken(recaptchaToken, new URL(request.url).hostname)
+    const verification = await verifyRecaptchaToken(
+      recaptchaToken,
+      new URL(request.url).hostname,
+      RECAPTCHA_ACTION,
+    )
     if (!verification.success) {
       console.warn('reCAPTCHA rejected a form submission', verification.errorCodes)
       return errorResponse('Security verification failed. Please try again.', 403)

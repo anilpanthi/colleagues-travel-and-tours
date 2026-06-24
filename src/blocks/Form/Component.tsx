@@ -12,8 +12,10 @@ import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import classes from './index.module.scss'
 import { cn } from '@/utilities/ui'
-import { ReCaptcha } from '@/components/ReCaptcha'
+import { executeRecaptcha, ReCaptchaScript } from '@/components/ReCaptcha'
 import { isRecaptchaRequired } from '@/utilities/recaptchaConfig'
+
+const RECAPTCHA_ACTION = 'form_submit'
 
 export type FormBlockType = {
   blockName?: string
@@ -51,8 +53,6 @@ export const FormBlock: React.FC<
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
-  const [recaptchaKey, setRecaptchaKey] = useState(0)
   const honeypotRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -61,11 +61,6 @@ export const FormBlock: React.FC<
       let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
-
-        if (recaptchaRequired && !recaptchaToken) {
-          setError({ message: 'Please complete the security verification.', status: '400' })
-          return
-        }
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
@@ -78,6 +73,17 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
+          const recaptchaToken = recaptchaRequired
+            ? await executeRecaptcha(RECAPTCHA_ACTION)
+            : null
+
+          if (recaptchaRequired && !recaptchaToken) {
+            clearTimeout(loadingTimerID)
+            setIsLoading(false)
+            setError({ message: 'Security verification failed. Please try again.', status: '400' })
+            return
+          }
+
           const req = await fetch(`${getClientSideURL()}/api/form-submit`, {
             body: JSON.stringify({
               form: formID,
@@ -122,19 +128,17 @@ export const FormBlock: React.FC<
           setError({
             message: 'Something went wrong.',
           })
-        } finally {
-          setRecaptchaToken(null)
-          setRecaptchaKey((key) => key + 1)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, recaptchaRequired, recaptchaToken],
+    [router, formID, redirect, confirmationType, recaptchaRequired],
   )
 
   return (
     <div className={cn(classes.formBlock, className)}>
+      {recaptchaRequired && <ReCaptchaScript />}
       {enableIntro && introContent && !hasSubmitted && (
         <RichText className={classes.formBlock__intro} data={introContent} enableGutter={false} />
       )}
@@ -189,14 +193,8 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              {recaptchaRequired && (
-                <div className={classes.formBlock__recaptcha}>
-                  <ReCaptcha key={recaptchaKey} onTokenChange={setRecaptchaToken} />
-                </div>
-              )}
-
               <div className={classes.formBlock__submit}>
-                <Button disabled={recaptchaRequired && !recaptchaToken} form={formID} type="submit">
+                <Button form={formID} type="submit">
                   {submitButtonLabel}
                 </Button>
               </div>
