@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 interface BrandImageProps {
   alt?: string
   alternateSrc?: string | null
+  className?: string
   fallbackSrc: string
   height?: number
   src: string | null
@@ -15,6 +16,7 @@ interface BrandImageProps {
 export function BrandImage({
   alt = 'Colleagues Travel and Tours',
   alternateSrc,
+  className,
   fallbackSrc,
   height = 57,
   src,
@@ -44,6 +46,7 @@ export function BrandImage({
   return (
     <Image
       alt={alt}
+      className={className}
       height={height}
       loading="eager"
       onError={() => setImageSrc(fallbackSrc)}

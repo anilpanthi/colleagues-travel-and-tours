@@ -40,11 +40,52 @@ const nextConfig: NextConfig = {
     qualities: [75, 100],
   },
   output: 'standalone',
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig, { dev, isServer, webpack }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
+    }
+
+    if (dev && !isServer) {
+      webpackConfig.plugins.push(
+        new webpack.BannerPlugin({
+          raw: true,
+          banner: `
+;(() => {
+  if (typeof window === 'undefined' || !window.performance) return
+
+  const performanceObject = window.performance
+
+  if (performanceObject.__nextRSCMeasurePatch) return
+  if (typeof performanceObject.measure !== 'function') return
+
+  const originalMeasure = performanceObject.measure.bind(performanceObject)
+
+  Object.defineProperty(performanceObject, '__nextRSCMeasurePatch', {
+    configurable: false,
+    enumerable: false,
+    value: true,
+  })
+
+  performanceObject.measure = function patchedMeasure(name, startOrMeasureOptions, endMark) {
+    try {
+      return originalMeasure(name, startOrMeasureOptions, endMark)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      const isReactServerComponentMeasure = typeof name === 'string' && name.charCodeAt(0) === 8203
+      const isNegativeTimestampError = message.includes('cannot have a negative time stamp')
+
+      if (isReactServerComponentMeasure && isNegativeTimestampError) {
+        return undefined
+      }
+
+      throw error
+    }
+  }
+})();`,
+        }),
+      )
     }
 
     return webpackConfig
