@@ -22,15 +22,15 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
           return null
         }
 
-        console.log(doc)
-
         const { id, title, slug, featuredImage, meta } = doc
 
         // Default to 'packages' if collection is not provided or 'none'
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
         const href = slug ? `/${slug}` : `/${collectionSlug}/${id}`
+        const cardKey = `${collectionSlug}-${id ?? slug ?? index}`
+
         return (
-          <Card key={index} className={styles.packageCard} as={Link} href={href}>
+          <Card key={cardKey} className={styles.packageCard} as={Link} href={href}>
             {doc.tripDuration && (
               <Card.Span className={styles.packageCard__batch_duration}>
                 {doc.tripDuration} Days

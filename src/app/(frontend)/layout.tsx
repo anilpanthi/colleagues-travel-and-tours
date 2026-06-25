@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import type { Metadata, Viewport } from 'next'
 
 import { Providers } from '@/providers'
@@ -81,7 +81,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ServiceWorkerRegistration />
         <Providers>
           <div className="layout-wrapper">
-            <ProgressBar />
+            <Suspense fallback={null}>
+              <ProgressBar />
+            </Suspense>
             <HeaderClient
               mainNavigation={mainNavigation}
               logos={logos}

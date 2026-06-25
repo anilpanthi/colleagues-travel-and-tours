@@ -206,14 +206,12 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                   variant="minimal"
                   allowMultiple={false}
                   defaultOpenIds={
-                    (pkg?.detailedItinerary?.[0]?.id
-                      ? [pkg.detailedItinerary[0].id]
-                      : []) as string[]
+                    pkg.detailedItinerary[0]?.id ? [`${pkg.detailedItinerary[0].id}-0`] : []
                   }
                 >
-                  {pkg?.detailedItinerary?.map((item) => {
-                    if (!item?.id) return null
-                    return <AccordionItem key={item.id} value={item.id} data={item} />
+                  {pkg.detailedItinerary.map((item, index) => {
+                    const itemKey = `${item.id ?? 'itinerary'}-${index}`
+                    return <AccordionItem key={itemKey} value={itemKey} data={item} />
                   })}
                 </Accordion>
               </div>
@@ -262,12 +260,12 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                   title="Faqs"
                   variant="ghost"
                   allowMultiple={false}
-                  defaultOpenIds={(pkg?.faqs?.[0]?.id ? [pkg.faqs[0].id] : []) as string[]}
+                  defaultOpenIds={pkg.faqs[0]?.id ? [`${pkg.faqs[0].id}-0`] : []}
                 >
-                  {pkg?.faqs?.map((item) => {
-                    if (!item?.id) return null
+                  {pkg.faqs.map((item, index) => {
+                    const itemKey = `${item.id ?? 'faq'}-${index}`
                     return (
-                      <AccordionItem key={item.id} value={item.id} heading={item.question ?? ''}>
+                      <AccordionItem key={itemKey} value={itemKey} heading={item.question ?? ''}>
                         {item.answer && <RichText data={item.answer} enableGutter={false} />}
                       </AccordionItem>
                     )

@@ -28,6 +28,9 @@ type GalleryMedia = Media & {
 	url: string
 }
 
+const getGalleryImageKey = (media: GalleryMedia, index: number) =>
+	`${media.id ?? media.url}-${index}`
+
 export const Gallery: React.FC<Props> = ({ images }) => {
 	const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperType | null>(null)
 	const [isMounted, setIsMounted] = React.useState(false)
@@ -157,7 +160,7 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 				className={styles.mainSwiper}
 			>
 				{validImages.map((media, index) => (
-					<SwiperSlide key={media.id || index} className={styles.mainSlide}>
+					<SwiperSlide key={getGalleryImageKey(media, index)} className={styles.mainSlide}>
 						<button
 							type="button"
 							className={styles.imageButton}
@@ -193,7 +196,7 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 					className={styles.thumbSwiper}
 				>
 					{validImages.map((media, index) => (
-						<SwiperSlide key={media.id || index} className={styles.thumbSlide}>
+						<SwiperSlide key={getGalleryImageKey(media, index)} className={styles.thumbSlide}>
 							<div className={styles.thumbWrapper}>
 								<Image
 									src={media.url}

@@ -3,7 +3,7 @@
 import CtaStyle from './Cta.module.css'
 import { Button } from '@/components/ui/Button/Button'
 import { Plane } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from '@/components/ui/Modal/Modal'
 import { FormBlock } from '@/blocks/Form/Component'
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
@@ -15,6 +15,32 @@ interface CtaProps {
 
 export default function Cta({ flightBookingForm }: CtaProps) {
   const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+    const openFromUrl = () => {
+      const params = new URLSearchParams(window.location.search)
+      const modal = params.get('modal')
+      const flightBooking = params.get('flightBooking')
+      const hash = window.location.hash
+
+      if (
+        hash === '#flight-booking' ||
+        modal === 'flight-booking' ||
+        flightBooking === 'true'
+      ) {
+        setShowModal(true)
+      }
+    }
+
+    openFromUrl()
+    window.addEventListener('hashchange', openFromUrl)
+    window.addEventListener('popstate', openFromUrl)
+
+    return () => {
+      window.removeEventListener('hashchange', openFromUrl)
+      window.removeEventListener('popstate', openFromUrl)
+    }
+  }, [])
 
   const handleOpenModal = () => setShowModal(true)
   const handleCloseModal = () => setShowModal(false)

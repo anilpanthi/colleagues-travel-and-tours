@@ -1,29 +1,45 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './index.module.css'
 
 export const ProgressBar = () => {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [progress, setProgress] = useState(0)
-  const [isNavigating, setIsNavigating] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const currentUrl = useMemo(() => {
+    const queryString = searchParams.toString()
 
-  const [prevPathname, setPrevPathname] = useState(pathname)
+    return queryString ? `${pathname}?${queryString}` : pathname
+  }, [pathname, searchParams])
+  const previousUrlRef = useRef(currentUrl)
 
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname)
-    setIsNavigating(false)
-    setProgress(100)
-  }
+  const startProgress = useCallback(() => {
+    setIsVisible(true)
+    setProgress((currentProgress) => (currentProgress > 0 && currentProgress < 100 ? currentProgress : 12))
+  }, [])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setProgress(0)
-    }, 400)
+    if (previousUrlRef.current === currentUrl) return
 
-    return () => clearTimeout(timeout)
-  }, [pathname])
+    previousUrlRef.current = currentUrl
+
+    const completeTimeout = window.setTimeout(() => {
+      setProgress(100)
+    }, 0)
+    const hideTimeout = window.setTimeout(() => {
+      setIsVisible(false)
+      setProgress(0)
+    }, 350)
+
+    return () => {
+      window.clearTimeout(completeTimeout)
+      window.clearTimeout(hideTimeout)
+    }
+  }, [currentUrl])
 
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
@@ -39,37 +55,36 @@ export const ProgressBar = () => {
         !e.shiftKey &&
         !e.altKey &&
         anchor.origin === window.location.origin &&
-        anchor.pathname !== window.location.pathname
+        anchor.href !== window.location.href
       ) {
-        setIsNavigating(true)
-        setProgress(10)
+        startProgress()
       }
     }
 
     document.addEventListener('click', handleAnchorClick)
     return () => document.removeEventListener('click', handleAnchorClick)
-  }, [])
+  }, [startProgress])
 
   useEffect(() => {
-    if (isNavigating) {
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) return prev
-          return prev + (90 - prev) * 0.1
-        })
-      }, 500)
-      return () => clearInterval(interval)
-    }
-  }, [isNavigating])
+    if (!isVisible || progress >= 100) return
 
-  if (progress === 0) return null
+    const interval = window.setInterval(() => {
+      setProgress((currentProgress) => {
+        if (currentProgress >= 90) return currentProgress
 
-  return (
+        return currentProgress + (90 - currentProgress) * 0.1
+      })
+    }, 400)
+
+    return () => window.clearInterval(interval)
+  }, [isVisible, progress])
+
+  if (!isVisible || typeof document === 'undefined') return null
+
+  return createPortal(
     <div className={styles.progressBarContainer}>
-      <div 
-        className={styles.progressBar} 
-        style={{ width: `${progress}%`, opacity: progress === 100 ? 0 : 1, transition: progress === 100 ? 'opacity 0.4s ease, width 0.3s ease' : 'width 0.3s ease' }} 
-      />
-    </div>
+      <div className={styles.progressBar} style={{ width: `${progress}%` }} />
+    </div>,
+    document.body,
   )
 }
