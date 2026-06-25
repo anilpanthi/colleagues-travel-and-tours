@@ -10,7 +10,7 @@ export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     try {
       const { isEnabled } = await draftMode()
       draft = isEnabled
-    } catch (e) {
+    } catch (_e) {
       // draftMode() can throw when not called from a server component or during build in some cases
     }
     const payload = await getPayload({ config: configPromise })
@@ -42,6 +42,7 @@ export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
 
     const result = await payload.find({
       collection: 'packages',
+      depth: 2,
       limit: 1,
       pagination: false,
       where: {
@@ -65,7 +66,7 @@ export const queryRelatedPackages = cache(
     try {
       const { isEnabled } = await draftMode()
       draft = isEnabled
-    } catch (e) {}
+    } catch (_e) {}
     const payload = await getPayload({ config: configPromise })
 
     const activityIds = (pkg.Activity ?? [])
@@ -78,11 +79,22 @@ export const queryRelatedPackages = cache(
 
     const result = await payload.find({
       collection: 'packages',
-      depth: 2,
+      depth: 1,
       draft,
       limit,
       overrideAccess: draft,
       pagination: false,
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        featuredImage: true,
+        meta: true,
+        tripDuration: true,
+        tripGrade: true,
+        elevation: true,
+        Activity: true,
+      },
       sort: '-updatedAt',
       where: {
         and: [
@@ -147,7 +159,7 @@ export const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
   try {
     const { isEnabled } = await draftMode()
     draft = isEnabled
-  } catch (e) {}
+  } catch (_e) {}
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
@@ -171,7 +183,7 @@ export const queryFormsByTitle = cache(async ({ title }: { title: string }) => {
   try {
     const { isEnabled } = await draftMode()
     draft = isEnabled
-  } catch (e) {}
+  } catch (_e) {}
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({

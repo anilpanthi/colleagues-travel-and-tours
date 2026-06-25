@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { type RequiredDataFromCollectionSlug } from 'payload'
+import type { Package } from '@/payload-types'
 import { draftMode } from 'next/headers'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
@@ -22,8 +24,13 @@ import {
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
-export const dynamic = 'force-dynamic'
 export const revalidate = 600
+
+async function RelatedPackagesLoader({ pkg }: { pkg: Package }) {
+  const relatedDocs = await queryRelatedPackages({ pkg })
+
+  return relatedDocs.length > 0 ? <RelatedPackages packages={relatedDocs} /> : null
+}
 
 export async function generateStaticParams() {
   if (isPayloadBuildTime) {
@@ -59,7 +66,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   try {
     const { isEnabled } = await draftMode()
     draft = isEnabled
-  } catch (e) {
+  } catch (_e) {
     // draftMode() can throw when not called from a server component or during build
   }
   const { slug } = await paramsPromise
@@ -78,7 +85,6 @@ export default async function Page({ params: paramsPromise }: Args) {
   const pkg = await queryPackageBySlug({ slug: decodedSlug })
 
   if (pkg) {
-    const relatedDocs = await queryRelatedPackages({ pkg })
     const siteSettings = await getCachedSiteSettings()
 
     const { bookingForm , enquiryForm } = siteSettings
@@ -92,7 +98,9 @@ export default async function Page({ params: paramsPromise }: Args) {
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
         <PackageDetails pkg={pkg} bookingForm={bookingForm} enquiryForm={enquiryForm}>
-          {relatedDocs.length > 0 ? <RelatedPackages packages={relatedDocs} /> : null}
+          <Suspense fallback={null}>
+            <RelatedPackagesLoader pkg={pkg} />
+          </Suspense>
         </PackageDetails>
       </>
     )

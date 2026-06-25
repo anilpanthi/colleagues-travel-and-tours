@@ -1,15 +1,25 @@
-import { redirect } from 'next/navigation'
+import CatchAllPage, { generateMetadata as generateCatchAllMetadata } from '../../[...slug]/page'
 
 type Args = {
-	params: Promise<{
-		slug?: string
-	}>
+  params: Promise<{
+    slug?: string
+  }>
 }
 
-export default async function PackagePage({ params: paramsPromise }: Args) {
-	const { slug } = await paramsPromise
-	if (slug) {
-		redirect(`/${slug}`)
-	}
-	redirect('/')
+const toCatchAllArgs = async ({ params }: Args) => {
+  const { slug } = await params
+
+  return {
+    params: Promise.resolve({
+      slug: slug ? [slug] : undefined,
+    }),
+  }
+}
+
+export default async function PackagePage(args: Args) {
+  return CatchAllPage(await toCatchAllArgs(args))
+}
+
+export async function generateMetadata(args: Args) {
+  return generateCatchAllMetadata(await toCatchAllArgs(args))
 }
