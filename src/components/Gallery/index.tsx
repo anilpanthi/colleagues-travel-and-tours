@@ -7,6 +7,7 @@ import Image from 'next/image'
 import type { Media } from '@/payload-types'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -27,6 +28,8 @@ type GalleryMedia = Media & {
 	url: string
 }
 
+type GalleryImageSize = keyof NonNullable<Media['sizes']>
+
 type ThumbScrollbarMetrics = {
 	hasOverflow: boolean
 	thumbLeft: number
@@ -35,6 +38,12 @@ type ThumbScrollbarMetrics = {
 
 const getGalleryImageKey = (media: GalleryMedia, index: number) =>
 	`${media.id ?? media.url}-${index}`
+
+const getGalleryImageUrl = (media: GalleryMedia, size: GalleryImageSize) => {
+	const sizedUrl = media.sizes?.[size]?.url
+
+	return getMediaUrl(sizedUrl || media.url, media.updatedAt)
+}
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
 
@@ -236,19 +245,20 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 	if (!isMounted) {
 		// Render just the first image as a static placeholder during SSR/hydration to prevent CLS and hydration mismatch
 		const media = validImages[0]
+		const src = getGalleryImageUrl(media, 'large')
 
 		return (
 			<div className={styles.galleryContainer}>
 				<div className={styles.mainSwiper}>
 					<div className={styles.imageWrapper}>
 						<Image
-							src={media.url}
+							src={src}
 							alt={media.alt || 'Gallery Image'}
 							fill
 							className={styles.image}
 							sizes="(max-width: 1200px) 100vw, 1200px"
 							priority
-							unoptimized
+							quality={82}
 						/>
 					</div>
 				</div>
@@ -286,26 +296,31 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 				observeParents={true}
 				className={styles.mainSwiper}
 			>
-				{validImages.map((media, index) => (
-					<SwiperSlide key={getGalleryImageKey(media, index)} className={styles.mainSlide}>
-						<button
-							type="button"
-							className={styles.imageButton}
-							onClick={() => openLightbox(index)}
-							aria-label={`Open gallery image ${index + 1}`}
-						>
-							<Image
-								src={media.url}
-								alt={media.alt || 'Gallery Image'}
-								fill
-								className={styles.image}
-								sizes="(max-width: 1200px) 100vw, 1200px"
-								priority={index === 0}
-								unoptimized // For local dev reliability
-							/>
-						</button>
-					</SwiperSlide>
-				))}
+				{validImages.map((media, index) => {
+					const isFirstImage = index === 0
+
+					return (
+						<SwiperSlide key={getGalleryImageKey(media, index)} className={styles.mainSlide}>
+							<button
+								type="button"
+								className={styles.imageButton}
+								onClick={() => openLightbox(index)}
+								aria-label={`Open gallery image ${index + 1}`}
+							>
+								<Image
+									src={getGalleryImageUrl(media, 'large')}
+									alt={media.alt || 'Gallery Image'}
+									fill
+									className={styles.image}
+									sizes="(max-width: 1200px) 100vw, 1200px"
+									priority={isFirstImage}
+									loading={isFirstImage ? 'eager' : 'lazy'}
+									quality={82}
+								/>
+							</button>
+						</SwiperSlide>
+					)
+				})}
 			</Swiper>
 
 			{validImages.length > 1 && (
@@ -330,12 +345,12 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 							>
 								<div className={styles.thumbWrapper}>
 									<Image
-										src={media.url}
+										src={getGalleryImageUrl(media, 'thumbnail')}
 										alt={media.alt || 'Gallery Thumb'}
 										fill
 										className={styles.thumbImage}
-										sizes="10px"
-										unoptimized
+										sizes="150px"
+										quality={70}
 									/>
 								</div>
 							</button>
@@ -425,12 +440,12 @@ export const Gallery: React.FC<Props> = ({ images }) => {
 									onClick={toggleZoom}
 								>
 									<Image
-										src={validImages[currentIndex].url}
+										src={getGalleryImageUrl(validImages[currentIndex], 'xlarge')}
 										alt={validImages[currentIndex].alt || 'Gallery Image'}
 										fill
 										className={styles.activeImageStyle}
 										sizes="100vw"
-										unoptimized
+										quality={90}
 									/>
 								</motion.div>
 							</div>

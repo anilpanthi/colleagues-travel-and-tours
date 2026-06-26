@@ -23,7 +23,7 @@ import {
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
-
+export const dynamic = 'force-static'
 export const revalidate = 600
 
 async function RelatedPackagesLoader({ pkg }: { pkg: Package }) {
@@ -87,9 +87,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   if (pkg) {
     const siteSettings = await getCachedSiteSettings()
 
-    const { bookingForm , enquiryForm } = siteSettings
-
-  
+    const { bookingForm, enquiryForm } = siteSettings
 
     // const { mainNavigation, logos, flightBookingForm } = siteSettings
 
