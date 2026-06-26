@@ -14,7 +14,7 @@ import containerStyles from '@/Styles/container.module.css'
 import type { PaginatedDocs, Where } from 'payload'
 import type { Package } from '@/payload-types'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 const tripFactFields = [
 	'tripDuration',
@@ -77,6 +77,15 @@ export default async function PackagesPage({
 		pagination: false,
 		depth: 0,
 		overrideAccess: false,
+		select: {
+			tripDuration: true,
+			tripGrade: true,
+			bestSeason: true,
+			perDayHiking: true,
+			elevation: true,
+			accommodation: true,
+			transportation: true,
+		},
 	})
 
 	const tripFactOptions = Object.fromEntries(
@@ -140,6 +149,19 @@ export default async function PackagesPage({
 			page: currentPage,
 			where: whereClauses.length > 0 ? { and: whereClauses } : undefined,
 			overrideAccess: false,
+			select: {
+				title: true,
+				slug: true,
+				featuredImage: true,
+				meta: true,
+				tripDuration: true,
+				tripGrade: true,
+				elevation: true,
+				Activity: true,
+				hero: true,
+				updatedAt: true,
+				createdAt: true,
+			},
 		})
 	} catch (_error) {
 		packages = {

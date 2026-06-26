@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      {
+        pathname: '/media/**',
+      },
     ],
     remotePatterns: [
       ...([NEXT_PUBLIC_SERVER_URL]

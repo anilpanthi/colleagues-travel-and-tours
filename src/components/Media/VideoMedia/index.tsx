@@ -60,7 +60,7 @@ export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClass
       }}
       onClick={onClick}
       playsInline
-      preload="auto"
+      preload="metadata"
       ref={videoRef}
       src={videoUrl}
     />

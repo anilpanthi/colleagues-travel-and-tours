@@ -5,7 +5,7 @@ import { ExplorePageClient } from './ExplorePage.client'
 import { Metadata } from 'next'
 import { StaticHero } from '@/heros/StaticHero/StaticHero'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 export const metadata: Metadata = {
   title: 'Explore Packages | Colleagues Travel And Tours',
@@ -20,6 +20,20 @@ export default async function ExplorePage() {
       collection: 'packages',
       limit: 100,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        featuredImage: true,
+        meta: true,
+        tripDuration: true,
+        tripGrade: true,
+        bestSeason: true,
+        elevation: true,
+        Activity: true,
+        hero: true,
+        updatedAt: true,
+        createdAt: true,
+      },
       where: {
         _status: {
           equals: 'published',
@@ -32,6 +46,12 @@ export default async function ExplorePage() {
       limit: 100,
       depth: 0,
       overrideAccess: false,
+      select: {
+        title: true,
+        slug: true,
+        updatedAt: true,
+        createdAt: true,
+      },
     }),
   ])
 

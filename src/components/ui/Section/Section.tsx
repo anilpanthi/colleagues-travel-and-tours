@@ -7,6 +7,7 @@ import SubHeading from '@/components/ui/Subheading/Index'
 import Heading from '@/components/ui/Heading/Index'
 import Description from '@/components/ui/Description/Index'
 import styles from './Section.module.scss'
+import Image from 'next/image'
 
 interface SectionProps {
 	sectionData: SectionBlockProps
@@ -29,20 +30,21 @@ export default function Section({ sectionData }: SectionProps) {
 		sectionStyle.backgroundColor = backgroundColor
 	}
 
-	if (backgroundType === 'image' && backgroundImage && typeof backgroundImage === 'object') {
-		sectionStyle.backgroundImage = `linear-gradient(
-			45deg,
-			rgba(21, 21, 21, 0.3),
-			rgba(29, 30, 30, 0.3),
-			rgba(0, 0, 0, 0.3)
-		), url(${backgroundImage.url})`
-		sectionStyle.backgroundSize = 'cover'
-		sectionStyle.backgroundRepeat = 'no-repeat'
-		sectionStyle.backgroundPosition = 'center'
-	} 
-
 	return (
 		<section className={styles.sectionBlock} style={sectionStyle}>
+			{backgroundType === 'image' && backgroundImage && typeof backgroundImage === 'object' && backgroundImage.url && (
+				<>
+					<Image
+						alt={backgroundImage.alt || ''}
+						className={styles.sectionBlock__image}
+						fill
+						quality={82}
+						sizes="100vw"
+						src={backgroundImage.url}
+					/>
+					<div className={styles.sectionBlock__imageOverlay} />
+				</>
+			)}
 			<Container>
 				<Row>
 					<div className={styles.sectionBlock__header}>

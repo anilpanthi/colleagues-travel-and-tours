@@ -11,7 +11,6 @@ import PageClient from './page.client'
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
-export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 export default async function Page() {
@@ -22,6 +21,18 @@ export default async function Page() {
 		depth: 1,
 		limit: 6,
 		overrideAccess: false,
+		select: {
+			title: true,
+			slug: true,
+			meta: true,
+			publishedAt: true,
+			categories: true,
+			featuredImage: true,
+			hero: true,
+			content: true,
+			updatedAt: true,
+			createdAt: true,
+		},
 	})
 
 	// Transform posts to the format required by the Cards component

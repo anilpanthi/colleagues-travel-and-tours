@@ -39,6 +39,15 @@ export default async function Page({ params: paramsPromise }: Args) {
       limit: 6,
       page: sanitizedPageNumber,
       overrideAccess: false,
+      select: {
+        title: true,
+        slug: true,
+        meta: true,
+        packageCount: true,
+        featuredIcon: true,
+        updatedAt: true,
+        createdAt: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching activities:', error)

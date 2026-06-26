@@ -15,7 +15,6 @@ import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
-export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 type Args = {
@@ -46,6 +45,18 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
     draft,
     limit: 6,
     overrideAccess: draft,
+    select: {
+      title: true,
+      slug: true,
+      meta: true,
+      publishedAt: true,
+      categories: true,
+      featuredImage: true,
+      hero: true,
+      content: true,
+      updatedAt: true,
+      createdAt: true,
+    },
     where: {
       categories: {
         contains: category.id,

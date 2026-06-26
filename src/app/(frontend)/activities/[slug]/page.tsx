@@ -79,6 +79,19 @@ export default async function ActivityPage({
     limit: 6,
     page: parseInt(pageNumber),
     overrideAccess: draft,
+    select: {
+      title: true,
+      slug: true,
+      featuredImage: true,
+      meta: true,
+      tripDuration: true,
+      tripGrade: true,
+      elevation: true,
+      Activity: true,
+      hero: true,
+      updatedAt: true,
+      createdAt: true,
+    },
     where: {
       Activity: {
         contains: activity.id,

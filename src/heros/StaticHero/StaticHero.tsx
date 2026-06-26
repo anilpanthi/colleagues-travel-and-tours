@@ -2,6 +2,7 @@ import React from 'react'
 import style from './StaticHero.module.scss'
 import { MapPin } from 'lucide-react'
 import bannerImage from './banner-image.webp'
+import Image, { type StaticImageData } from 'next/image'
 
 interface StaticHeroProps {
 	title?: string
@@ -15,13 +16,22 @@ export const StaticHero: React.FC<StaticHeroProps> = ({
 	title = 'Activities',
 	subtitle = 'Discover the hidden gems and breathtaking adventures.',
 	tagline = 'Explore Nepal',
+	imageSrc,
 	scrollDot = true,
 }) => {
+	const heroImage: string | StaticImageData = imageSrc || bannerImage
+
 	return (
-		<section
-			className={style.staticHero}
-			style={{ backgroundImage: `url(${bannerImage.src})` } as React.CSSProperties}
-		>
+		<section className={style.staticHero}>
+			<Image
+				alt=""
+				className={style.staticHero__image}
+				fill
+				priority
+				quality={82}
+				sizes="100vw"
+				src={heroImage}
+			/>
 			<div className={style.heroOverlayDark}></div>
 			<div className={style.heroOverlayGradient}></div>
 

@@ -37,6 +37,16 @@ export default async function Page({ params: paramsPromise }: Args) {
       limit: 12,
       page: sanitizedPageNumber,
       overrideAccess: false,
+      select: {
+        title: true,
+        slug: true,
+        meta: true,
+        categories: true,
+        hero: true,
+        content: true,
+        updatedAt: true,
+        createdAt: true,
+      },
     })
   } catch (error) {
     console.error('Error fetching posts:', error)

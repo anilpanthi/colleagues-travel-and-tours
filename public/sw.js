@@ -35,6 +35,7 @@ self.addEventListener('activate', (event) => {
 
 const isCacheableFrontendRequest = (request, url) => {
   if (request.method !== 'GET' || url.origin !== self.location.origin) return false
+  if (url.pathname.startsWith('/_next/')) return false
 
   return !url.pathname.startsWith('/admin') && !url.pathname.startsWith('/api')
 }

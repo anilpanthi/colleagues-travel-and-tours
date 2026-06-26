@@ -6,9 +6,16 @@
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
+	background-color: #1f2937;
+
+	&__image {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		object-fit: cover;
+		object-position: center;
+	}
+
 	&__contentWrap {
 		position: relative;
 		z-index: 10;

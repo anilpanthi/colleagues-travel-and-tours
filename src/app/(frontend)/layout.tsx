@@ -19,8 +19,6 @@ import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),

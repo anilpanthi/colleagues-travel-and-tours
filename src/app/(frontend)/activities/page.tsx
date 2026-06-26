@@ -10,7 +10,6 @@ import { PageRange } from '@/components/PageRange'
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
-export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 export default async function ActivitiesPage() {
@@ -21,6 +20,15 @@ export default async function ActivitiesPage() {
 		depth: 1,
 		limit: 6,
 		overrideAccess: false,
+		select: {
+			title: true,
+			slug: true,
+			meta: true,
+			packageCount: true,
+			featuredIcon: true,
+			updatedAt: true,
+			createdAt: true,
+		},
 	})
 
 	// Transform activities to the format required by the Cards component
