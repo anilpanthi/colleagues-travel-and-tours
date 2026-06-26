@@ -13,15 +13,17 @@ interface Props {
 }
 
 export const AccordionTrigger = memo(({ title, heading, isOpen, onClick }: Props) => {
+	const hasDayLabel = Boolean(title)
+
 	return (
 		<button
-			className={styles.trigger}
+			className={`${styles.trigger} ${!hasDayLabel ? styles.triggerNoDay : ''}`}
 			onClick={onClick}
 			type="button"
 			data-state={isOpen ? 'open' : 'closed'}
 		>
-			<div className={styles.titleWrapper}>
-				{title && (
+			<div className={`${styles.titleWrapper} ${!hasDayLabel ? styles.titleWrapperNoDay : ''}`}>
+				{hasDayLabel && (
 					<span className={styles.day}>
 						{title} {':'}
 					</span>

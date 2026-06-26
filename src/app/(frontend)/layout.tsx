@@ -12,6 +12,7 @@ import './global.css'
 
 import { ProgressBar } from '@/components/ProgressBar'
 import { ServiceWorkerRegistration } from '@/components/PWA/ServiceWorkerRegistration'
+import { GDPRConsent } from '@/components/GDPRConsent'
 
 import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
@@ -91,6 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
+            <GDPRConsent />
           </div>
         </Providers>
       </body>
