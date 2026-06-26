@@ -50,6 +50,8 @@ type Args = {
 
 import styles from './page.module.scss'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ActivityPage({
   params: paramsPromise,
   searchParams: searchParamsPromise,
@@ -66,7 +68,7 @@ export default async function ActivityPage({
 
   const decodedSlug = decodeURIComponent(slug)
   const url = '/activities/' + decodedSlug
-  const activity = await queryActivityBySlug({ slug: decodedSlug })
+  const activity = await queryActivityBySlug({ slug: decodedSlug, draft })
 
   if (!activity) return <PayloadRedirects url={url} />
 
@@ -163,18 +165,12 @@ export default async function ActivityPage({
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const decodedSlug = decodeURIComponent(slug)
-  const activity = await queryActivityBySlug({ slug: decodedSlug })
+  const activity = await queryActivityBySlug({ slug: decodedSlug, draft: false })
 
   return generateMeta({ doc: activity })
 }
 
-const queryActivityBySlug = cache(async ({ slug }: { slug: string }) => {
-  let draft = false
-  try {
-    const { isEnabled } = await draftMode()
-    draft = isEnabled
-  } catch (_error) {}
-
+const queryActivityBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
