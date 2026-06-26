@@ -147,15 +147,16 @@ export const Activities: CollectionConfig = {
     afterChange: [revalidateActivity],
     afterDelete: [revalidateDelete],
     afterRead: [
-      async ({ doc, req: { payload } }) => {
+      async ({ doc, req }) => {
         if (!doc.id) return doc
 
-        const { totalDocs } = await payload.find({
+        const { totalDocs } = await req.payload.find({
           collection: 'packages',
           depth: 0,
+          req,
           where: {
             Activity: {
-              contains: doc.id,
+              in: [doc.id],
             },
           },
         })

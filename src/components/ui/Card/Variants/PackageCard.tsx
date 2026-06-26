@@ -26,7 +26,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
 
         // Default to 'packages' if collection is not provided or 'none'
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
-        const href = slug ? `/${slug}` : `/${collectionSlug}/${id}`
+        const href = slug ? `/${collectionSlug}/${slug}` : `/${collectionSlug}/${id}`
         const cardKey = `${collectionSlug}-${id ?? slug ?? index}`
 
         return (

@@ -100,11 +100,9 @@ export const queryRelatedPackages = cache(
         and: [
           { id: { not_equals: pkg.id } },
           {
-            or: activityIds.map((id) => ({
-              Activity: {
-                contains: id,
-              },
-            })),
+            Activity: {
+              in: activityIds,
+            },
           },
         ],
       },

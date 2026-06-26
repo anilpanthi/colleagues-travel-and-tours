@@ -94,7 +94,7 @@ export default async function ActivityPage({
     },
     where: {
       Activity: {
-        contains: activity.id,
+        in: [activity.id],
       },
     },
   })
@@ -169,7 +169,12 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryActivityBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
+  let draft = false
+  try {
+    const { isEnabled } = await draftMode()
+    draft = isEnabled
+  } catch (_error) {}
+
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
