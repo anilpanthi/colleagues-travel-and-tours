@@ -1,7 +1,8 @@
 <svg
    width="178.45201"
    zoomAndPan="magnify"
-   viewBox="0 0 133.83901 84.414146"
+   viewBox="-4 -2 160 90"
+   overflow="visible"
    height="112.5522"
    preserveAspectRatio="xMidYMid"
    version="1.0"
@@ -169,11 +170,15 @@
        x="0.17548059"
        y="73.009239"
        id="text125"
-       transform="scale(1.0133512,0.98682471)"><tspan
+       transform="scale(1.0133512,0.98682471)"
+       textLength="128"
+       lengthAdjust="spacingAndGlyphs"><tspan
          id="tspan125"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:21.376px;line-height:17.5871px;font-family:Roboto;-inkscape-font-specification:'Roboto Medium';fill:#1a1a1a;stroke-width:1.002"
          x="0.17548059"
-         y="73.009239">COLLEAGUES</tspan></text>
+         y="73.009239"
+         textLength="128"
+         lengthAdjust="spacingAndGlyphs">COLLEAGUES</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:11.4715px;line-height:7.28725px;font-family:Poppins;-inkscape-font-specification:'Poppins Medium';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;display:inline;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0;stroke-dasharray:none"

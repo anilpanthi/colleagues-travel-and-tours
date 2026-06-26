@@ -9,8 +9,10 @@
 .brandAnchor {
   display: flex;
   align-items: center;
-  width: 100px;
+  width: 108px;
   height: 57px;
+  overflow: visible;
+  padding-right: 0.5rem;
 }
 
 .brandImage {
@@ -18,8 +20,7 @@
   width: 100px;
   object-fit: contain;
   display: block;
-  flex-shrink: 1;
-  padding-right: 0.5rem;
+  flex-shrink: 0;
   opacity: 0;
   transform: translateY(1px) scale(0.99);
   transition:
