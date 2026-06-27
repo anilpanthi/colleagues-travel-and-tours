@@ -4,6 +4,7 @@ import config from '@payload-config'
 import { ExplorePageClient } from './ExplorePage.client'
 import { Metadata } from 'next'
 import { StaticHero } from '@/heros/StaticHero/StaticHero'
+import { Sparkles } from 'lucide-react'
 
 export const revalidate = 600
 
@@ -59,14 +60,12 @@ export default async function ExplorePage() {
     <>
       <StaticHero
         title="Explore Packages"
-        tagline="Unforgettable Journeys"
-        subtitle="Search and filter our curated travel packages to find your next adventure."
+        tagline="Find Your Fit"
+        subtitle="Choose the journey that matches your pace."
         scrollDot={false}
+        icon={Sparkles}
       />
-      <ExplorePageClient
-        initialPackages={packagesRes.docs}
-        activities={activitiesRes.docs}
-      />
+      <ExplorePageClient initialPackages={packagesRes.docs} activities={activitiesRes.docs} />
     </>
   )
 }

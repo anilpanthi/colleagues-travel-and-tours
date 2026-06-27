@@ -136,6 +136,13 @@ export const FormBlock: React.FC<
     [router, formID, redirect, confirmationType, recaptchaRequired],
   )
 
+  const handleFormSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      void handleSubmit(onSubmit)(e)
+    },
+    [handleSubmit, onSubmit],
+  )
+
   return (
     <div className={cn(classes.formBlock, className)}>
       {recaptchaRequired && <ReCaptchaScript />}
@@ -156,7 +163,7 @@ export const FormBlock: React.FC<
             >{`${error.status || '500'}: ${error.message || ''}`}</div>
           )}
           {!hasSubmitted && (
-            <form id={formID} className={classes.formBlock__form} onSubmit={handleSubmit(onSubmit)}>
+            <form id={formID} className={classes.formBlock__form} onSubmit={handleFormSubmit}>
               <div aria-hidden="true" className={classes.formBlock__honeypot}>
                 <label htmlFor={`${formID}-company-website`}>Leave this field blank</label>
                 <input

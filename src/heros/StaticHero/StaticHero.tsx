@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './StaticHero.module.scss'
 import { MapPin } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import bannerImage from './banner-image.webp'
 import Image, { type StaticImageData } from 'next/image'
 
@@ -10,6 +11,7 @@ interface StaticHeroProps {
 	tagline?: string | boolean
 	imageSrc?: string
 	scrollDot?: boolean
+	icon?: LucideIcon
 }
 
 export const StaticHero: React.FC<StaticHeroProps> = ({
@@ -18,8 +20,10 @@ export const StaticHero: React.FC<StaticHeroProps> = ({
 	tagline = 'Explore Nepal',
 	imageSrc,
 	scrollDot = true,
+	icon,
 }) => {
 	const heroImage: string | StaticImageData = imageSrc || bannerImage
+	const Icon = icon || MapPin
 
 	return (
 		<section className={style.staticHero}>
@@ -28,7 +32,7 @@ export const StaticHero: React.FC<StaticHeroProps> = ({
 				className={style.staticHero__image}
 				fill
 				priority
-				quality={82}
+				quality={2}
 				sizes="100vw"
 				src={heroImage}
 			/>
@@ -38,7 +42,7 @@ export const StaticHero: React.FC<StaticHeroProps> = ({
 			<div className={style.staticHero__contentWrap}>
 				{tagline && (
 					<div className={style.heroTagline}>
-						<MapPin className={style.iconPin} size={16} />
+						<Icon className={style.iconPin} size={16} />
 						<span>{tagline}</span>
 					</div>
 				)}

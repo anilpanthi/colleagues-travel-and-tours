@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react'
 import { Activity, Package } from '@/payload-types'
-import { Filter, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react'
+import { Filter, Search, SlidersHorizontal, X } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import Content from '@/components/ui/Content/Index'
 import Cards from '@/components/ui/Card/Cards'
@@ -49,9 +49,9 @@ const SEASONS: { label: string; value: BestSeason }[] = [
   { label: 'December', value: 'december' },
 ]
 
-export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({ 
-  initialPackages, 
-  activities 
+export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
+  initialPackages,
+  activities,
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedActivities, setSelectedActivities] = useState<number[]>([])
@@ -61,19 +61,17 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
   const [selectedSeasons, setSelectedSeasons] = useState<BestSeason[]>([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  
+
   const ITEMS_PER_PAGE = 6
-
-
 
   // Extract unique durations and elevations
   const durations = useMemo(() => {
-    const all = initialPackages.map(p => p.tripDuration).filter(Boolean) as number[]
+    const all = initialPackages.map((p) => p.tripDuration).filter(Boolean) as number[]
     return Array.from(new Set(all)).sort((a, b) => a - b)
   }, [initialPackages])
 
   const elevations = useMemo(() => {
-    const all = initialPackages.map(p => p.elevation).filter(Boolean) as number[]
+    const all = initialPackages.map((p) => p.elevation).filter(Boolean) as number[]
     return Array.from(new Set(all)).sort((a, b) => a - b)
   }, [initialPackages])
 
@@ -81,25 +79,50 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
   const maxTripElevation = elevations[elevations.length - 1]
 
   const filteredPackages = useMemo(() => {
-    return initialPackages.filter(pkg => {
+    return initialPackages.filter((pkg) => {
       const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase())
-      const pkgActivityIds = pkg.Activity?.map(a => typeof a === 'object' ? a.id : a) || []
-      const matchesActivity = selectedActivities.length === 0 || 
-        selectedActivities.some(id => pkgActivityIds.includes(id))
-      const matchesGrade = selectedGrades.length === 0 || 
-        (pkg.tripGrade && selectedGrades.includes(pkg.tripGrade))
-      const matchesDuration = maxDuration === null || 
-        (pkg.tripDuration !== undefined && pkg.tripDuration !== null && pkg.tripDuration <= maxDuration)
-      const matchesElevation = maxElevation === null || 
+      const pkgActivityIds = pkg.Activity?.map((a) => (typeof a === 'object' ? a.id : a)) || []
+      const matchesActivity =
+        selectedActivities.length === 0 ||
+        selectedActivities.some((id) => pkgActivityIds.includes(id))
+      const matchesGrade =
+        selectedGrades.length === 0 || (pkg.tripGrade && selectedGrades.includes(pkg.tripGrade))
+      const matchesDuration =
+        maxDuration === null ||
+        (pkg.tripDuration !== undefined &&
+          pkg.tripDuration !== null &&
+          pkg.tripDuration <= maxDuration)
+      const matchesElevation =
+        maxElevation === null ||
         (pkg.elevation !== undefined && pkg.elevation !== null && pkg.elevation <= maxElevation)
-      const matchesSeason = selectedSeasons.length === 0 || 
-        (pkg.bestSeason && selectedSeasons.some(season => pkg.bestSeason?.includes(season)))
+      const matchesSeason =
+        selectedSeasons.length === 0 ||
+        (pkg.bestSeason && selectedSeasons.some((season) => pkg.bestSeason?.includes(season)))
 
-      return matchesSearch && matchesActivity && matchesGrade && matchesDuration && matchesElevation && matchesSeason
+      return (
+        matchesSearch &&
+        matchesActivity &&
+        matchesGrade &&
+        matchesDuration &&
+        matchesElevation &&
+        matchesSeason
+      )
     })
-  }, [initialPackages, searchQuery, selectedActivities, selectedGrades, maxDuration, maxElevation, selectedSeasons])
+  }, [
+    initialPackages,
+    searchQuery,
+    selectedActivities,
+    selectedGrades,
+    maxDuration,
+    maxElevation,
+    selectedSeasons,
+  ])
 
-  const toggleFilter = <T,>(id: T, list: T[], setList: React.Dispatch<React.SetStateAction<T[]>>) => {
+  const toggleFilter = <T,>(
+    id: T,
+    list: T[],
+    setList: React.Dispatch<React.SetStateAction<T[]>>,
+  ) => {
     setList(list.includes(id) ? list.filter((item) => item !== id) : [...list, id])
     setCurrentPage(1)
   }
@@ -114,7 +137,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
     setCurrentPage(1)
   }
 
-  const selectedItems = filteredPackages.map(pkg => ({
+  const selectedItems = filteredPackages.map((pkg) => ({
     relationTo: 'packages' as const,
     value: pkg,
   }))
@@ -122,53 +145,23 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
   const totalPages = Math.ceil(selectedItems.length / ITEMS_PER_PAGE)
   const paginatedItems = selectedItems.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   )
 
-  const activeFilterCount = 
-    (selectedActivities.length > 0 ? 1 : 0) + 
-    (selectedGrades.length > 0 ? 1 : 0) + 
-    (maxDuration !== null ? 1 : 0) + 
-    (maxElevation !== null ? 1 : 0) + 
-    (selectedSeasons.length > 0 ? 1 : 0) + 
+  const activeFilterCount =
+    (selectedActivities.length > 0 ? 1 : 0) +
+    (selectedGrades.length > 0 ? 1 : 0) +
+    (maxDuration !== null ? 1 : 0) +
+    (maxElevation !== null ? 1 : 0) +
+    (selectedSeasons.length > 0 ? 1 : 0) +
     (searchQuery ? 1 : 0)
 
   return (
     <div className={style.explore}>
       <Content>
-        <div className={cn(containerStyles.container, style.intro)}>
-          <div>
-            <span className={style.eyebrow}>
-              <Sparkles size={16} />
-              Find your fit
-            </span>
-            <h2 className={style.introTitle}>Choose the journey that matches your pace.</h2>
-            <p className={style.introText}>
-              Compare routes, seasons, difficulty, and duration from one focused explorer.
-            </p>
-          </div>
-          <div className={style.stats}>
-            <div className={style.stat}>
-              <strong>{initialPackages.length}</strong>
-              <span>Packages</span>
-            </div>
-            <div className={style.stat}>
-              <strong>{activities.length}</strong>
-              <span>Activities</span>
-            </div>
-            <div className={style.stat}>
-              <strong>{maxTripDuration ? `${maxTripDuration}` : 'Any'}</strong>
-              <span>Max days</span>
-            </div>
-          </div>
-        </div>
-
         <div className={cn(containerStyles.container, style.layout)}>
           {/* Mobile Toggle */}
-          <button
-            className={style.mobileFilterBtn}
-            onClick={() => setIsSidebarOpen(true)}
-          >
+          <button className={style.mobileFilterBtn} onClick={() => setIsSidebarOpen(true)}>
             <Filter size={18} />
             Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
           </button>
@@ -177,7 +170,9 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
           <aside className={cn(style.filterSidebar, isSidebarOpen && style.sidebarOpen)}>
             <div className={style.sidebarHeader}>
               <h2 className={style.sidebarTitle}>Filters</h2>
-              <button onClick={() => setIsSidebarOpen(false)} className={style.closeBtn}><X size={24} /></button>
+              <button onClick={() => setIsSidebarOpen(false)} className={style.closeBtn}>
+                <X size={24} />
+              </button>
             </div>
 
             <div className={style.filterForm}>
@@ -210,9 +205,11 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
               <div className={style.formGroup}>
                 <p className={style.groupLabel}>Activities</p>
                 <MultiSelect
-                  options={activities.map(a => ({ label: a.title, value: a.id }))}
+                  options={activities.map((a) => ({ label: a.title, value: a.id }))}
                   selectedValues={selectedActivities}
-                  onChange={(val) => toggleFilter(val as number, selectedActivities, setSelectedActivities)}
+                  onChange={(val) =>
+                    toggleFilter(val as number, selectedActivities, setSelectedActivities)
+                  }
                   placeholder="Select activities..."
                 />
               </div>
@@ -221,12 +218,14 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
               <div className={style.formGroup}>
                 <p className={style.groupLabel}>Trip Grade</p>
                 <div className={style.checkboxGroup}>
-                  {TRIP_GRADES.map(grade => (
+                  {TRIP_GRADES.map((grade) => (
                     <label key={grade.value} className={style.checkboxLabel}>
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         checked={selectedGrades.includes(grade.value)}
-                        onChange={() => toggleFilter(grade.value, selectedGrades, setSelectedGrades)}
+                        onChange={() =>
+                          toggleFilter(grade.value, selectedGrades, setSelectedGrades)
+                        }
                       />
                       <span>{grade.label}</span>
                     </label>
@@ -240,7 +239,9 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                 <MultiSelect
                   options={SEASONS}
                   selectedValues={selectedSeasons}
-                  onChange={(val) => toggleFilter(val as BestSeason, selectedSeasons, setSelectedSeasons)}
+                  onChange={(val) =>
+                    toggleFilter(val as BestSeason, selectedSeasons, setSelectedSeasons)
+                  }
                   placeholder="Select seasons..."
                 />
               </div>
@@ -258,7 +259,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                     type="range"
                     min={1}
                     max={Math.max(2, maxTripDuration || 2)}
-                    value={maxDuration === null ? (maxTripDuration || 2) : maxDuration}
+                    value={maxDuration === null ? maxTripDuration || 2 : maxDuration}
                     onChange={(e) => {
                       setMaxDuration(Number(e.target.value))
                       setCurrentPage(1)
@@ -282,7 +283,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                     min={0}
                     max={Math.max(100, maxTripElevation || 100)}
                     step={100}
-                    value={maxElevation === null ? (maxTripElevation || 100) : maxElevation}
+                    value={maxElevation === null ? maxTripElevation || 100 : maxElevation}
                     onChange={(e) => {
                       setMaxElevation(Number(e.target.value))
                       setCurrentPage(1)
@@ -296,10 +297,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                 <button className={style.clearButton} onClick={clearFilters}>
                   Clear All Filters
                 </button>
-                <button 
-                  className={style.showResultsButton} 
-                  onClick={() => setIsSidebarOpen(false)}
-                >
+                <button className={style.showResultsButton} onClick={() => setIsSidebarOpen(false)}>
                   Show Results
                 </button>
               </div>
@@ -330,22 +328,22 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                   variant="packagesCard"
                   columns="3"
                 />
-                
+
                 {totalPages > 1 && (
                   <Pagination className={style.paginationWrapper}>
                     <PaginationContent>
                       <PaginationItem>
                         <PaginationPrevious
-                          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                           disabled={currentPage === 1}
                         />
                       </PaginationItem>
 
                       {Array.from({ length: totalPages }).map((_, i) => {
-                        const page = i + 1;
+                        const page = i + 1
                         if (
-                          page === 1 || 
-                          page === totalPages || 
+                          page === 1 ||
+                          page === totalPages ||
                           (page >= currentPage - 1 && page <= currentPage + 1)
                         ) {
                           return (
@@ -357,23 +355,20 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
                                 {page}
                               </PaginationLink>
                             </PaginationItem>
-                          );
-                        } else if (
-                          page === currentPage - 2 ||
-                          page === currentPage + 2
-                        ) {
+                          )
+                        } else if (page === currentPage - 2 || page === currentPage + 2) {
                           return (
                             <PaginationItem key={page}>
                               <PaginationEllipsis />
                             </PaginationItem>
                           )
                         }
-                        return null;
+                        return null
                       })}
 
                       <PaginationItem>
                         <PaginationNext
-                          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                           disabled={currentPage === totalPages}
                         />
                       </PaginationItem>

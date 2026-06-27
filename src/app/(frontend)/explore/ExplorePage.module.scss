@@ -1,4 +1,5 @@
 .explore {
+  position: relative;
   padding-bottom: 6rem;
   background:
     radial-gradient(circle at top left, rgba(245, 158, 11, 0.12), transparent 34rem),
@@ -78,6 +79,9 @@
 }
 
 .layout {
+  position: relative;
+  z-index: 20;
+  margin-top: -12rem;
   max-width: 144rem;
   display: grid;
   grid-template-columns: minmax(25rem, 27rem) minmax(0, 1fr);
@@ -404,6 +408,7 @@
   }
 
   .layout {
+    margin-top: -5.5rem;
     grid-template-columns: 1fr;
   }
 
