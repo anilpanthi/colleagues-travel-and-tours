@@ -26,9 +26,9 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'map',
               type: 'textarea',
-              label: 'Map (OpenStreetMap Embed)',
+              label: 'Map Embed Code',
               admin: {
-                description: 'Paste the OpenStreetMap iframe embed code here.',
+                description: 'Paste the Google Maps or OpenStreetMap iframe embed code here.',
               },
             },
             {

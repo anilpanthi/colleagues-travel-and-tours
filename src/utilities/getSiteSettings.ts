@@ -18,6 +18,7 @@ export const getCachedSiteSettings = () =>
     socialLinks: true,
     contactNumbers: true,
     address: true,
+    map: true,
     emailAddresses: true,
     contactForm: {
       items: true,

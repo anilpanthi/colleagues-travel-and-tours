@@ -2919,7 +2919,7 @@ export interface SiteSetting {
   id: number;
   address?: string | null;
   /**
-   * Paste the OpenStreetMap iframe embed code here.
+   * Paste the Google Maps or OpenStreetMap iframe embed code here.
    */
   map?: string | null;
   contactNumbers?:

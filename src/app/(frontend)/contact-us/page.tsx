@@ -13,6 +13,36 @@ import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
 
+const fallbackMapSrc =
+  'https://www.openstreetmap.org/export/embed.html?bbox=-122.40428388118745%2C37.781682705573424%2C-122.39250361919404%2C37.78841724035677&layer=mapnik&marker=37.78505004746624%2C-122.39839375019073'
+
+const allowedMapHosts = new Set([
+  'maps.google.com',
+  'www.google.com',
+  'google.com',
+  'www.openstreetmap.org',
+  'openstreetmap.org',
+])
+
+const getMapIframeSrc = (embedCode?: string | null): string => {
+  if (!embedCode) return fallbackMapSrc
+
+  const iframeSrcMatch = embedCode.match(/<iframe[^>]+src=["']([^"']+)["']/i)
+  const rawSrc = iframeSrcMatch?.[1] || embedCode
+
+  try {
+    const url = new URL(rawSrc.replaceAll('&amp;', '&'))
+
+    if (!allowedMapHosts.has(url.hostname)) {
+      return fallbackMapSrc
+    }
+
+    return url.toString()
+  } catch {
+    return fallbackMapSrc
+  }
+}
+
 export default async function ContactPage() {
   const { isEnabled: draft } = await draftMode()
   const page = await queryPageBySlug({ slug: 'contact-us' })
@@ -27,6 +57,7 @@ export default async function ContactPage() {
   const { address, contactNumbers, emailAddresses, map: mapEmbed } = siteSettings
 
   const { hero, layout } = page
+  const mapSrc = getMapIframeSrc(mapEmbed)
 
   return (
     <article className={styles.contactPage}>
@@ -94,14 +125,12 @@ export default async function ContactPage() {
       </div>
 
       <div className={styles.mapSection}>
-        {mapEmbed ? (
-          <div dangerouslySetInnerHTML={{ __html: mapEmbed }} />
-        ) : (
-          <iframe
-            title="Contact Map"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=-122.40428388118745%2C37.781682705573424%2C-122.39250361919404%2C37.78841724035677&amp;layer=mapnik&amp;marker=37.78505004746624%2C-122.39839375019073"
-          />
-        )}
+        <iframe
+          title="Contact Map"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          src={mapSrc}
+        />
       </div>
     </article>
   )
