@@ -20,6 +20,7 @@ type CMSLinkType = {
   type?: 'custom' | 'reference' | null
   url?: string | null
   onClick?: (e: React.MouseEvent) => void
+  ariaCurrent?: React.AriaAttributes['aria-current']
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -34,6 +35,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     size: sizeFromProps,
     url,
     onClick,
+    ariaCurrent,
   } = props
 
   let href = url
@@ -60,7 +62,13 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps} onClick={onClick}>
+      <Link
+        aria-current={ariaCurrent}
+        className={cn(className)}
+        href={href || url || ''}
+        {...newTabProps}
+        onClick={onClick}
+      >
         {label && label}
         {children && children}
       </Link>
@@ -73,6 +81,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       size={size as ButtonSize}
       appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
       href={href || url || ''}
+      aria-current={ariaCurrent}
       onClick={onClick}
       {...newTabProps}
     >
