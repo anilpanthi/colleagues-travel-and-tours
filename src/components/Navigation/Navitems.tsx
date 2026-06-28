@@ -79,11 +79,16 @@ export default function Navitems({ item, isMobile, onNavClick }: NavItemsProp) {
 
   return (
     <li
-      className={cn(cssItem.navItem, isMobile && cssItem.navItemMobile, isOpen && cssItem.isOpen)}
+      className={cn(
+        cssItem.navItem,
+        isActive && cssItem.navItemActive,
+        isMobile && cssItem.navItemMobile,
+        isOpen && cssItem.isOpen,
+      )}
     >
       <CMSLink
         ariaCurrent={isActive ? 'page' : undefined}
-        className={cn(cssItem.navItem_link, isActive && cssItem.navItem_linkActive)}
+        className={cssItem.navItem_link}
         type={linkType === 'internal' ? 'reference' : 'custom'}
         url={externalUrl}
         reference={internalLink}
