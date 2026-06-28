@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { usePathname } from 'next/navigation'
 import type { SiteSetting } from '@/payload-types'
@@ -28,6 +28,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
 
   const [isFront, setIsFront] = useState<boolean>(true)
+  const heroThresholdRef = useRef(0)
+  const scrollFrameRef = useRef<number | null>(null)
 
 
 
@@ -44,20 +46,38 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
   }, [pathname, setHeaderTheme, setHasHeroImage])
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-      const heroHeight = isFront ? window.innerHeight * 0.8 : window.innerHeight * 0.4
+    const updateHeroThreshold = () => {
+      heroThresholdRef.current = window.innerHeight * (isFront ? 0.8 : 0.4)
+    }
 
-      setIsPastHero(window.scrollY > heroHeight)
+    const updateScrollState = () => {
+      scrollFrameRef.current = null
+      const scrollY = window.scrollY
+      const nextIsScrolled = scrollY > 20
+      const nextIsPastHero = scrollY > heroThresholdRef.current
+
+      setIsScrolled((current) => (current === nextIsScrolled ? current : nextIsScrolled))
+      setIsPastHero((current) => (current === nextIsPastHero ? current : nextIsPastHero))
+    }
+
+    const handleScroll = () => {
+      if (scrollFrameRef.current !== null) return
+
+      scrollFrameRef.current = window.requestAnimationFrame(updateScrollState)
     }
 
     const handleResize = () => {
+      updateHeroThreshold()
+
       if (window.innerWidth >= 1100) {
         setIsMobileMenuOpen(false)
       }
+
+      handleScroll()
     }
 
-    window.addEventListener('scroll', handleScroll)
+    updateHeroThreshold()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleResize)
 
     // Initialize state on mount
@@ -65,6 +85,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
     handleResize()
 
     return () => {
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current)
+      }
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
     }
