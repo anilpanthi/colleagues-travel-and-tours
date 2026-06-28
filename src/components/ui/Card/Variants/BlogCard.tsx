@@ -127,6 +127,7 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 									pictureClassName={styles.blogCard__image}
 									imgClassName={styles.blogCard__image}
 									fill
+									size="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 								/>
 							) : (
 								<div className={styles.blogCard__placeholder}>

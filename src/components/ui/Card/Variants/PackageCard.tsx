@@ -48,6 +48,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
                   imgClassName={styles.packageCard__image}
                   fill
                   loading="lazy"
+                  size="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               ) : (
                 <div className={styles.packageCard__placeholder}>

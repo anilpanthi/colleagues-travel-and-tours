@@ -13,6 +13,37 @@ const NEXT_PUBLIC_SERVER_URL =
     : 'http://localhost:3000')
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/media/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/api/media/file/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+    ]
+  },
   images: {
     localPatterns: [
       {
@@ -40,7 +71,7 @@ const nextConfig: NextConfig = {
           Boolean(item),
         )),
     ],
-    qualities: [75, 100],
+    qualities: [75, 82, 100],
   },
   output: 'standalone',
   webpack: (webpackConfig, { dev, isServer, webpack }) => {

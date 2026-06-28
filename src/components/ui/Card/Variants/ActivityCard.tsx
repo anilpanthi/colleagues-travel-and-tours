@@ -28,6 +28,7 @@ export default function ActivityCard({ data, collection }: ActivityCardProps) {
 								className={styles.activityCard__image}
 								imgClassName={styles.activityCard__image}
 								fill
+								size="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 							/>
 						) : (
 							<div className={styles.activityCard__placeholder}>
@@ -51,4 +52,3 @@ export default function ActivityCard({ data, collection }: ActivityCardProps) {
 		</>
 	)
 }
-
