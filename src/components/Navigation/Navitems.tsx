@@ -64,9 +64,31 @@ export default function Navitems({ item, isMobile, onNavClick }: NavItemsProp) {
   const linkPath =
     linkType === 'internal' ? getReferencePath(internalLink) : getPathFromUrl(externalUrl)
   const currentPath = normalizePath(pathname || '/')
-  const isActive =
-    Boolean(linkPath) &&
-    (currentPath === linkPath || (linkPath !== '/' && currentPath.startsWith(`${linkPath}/`)))
+  const simpleDropdownPaths =
+    simpleLinks?.map((link) =>
+      link.linkType === 'internal' ? getReferencePath(link.internalLink) : getPathFromUrl(link.externalUrl),
+    ) ?? []
+  const megaDropdownPaths =
+    columns?.flatMap((column) => {
+      const titlePath =
+        column.titleLinkType === 'internal'
+          ? getReferencePath(column.titleInternalLink)
+          : getPathFromUrl(column.titleExternalUrl)
+      const linkPaths =
+        column.links?.map((link) =>
+          link.linkType === 'internal'
+            ? getReferencePath(link.internalLink)
+            : getPathFromUrl(link.externalUrl),
+        ) ?? []
+
+      return [titlePath, ...linkPaths]
+    }) ?? []
+  const navPaths = [linkPath, ...simpleDropdownPaths, ...megaDropdownPaths].filter(
+    (path): path is string => Boolean(path),
+  )
+  const isActive = navPaths.some(
+    (path) => currentPath === path || (path !== '/' && currentPath.startsWith(`${path}/`)),
+  )
 
   const handleToggle = (e: React.MouseEvent) => {
     if (isMobile && hasDropdown) {
