@@ -24,7 +24,40 @@ const getRequestProtocol = (request: NextRequest) => {
   return forwardedProtocol ? `${forwardedProtocol}:` : request.nextUrl.protocol
 }
 
+const shouldSkipCanonicalRedirect = (request: NextRequest) => {
+  const { pathname } = request.nextUrl
+  const accept = request.headers.get('accept') || ''
+  const secFetchDest = request.headers.get('sec-fetch-dest')
+
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return true
+  }
+
+  if (
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/media/') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/site.webmanifest' ||
+    pathname === '/sw.js'
+  ) {
+    return true
+  }
+
+  if (secFetchDest && secFetchDest !== 'document' && secFetchDest !== 'empty') {
+    return true
+  }
+
+  return !accept.includes('text/html')
+}
+
 export function proxy(request: NextRequest) {
+  if (shouldSkipCanonicalRedirect(request)) {
+    return NextResponse.next()
+  }
+
   const canonicalURL = getCanonicalURL()
 
   if (!canonicalURL) {
@@ -60,5 +93,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|media/).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|site.webmanifest|sw.js|media/|api/).*)'],
 }
