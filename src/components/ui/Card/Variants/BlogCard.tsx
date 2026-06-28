@@ -9,16 +9,28 @@ export interface BlogCardProps {
 	collection: string
 }
 
-const extractTextFromLexical = (node: Record<string, any> | null | undefined): string => {
-	if (!node) return ''
+type LexicalNode = {
+	text?: unknown
+	children?: unknown
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+	typeof value === 'object' && value !== null
+
+const isMedia = (value: unknown): value is Media =>
+	isRecord(value) && typeof value.url === 'string' && value.url.length > 0
+
+const extractTextFromLexical = (node: unknown): string => {
+	if (!isRecord(node)) return ''
+	const lexicalNode = node as LexicalNode
 	if (typeof node.text === 'string') return node.text
-	if (Array.isArray(node.children)) {
-		return node.children.map((child: any) => extractTextFromLexical(child)).join(' ')
+	if (Array.isArray(lexicalNode.children)) {
+		return lexicalNode.children.map((child) => extractTextFromLexical(child)).join(' ')
 	}
 	return ''
 }
 
-const calculateReadingTime = (content: any): number => {
+const calculateReadingTime = (content: Post['content']): number => {
 	const text = extractTextFromLexical(content?.root)
 	const words = text.split(/\s+/).filter((word) => word.length > 0).length
 	return Math.ceil(words / 200) || 1
@@ -29,6 +41,8 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 		<>
 			{data?.map((item, index) => {
 				const doc = item?.value as Post
+				if (!doc || typeof doc !== 'object') return null
+
 				const {
 					id,
 					title,
@@ -40,8 +54,11 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 					hero,
 					content,
 				} = doc
-				const href = slug ? `/${collection}/${slug}` : `/${collection}/${id}`
-				const cardImage = meta?.image || featuredImage || (hero?.type === 'mediumImpact' ? hero?.media : null)
+				const collectionSlug = collection && collection !== 'none' ? collection : item.relationTo
+				const href = slug ? `/${collectionSlug}/${slug}` : `/${collectionSlug}/${id}`
+				const cardKey = `${collectionSlug}-${id ?? slug ?? index}`
+				const heroMedia = hero?.type === 'mediumImpact' ? hero?.media : null
+				const cardImage = [meta?.image, featuredImage, heroMedia].find(isMedia)
 
 				const category = categories?.[0]
 				const categoryName =
@@ -70,13 +87,14 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 				const readingTime = content ? calculateReadingTime(content) : null
 
 				return (
-					<Card key={index} className={styles.blogCard}>
+					<Card key={cardKey} className={styles.blogCard}>
 						<Card.Div className={styles.blogCard__image_container}>
 							{cardImage ? (
 								<Card.Image
 									fit
 									resource={cardImage as Media}
-									className={styles.blogCard__image}
+									pictureClassName={styles.blogCard__image}
+									imgClassName={styles.blogCard__image}
 									fill
 								/>
 							) : (

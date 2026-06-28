@@ -16,13 +16,12 @@ import Container from '@/components/ui/Container'
 import { formatAuthors } from '@/utilities/formatAuthors'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { generateMeta } from '@/utilities/generateMeta'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Tag, User } from 'lucide-react'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
+import { Media } from '@/components/Media'
 
 // import styles from './page.module.css'
 import styles from './singlePost.module.scss'
@@ -149,7 +148,15 @@ export default async function Post({ params: paramsPromise }: Args) {
             </div>
 
             {/* display featured image  */}
-            {post.featuredImage && <div className={styles.pd__cont_gr_left_img}></div>}
+            {post.featuredImage && typeof post.featuredImage === 'object' && (
+              <div className={styles.pd__cont_gr_left_img}>
+                <Media
+                  resource={post.featuredImage}
+                  imgClassName={styles.pd__cont_gr_left_img_media}
+                  size="(max-width: 1024px) 100vw, 66vw"
+                />
+              </div>
+            )}
 
             <RichText
               className={styles.pd__cont_gr_left_text}

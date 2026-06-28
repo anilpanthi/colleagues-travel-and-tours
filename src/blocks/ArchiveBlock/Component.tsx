@@ -35,6 +35,7 @@ export const ArchiveBlock: React.FC<
 				slug: true,
 				meta: true,
 				categories: true,
+				featuredImage: true,
 				hero: true,
 				content: true,
 				updatedAt: true,

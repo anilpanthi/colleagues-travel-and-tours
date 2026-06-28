@@ -7,13 +7,22 @@ import React, { Fragment } from 'react'
 import type { Activity, Package, Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import type { Media as MediaType } from '@/payload-types'
 
 export type CardPostData = {
 	slug?: string | null
 	title?: string | null
 	meta?: (Post | Activity | Package)['meta']
 	categories?: Post['categories']
+	featuredImage?: Post['featuredImage'] | Package['featuredImage']
 }
+
+const isMedia = (value: unknown): value is MediaType =>
+	typeof value === 'object' &&
+	value !== null &&
+	'url' in value &&
+	typeof value.url === 'string' &&
+	value.url.length > 0
 
 export const Card: React.FC<{
 	alignItems?: 'center'
@@ -26,8 +35,9 @@ export const Card: React.FC<{
 	const { card, link } = useClickableCard({})
 	const { className, doc, relationTo, showCategories, title: titleFromProps } = props
 
-	const { slug, categories, meta, title } = doc || {}
+	const { slug, categories, featuredImage, meta, title } = doc || {}
 	const { description, image: metaImage } = meta || {}
+	const cardImage = [metaImage, featuredImage].find(isMedia)
 
 	const hasCategories = categories && Array.isArray(categories) && categories.length > 0
 	const titleToUse = titleFromProps || title
@@ -43,8 +53,8 @@ export const Card: React.FC<{
 			ref={card.ref}
 		>
 			<div className="relative w-full ">
-				{!metaImage && <div className="">No image</div>}
-				{metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+				{!cardImage && <div className="">No image</div>}
+				{cardImage && <Media resource={cardImage} size="33vw" />}
 			</div>
 			<div className="p-4">
 				{showCategories && hasCategories && (
