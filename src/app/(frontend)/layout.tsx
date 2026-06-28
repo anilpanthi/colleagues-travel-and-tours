@@ -4,6 +4,8 @@ import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { Inter, Jost } from 'next/font/google'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import { getServerSideURL } from '@/utilities/getURL'
 import { cn } from '@/utilities/ui'
 
@@ -18,6 +20,7 @@ import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
 import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
+import { LiveBookingToast } from '@/components/LiveBookingToast'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
@@ -56,8 +59,34 @@ const jost = Jost({
   variable: '--font-jost',
 })
 
+const getLiveBookingPackageTitles = async (): Promise<string[]> => {
+  try {
+    const payload = await getPayload({ config: configPromise })
+
+    const packages = await payload.find({
+      collection: 'packages',
+      draft: false,
+      limit: 50,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        title: true,
+      },
+      sort: '-updatedAt',
+    })
+
+    return packages.docs.map((pkg) => pkg.title).filter((title): title is string => Boolean(title))
+  } catch (error) {
+    console.error('Error loading packages for live booking notifications:', error)
+    return []
+  }
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const siteSettings = await getCachedSiteSettings()
+  const [siteSettings, liveBookingPackageTitles] = await Promise.all([
+    getCachedSiteSettings(),
+    getLiveBookingPackageTitles(),
+  ])
 
   const { mainNavigation, logos, flightBookingForm } = siteSettings
 
@@ -88,6 +117,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
+            <LiveBookingToast packageTitles={liveBookingPackageTitles} />
             <DeferredGDPRConsent />
           </div>
         </Providers>
