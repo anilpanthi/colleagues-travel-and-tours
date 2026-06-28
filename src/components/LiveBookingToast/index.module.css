@@ -57,8 +57,21 @@
 }
 
 .message strong,
-.message span {
+.packageLink {
   font-weight: 700;
+}
+
+.packageLink {
+  color: #0b62f5;
+  text-decoration: none;
+  text-underline-offset: 0.2rem;
+}
+
+.packageLink:hover,
+.packageLink:focus-visible {
+  color: #0846b8;
+  text-decoration: underline;
+  outline: none;
 }
 
 .time {

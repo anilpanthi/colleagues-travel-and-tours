@@ -20,7 +20,7 @@ import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
 import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
-import { LiveBookingToast } from '@/components/LiveBookingToast'
+import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
@@ -59,7 +59,7 @@ const jost = Jost({
   variable: '--font-jost',
 })
 
-const getLiveBookingPackageTitles = async (): Promise<string[]> => {
+const getLiveBookingPackages = async (): Promise<LiveBookingPackage[]> => {
   try {
     const payload = await getPayload({ config: configPromise })
 
@@ -70,12 +70,18 @@ const getLiveBookingPackageTitles = async (): Promise<string[]> => {
       overrideAccess: false,
       pagination: false,
       select: {
+        slug: true,
         title: true,
       },
       sort: '-updatedAt',
     })
 
-    return packages.docs.map((pkg) => pkg.title).filter((title): title is string => Boolean(title))
+    return packages.docs
+      .map((pkg) => ({
+        slug: pkg.slug,
+        title: pkg.title,
+      }))
+      .filter((pkg): pkg is LiveBookingPackage => Boolean(pkg.slug && pkg.title))
   } catch (error) {
     console.error('Error loading packages for live booking notifications:', error)
     return []
@@ -83,9 +89,9 @@ const getLiveBookingPackageTitles = async (): Promise<string[]> => {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [siteSettings, liveBookingPackageTitles] = await Promise.all([
+  const [siteSettings, liveBookingPackages] = await Promise.all([
     getCachedSiteSettings(),
-    getLiveBookingPackageTitles(),
+    getLiveBookingPackages(),
   ])
 
   const { mainNavigation, logos, flightBookingForm } = siteSettings
@@ -117,7 +123,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
-            <LiveBookingToast packageTitles={liveBookingPackageTitles} />
+            <LiveBookingToast packages={liveBookingPackages} />
             <DeferredGDPRConsent />
           </div>
         </Providers>

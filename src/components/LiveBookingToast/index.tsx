@@ -1,18 +1,24 @@
 'use client'
 
 import { CheckCircle2, X } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
 import styles from './index.module.css'
 
+export type LiveBookingPackage = {
+  title: string
+  slug: string
+}
+
 type LiveBookingToastProps = {
-  packageTitles: string[]
+  packages: LiveBookingPackage[]
 }
 
 type BookingToast = {
   id: number
   name: string
-  packageTitle: string
+  package: LiveBookingPackage
   minutesAgo: number
 }
 
@@ -23,50 +29,145 @@ const toastVisibleDuration = 30 * 1000
 const toastFadeDuration = 420
 
 const names = [
-  'Aarav',
-  'Aisha',
-  'Anita',
+  'Abigail',
+  'Adam',
+  'Addison',
+  'Aiden',
+  'Alexander',
+  'Alice',
+  'Amelia',
+  'Andrew',
+  'Anna',
+  'Anthony',
+  'Archie',
+  'Arthur',
+  'Audrey',
+  'Ava',
+  'Beatrice',
   'Ben',
+  'Benjamin',
+  'Bethany',
+  'Blake',
+  'Brandon',
+  'Brian',
+  'Brianna',
+  'Brooklyn',
+  'Caleb',
+  'Callum',
+  'Cameron',
+  'Caroline',
+  'Charlotte',
+  'Chloe',
+  'Christopher',
+  'Claire',
+  'Connor',
+  'Daisy',
   'Daniel',
+  'David',
+  'Dylan',
+  'Edward',
+  'Eleanor',
+  'Elijah',
+  'Elizabeth',
+  'Ella',
   'Emily',
+  'Emma',
+  'Ethan',
+  'Evelyn',
+  'Florence',
+  'Freddie',
+  'George',
+  'Grace',
+  'Grayson',
+  'Harper',
+  'Harry',
   'Hannah',
-  'Ishan',
+  'Henry',
+  'Hudson',
+  'Isaac',
+  'Isabella',
+  'Isla',
+  'Jack',
+  'Jackson',
+  'Jacob',
   'James',
-  'Maya',
-  'Nisha',
+  'Jasmine',
+  'Jessica',
+  'John',
+  'Joseph',
+  'Joshua',
+  'Julia',
+  'Katherine',
+  'Kayla',
+  'Liam',
+  'Lily',
+  'Logan',
+  'Lucas',
+  'Lucy',
+  'Luke',
+  'Madison',
+  'Mason',
+  'Matthew',
+  'Megan',
+  'Michael',
+  'Mia',
+  'Nathan',
+  'Nicholas',
+  'Noah',
+  'Oliver',
   'Olivia',
-  'Prabin',
-  'Priya',
-  'Rahul',
-  'Sanjay',
+  'Oscar',
+  'Owen',
+  'Poppy',
+  'Rebecca',
+  'Riley',
+  'Ruby',
+  'Samuel',
   'Sara',
+  'Scarlett',
+  'Sebastian',
   'Sophia',
-  'Suman',
+  'Sophie',
+  'Thomas',
   'Tara',
+  'Taylor',
+  'Theo',
+  'Victoria',
+  'William',
+  'Zoe',
 ] as const
 
-const fallbackPackageTitles = [
-  'Everest Base Camp Trek',
-  'Annapurna Circuit Trek',
-  'Chitwan Jungle Safari',
-  'Kathmandu Valley Tour',
+const fallbackPackages: LiveBookingPackage[] = [
+  { title: 'Everest Base Camp Trek', slug: 'everest-base-camp-trek' },
+  { title: 'Annapurna Circuit Trek', slug: 'annapurna-circuit-trek' },
+  { title: 'Chitwan Jungle Safari', slug: 'chitwan-jungle-safari' },
+  { title: 'Kathmandu Valley Tour', slug: 'kathmandu-valley-tour' },
 ] as const
 
 const randomItem = <Value,>(items: readonly Value[]): Value => {
   return items[Math.floor(Math.random() * items.length)]
 }
 
-export function LiveBookingToast({ packageTitles }: LiveBookingToastProps) {
+export function LiveBookingToast({ packages }: LiveBookingToastProps) {
   const [toast, setToast] = useState<BookingToast | null>(null)
   const [isLeaving, setIsLeaving] = useState(false)
 
   const availablePackages = useMemo(() => {
-    const cleanTitles = packageTitles
-      .map((title) => title.trim())
-      .filter((title, index, titles) => title.length > 0 && titles.indexOf(title) === index)
+    const uniquePackages = new Map<string, LiveBookingPackage>()
 
-    return cleanTitles.length > 0 ? cleanTitles : [...fallbackPackageTitles]
-  }, [packageTitles])
+    packages.forEach((pkg) => {
+      const title = pkg.title.trim()
+      const slug = pkg.slug.trim()
+
+      if (title && slug) {
+        uniquePackages.set(slug, { title, slug })
+      }
+    })
+
+    const cleanPackages = [...uniquePackages.values()]
+
+    return cleanPackages.length > 0 ? cleanPackages : [...fallbackPackages]
+  }, [packages])
 
   useEffect(() => {
     const showToast = () => {
@@ -74,7 +175,7 @@ export function LiveBookingToast({ packageTitles }: LiveBookingToastProps) {
       setToast({
         id: Date.now(),
         name: randomItem(names),
-        packageTitle: randomItem(availablePackages),
+        package: randomItem(availablePackages),
         minutesAgo: Math.floor(Math.random() * 12) + 2,
       })
     }
@@ -137,7 +238,10 @@ export function LiveBookingToast({ packageTitles }: LiveBookingToastProps) {
       <div className={styles.content}>
         <p className={styles.eyebrow}>Live booking</p>
         <p className={styles.message}>
-          <strong>{toast.name}</strong> just booked <span>{toast.packageTitle}</span>
+          <strong>{toast.name}</strong> just booked{' '}
+          <Link className={styles.packageLink} href={`/packages/${toast.package.slug}`}>
+            {toast.package.title}
+          </Link>
         </p>
         <p className={styles.time}>{toast.minutesAgo} minutes ago</p>
       </div>
