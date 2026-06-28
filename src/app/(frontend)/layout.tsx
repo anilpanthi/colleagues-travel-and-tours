@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import type { Metadata, Viewport } from 'next'
 
 import { Providers } from '@/providers'
@@ -10,9 +10,9 @@ import { cn } from '@/utilities/ui'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import './global.css'
 
-import { ProgressBar } from '@/components/ProgressBar'
+import { DeferredProgressBar } from '@/components/ProgressBar/DeferredProgressBar'
 import { ServiceWorkerRegistration } from '@/components/PWA/ServiceWorkerRegistration'
-import { GDPRConsent } from '@/components/GDPRConsent'
+import { DeferredGDPRConsent } from '@/components/GDPRConsent/DeferredGDPRConsent'
 
 import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
@@ -80,9 +80,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ServiceWorkerRegistration />
         <Providers>
           <div className="layout-wrapper">
-            <Suspense fallback={null}>
-              <ProgressBar />
-            </Suspense>
+            <DeferredProgressBar />
             <HeaderClient
               mainNavigation={mainNavigation}
               logos={logos}
@@ -90,7 +88,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
-            <GDPRConsent />
+            <DeferredGDPRConsent />
           </div>
         </Providers>
       </body>
