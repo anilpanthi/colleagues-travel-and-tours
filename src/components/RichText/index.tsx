@@ -25,6 +25,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { LegalDocumentsBlock } from '@/blocks/LegalDocuments/Component'
 import { OurTeamBlock } from '@/blocks/OurTeam/Component'
 import { cn } from '@/utilities/ui'
+import { LazyEmbed } from '@/components/LazyEmbed'
 
 type NodeTypes =
 	| DefaultNodeTypes
@@ -45,14 +46,32 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 	return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+const getIframeSrc = (html: string): string | null => {
+	const iframeSrcMatch = html.match(/<iframe[^>]+src=["']([^"']+)["']/i)
+	const rawSrc = iframeSrcMatch?.[1]
+
+	if (!rawSrc) return null
+
+	try {
+		return new URL(rawSrc.replaceAll('&amp;', '&')).toString()
+	} catch {
+		return null
+	}
+}
+
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
 	...defaultConverters,
 	...LinkJSXConverter({ internalDocToHref }),
 	text: (args) => {
 		const { node } = args
 		if (typeof node.text === 'string' && node.text.includes('<iframe') && node.text.includes('</iframe>')) {
-			// Render the text node as HTML if it contains an iframe.
-			return <span dangerouslySetInnerHTML={{ __html: node.text }} />
+			const iframeSrc = getIframeSrc(node.text)
+
+			if (iframeSrc) {
+				return <LazyEmbed src={iframeSrc} title="Embedded content" />
+			}
+
+			return null
 		}
 		// Fallback to default
 		if (typeof defaultConverters.text === 'function') {

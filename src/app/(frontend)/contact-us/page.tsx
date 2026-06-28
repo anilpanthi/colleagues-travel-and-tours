@@ -9,6 +9,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { draftMode } from 'next/headers'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { getSiteSettings } from '@/utilities/getSiteSettings'
+import { LazyEmbed } from '@/components/LazyEmbed'
 import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
@@ -125,9 +126,8 @@ export default async function ContactPage() {
       </div>
 
       <div className={styles.mapSection}>
-        <iframe
+        <LazyEmbed
           title="Contact Map"
-          loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           src={mapSrc}
         />

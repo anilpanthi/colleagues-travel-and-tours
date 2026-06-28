@@ -1,14 +1,21 @@
 'use client'
 
 import { cn } from '@/utilities/ui'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import type { Props as MediaProps } from '../types'
 
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
-export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClassName }) => {
+export const VideoMedia: React.FC<MediaProps> = ({
+  onClick,
+  playAfterPageLoad,
+  poster,
+  resource,
+  videoClassName,
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(!playAfterPageLoad)
 
   const videoUrl =
     resource && typeof resource === 'object'
@@ -17,8 +24,32 @@ export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClass
           resource.updatedAt,
         )
       : null
+  const posterUrl =
+    poster ||
+    (resource && typeof resource === 'object'
+      ? getMediaUrl(resource.thumbnailURL || null, resource.updatedAt)
+      : undefined)
 
   useEffect(() => {
+    if (!playAfterPageLoad) return
+
+    if (document.readyState === 'complete') {
+      setShouldLoadVideo(true)
+      return
+    }
+
+    const handlePageLoad = () => setShouldLoadVideo(true)
+
+    window.addEventListener('load', handlePageLoad, { once: true })
+
+    return () => {
+      window.removeEventListener('load', handlePageLoad)
+    }
+  }, [playAfterPageLoad])
+
+  useEffect(() => {
+    if (!shouldLoadVideo) return
+
     const video = videoRef.current
     if (!video || !videoUrl) return
 
@@ -41,7 +72,7 @@ export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClass
       window.removeEventListener('pageshow', playVideo)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [videoUrl])
+  }, [shouldLoadVideo, videoUrl])
 
   if (!videoUrl || !resource || typeof resource !== 'object') return null
 
@@ -60,9 +91,10 @@ export const VideoMedia: React.FC<MediaProps> = ({ onClick, resource, videoClass
       }}
       onClick={onClick}
       playsInline
-      preload="metadata"
+      poster={posterUrl || undefined}
+      preload={playAfterPageLoad ? 'none' : 'metadata'}
       ref={videoRef}
-      src={videoUrl}
+      src={shouldLoadVideo ? videoUrl : undefined}
     />
   )
 }

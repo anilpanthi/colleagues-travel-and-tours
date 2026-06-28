@@ -13,6 +13,7 @@ import { Media } from '@/components/Media'
 import Modal from '@/components/ui/Modal/Modal'
 import { FormBlock } from '@/blocks/Form/Component'
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import { LazyEmbed } from '@/components/LazyEmbed'
 
 import style from './index.module.scss'
 import { Button } from '../ui/Button'
@@ -234,13 +235,14 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
             {(pkg.mapType === 'embedMap' ? pkg.mapIframe : pkg.mapImage) && (
               <div className={style.mapSection}>
                 <h2 className={style.title}>Map</h2>
-                {pkg.mapType === 'embedMap' && pkg.mapIframe && (
+                {pkg.mapType === 'embedMap' && typeof pkg.mapIframe === 'string' && (
+                  <div className={style.mapEmbed}>
+                    <LazyEmbed src={pkg.mapIframe} title={`${pkg.title} map`} />
+                  </div>
+                )}
+                {pkg.mapType === 'embedMap' && pkg.mapIframe && typeof pkg.mapIframe !== 'string' && (
                   <div className={style.mapIframeRichText}>
-                    {typeof pkg.mapIframe === 'string' ? (
-                      <div dangerouslySetInnerHTML={{ __html: pkg.mapIframe }} />
-                    ) : (
-                      <RichText data={pkg.mapIframe} enableGutter={false} />
-                    )}
+                    <RichText data={pkg.mapIframe} enableGutter={false} />
                   </div>
                 )}
                 {pkg.mapType === 'imageUpload' &&

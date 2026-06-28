@@ -59,7 +59,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
     <section className={cssClass.heroSection}>
       {/* Background Video */}
       {backgroundVideo && typeof backgroundVideo === 'object' && (
-        <Media fill videoClassName={cssClass.heroVideo} priority resource={backgroundVideo} />
+        <Media
+          fill
+          playAfterPageLoad
+          videoClassName={cssClass.heroVideo}
+          priority
+          resource={backgroundVideo}
+        />
       )}
       <div className={cssClass.heroOverlayDark}></div>
       <div className={cssClass.heroOverlayGradient}></div>

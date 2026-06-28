@@ -132,8 +132,7 @@
 }
 
 .mapSection iframe,
-.mapSection div,
-.mapSection div iframe {
+.mapSection div {
 	width: 100% !important;
 	height: 100% !important;
 	border: 0;
