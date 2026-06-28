@@ -12,7 +12,12 @@ export interface BlogCardProps {
 type LexicalNode = {
 	text?: unknown
 	children?: unknown
+	root?: unknown
+	fields?: unknown
 }
+
+const READING_TIME_WORDS_PER_MINUTE = 225
+const READABLE_FIELD_KEYS = new Set(['caption', 'content', 'description', 'heading', 'label', 'subtitle', 'title'])
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === 'object' && value !== null
@@ -20,20 +25,46 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 const isMedia = (value: unknown): value is Media =>
 	isRecord(value) && typeof value.url === 'string' && value.url.length > 0
 
-const extractTextFromLexical = (node: unknown): string => {
-	if (!isRecord(node)) return ''
-	const lexicalNode = node as LexicalNode
-	if (typeof node.text === 'string') return node.text
-	if (Array.isArray(lexicalNode.children)) {
-		return lexicalNode.children.map((child) => extractTextFromLexical(child)).join(' ')
+const extractReadableText = (node: unknown, key?: string): string => {
+	if (typeof node === 'string') {
+		return key && READABLE_FIELD_KEYS.has(key) ? node : ''
 	}
-	return ''
+
+	if (Array.isArray(node)) {
+		return node.map((child) => extractReadableText(child)).join(' ')
+	}
+
+	if (!isRecord(node)) return ''
+
+	const lexicalNode = node as LexicalNode
+	const parts: string[] = []
+
+	if (typeof lexicalNode.text === 'string') {
+		parts.push(lexicalNode.text)
+	}
+
+	if (lexicalNode.root) {
+		parts.push(extractReadableText(lexicalNode.root, 'content'))
+	}
+
+	if (Array.isArray(lexicalNode.children)) {
+		parts.push(lexicalNode.children.map((child) => extractReadableText(child)).join(' '))
+	}
+
+	if (isRecord(lexicalNode.fields)) {
+		for (const [fieldKey, fieldValue] of Object.entries(lexicalNode.fields)) {
+			parts.push(extractReadableText(fieldValue, fieldKey))
+		}
+	}
+
+	return parts.filter(Boolean).join(' ')
 }
 
 const calculateReadingTime = (content: Post['content']): number => {
-	const text = extractTextFromLexical(content?.root)
-	const words = text.split(/\s+/).filter((word) => word.length > 0).length
-	return Math.ceil(words / 200) || 1
+	const text = extractReadableText(content)
+	const words = text.match(/\p{L}[\p{L}\p{N}'-]*/gu)?.length ?? 0
+
+	return Math.max(1, Math.ceil(words / READING_TIME_WORDS_PER_MINUTE))
 }
 
 export default function BlogCard({ data, collection }: BlogCardProps) {
