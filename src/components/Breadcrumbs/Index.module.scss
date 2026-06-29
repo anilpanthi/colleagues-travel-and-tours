@@ -27,16 +27,18 @@
 .list {
 	display: flex;
 	align-items: center;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	max-width: 100%;
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	overflow: hidden;
 }
 
 .item {
 	display: flex;
 	align-items: center;
+	flex: 0 0 auto;
 	min-width: 0;
 	font-family: var(--font-jost);
 	font-size: var(--br-item-font-size);
@@ -55,6 +57,7 @@
 	display: flex;
 	align-items: center;
 	min-width: 0;
+	white-space: nowrap;
 
 	&:hover {
 		color: var(--br-link-hover-color);
@@ -62,6 +65,7 @@
 }
 
 .separator {
+	flex: 0 0 auto;
 	margin: 0 0.8rem;
 	color: var(--br-separator-color);
 }
@@ -70,6 +74,7 @@
 	color: var(--br-current-color);
 	display: block;
 	min-width: 0;
+	max-width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
