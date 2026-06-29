@@ -148,6 +148,56 @@ const randomItem = <Value,>(items: readonly Value[]): Value => {
   return items[Math.floor(Math.random() * items.length)]
 }
 
+type WindowWithWebAudio = Window & {
+  webkitAudioContext?: typeof AudioContext
+}
+
+const playNotificationSound = () => {
+  const AudioContextClass = window.AudioContext ?? (window as WindowWithWebAudio).webkitAudioContext
+
+  if (!AudioContextClass || document.visibilityState === 'hidden') {
+    return
+  }
+
+  try {
+    const audioContext = new AudioContextClass()
+    const masterGain = audioContext.createGain()
+    const startTime = audioContext.currentTime
+
+    masterGain.gain.setValueAtTime(0.0001, startTime)
+    masterGain.gain.exponentialRampToValueAtTime(0.045, startTime + 0.03)
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.75)
+    masterGain.connect(audioContext.destination)
+
+    const playTone = (frequency: number, startOffset: number, duration: number) => {
+      const oscillator = audioContext.createOscillator()
+      const toneGain = audioContext.createGain()
+      const toneStart = startTime + startOffset
+      const toneEnd = toneStart + duration
+
+      oscillator.type = 'sine'
+      oscillator.frequency.setValueAtTime(frequency, toneStart)
+      toneGain.gain.setValueAtTime(0.0001, toneStart)
+      toneGain.gain.exponentialRampToValueAtTime(0.8, toneStart + 0.04)
+      toneGain.gain.exponentialRampToValueAtTime(0.0001, toneEnd)
+
+      oscillator.connect(toneGain)
+      toneGain.connect(masterGain)
+      oscillator.start(toneStart)
+      oscillator.stop(toneEnd + 0.02)
+    }
+
+    playTone(659.25, 0, 0.28)
+    playTone(987.77, 0.16, 0.42)
+
+    window.setTimeout(() => {
+      void audioContext.close()
+    }, 900)
+  } catch (_error) {
+    // Browsers may block autoplay until the visitor interacts with the page.
+  }
+}
+
 export function LiveBookingToast({ packages }: LiveBookingToastProps) {
   const [toast, setToast] = useState<BookingToast | null>(null)
   const [isLeaving, setIsLeaving] = useState(false)
@@ -178,6 +228,7 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
         package: randomItem(availablePackages),
         minutesAgo: Math.floor(Math.random() * 12) + 2,
       })
+      playNotificationSound()
     }
 
     const firstToast = window.setTimeout(showToast, firstToastDelay)
