@@ -862,6 +862,7 @@ export interface Package {
   tripGrade?: ('easy' | 'moderate' | 'difficult' | 'strenuous') | null;
   bestSeason?:
     | (
+        | 'all-year-round'
         | 'january'
         | 'february'
         | 'march'

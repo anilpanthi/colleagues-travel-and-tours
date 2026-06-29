@@ -28,12 +28,13 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
         const href = slug ? `/${collectionSlug}/${slug}` : `/${collectionSlug}/${id}`
         const cardKey = `${collectionSlug}-${id ?? slug ?? index}`
+        const tripDurationLabel = doc.tripDuration === 1 ? 'day' : 'days'
 
         return (
           <Card key={cardKey} className={styles.packageCard} as={Link} href={href}>
             {doc.tripDuration && (
               <Card.Span className={styles.packageCard__batch_duration}>
-                {doc.tripDuration} Days
+                {doc.tripDuration} {tripDurationLabel}
               </Card.Span>
             )}
             {doc.tripGrade && (

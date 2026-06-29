@@ -386,6 +386,7 @@ export const Packages: CollectionConfig<'packages'> = {
           label: 'Best Season',
           hasMany: true,
           options: [
+            { label: 'All Year Round', value: 'all-year-round' },
             { label: 'January', value: 'january' },
             { label: 'February', value: 'february' },
             { label: 'March', value: 'march' },

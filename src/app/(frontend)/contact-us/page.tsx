@@ -127,6 +127,7 @@ export default async function ContactPage() {
 
       <div className={styles.mapSection}>
         <LazyEmbed
+          loadImmediately
           title="Contact Map"
           referrerPolicy="no-referrer-when-downgrade"
           src={mapSrc}

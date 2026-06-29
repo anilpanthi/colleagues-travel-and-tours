@@ -8,6 +8,7 @@ import styles from './index.module.css'
 type LazyEmbedProps = {
   allow?: string
   className?: string
+  loadImmediately?: boolean
   referrerPolicy?: React.IframeHTMLAttributes<HTMLIFrameElement>['referrerPolicy']
   src: string
   title: string
@@ -27,11 +28,12 @@ const getEmbedSrc = (value: string): string | null => {
 export const LazyEmbed: React.FC<LazyEmbedProps> = ({
   allow,
   className,
+  loadImmediately = false,
   referrerPolicy,
   src,
   title,
 }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(loadImmediately)
   const embedSrc = getEmbedSrc(src)
 
   if (!embedSrc) {
@@ -40,7 +42,7 @@ export const LazyEmbed: React.FC<LazyEmbedProps> = ({
 
   return (
     <div className={[styles.embed, className].filter(Boolean).join(' ')}>
-      {isLoaded ? (
+      {isLoaded || loadImmediately ? (
         <iframe
           allow={allow}
           allowFullScreen

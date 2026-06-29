@@ -13,6 +13,7 @@ import * as migration_20260621_081500_repair_locked_document_relations from './2
 import * as migration_20260621_083000_reconcile_database_schema from './20260621_083000_reconcile_database_schema'
 import * as migration_20260622_103515_add_date_field_to_forms from './20260622_103515_add_date_field_to_forms'
 import * as migration_20260629_161323_add_activity_hero from './20260629_161323_add_activity_hero'
+import * as migration_20260629_164516_add_all_year_round_best_season from './20260629_164516_add_all_year_round_best_season'
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20260629_161323_add_activity_hero.up,
     down: migration_20260629_161323_add_activity_hero.down,
     name: '20260629_161323_add_activity_hero',
+  },
+  {
+    up: migration_20260629_164516_add_all_year_round_best_season.up,
+    down: migration_20260629_164516_add_all_year_round_best_season.down,
+    name: '20260629_164516_add_all_year_round_best_season',
   },
 ]
