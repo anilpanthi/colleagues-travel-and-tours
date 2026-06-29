@@ -28,6 +28,7 @@
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
+	max-width: 100%;
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -36,10 +37,15 @@
 .item {
 	display: flex;
 	align-items: center;
+	min-width: 0;
 	font-family: var(--font-jost);
 	font-size: var(--br-item-font-size);
 	font-weight: var(--br-item-font-weight);
 	color: var(--br-item-color);
+
+	&:last-child {
+		flex: 1 1 auto;
+	}
 }
 
 .link {
@@ -48,6 +54,7 @@
 	transition: color 0.2s ease;
 	display: flex;
 	align-items: center;
+	min-width: 0;
 
 	&:hover {
 		color: var(--br-link-hover-color);
@@ -61,5 +68,10 @@
 
 .current {
 	color: var(--br-current-color);
+	display: block;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	font-weight: 500;
 }
