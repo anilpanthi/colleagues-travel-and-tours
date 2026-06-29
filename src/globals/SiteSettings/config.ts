@@ -42,6 +42,18 @@ export const SiteSettings: GlobalConfig = {
                   label: 'Phone Number',
                   required: false,
                 },
+                {
+                  name: 'hasWhatsApp',
+                  type: 'checkbox',
+                  label: 'Have WhatsApp?',
+                  required: false,
+                },
+                {
+                  name: 'hasViber',
+                  type: 'checkbox',
+                  label: 'Have Viber?',
+                  required: false,
+                },
               ],
             },
             {

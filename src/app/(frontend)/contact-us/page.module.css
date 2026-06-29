@@ -125,6 +125,48 @@
 	font-family: var(--font-jost);
 }
 
+.phoneLine {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+}
+
+.messagingLinks {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.messagingLink {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.6rem;
+	height: 2.6rem;
+	border-radius: 999px;
+	color: #fff;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.messagingLink:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 0.6rem 1.4rem rgba(0, 0, 0, 0.16);
+}
+
+.messagingLink svg {
+	width: 1.7rem;
+	height: 1.7rem;
+}
+
+.whatsAppLink {
+	background: #25d366;
+}
+
+.viberLink {
+	background: #7360f2;
+}
+
 .mapSection {
 	width: 100%;
 	height: 500px;

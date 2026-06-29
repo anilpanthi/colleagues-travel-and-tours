@@ -3030,6 +3030,8 @@ export interface SiteSetting {
   contactNumbers?:
     | {
         number?: string | null;
+        hasWhatsApp?: boolean | null;
+        hasViber?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -3172,6 +3174,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         number?: T;
+        hasWhatsApp?: T;
+        hasViber?: T;
         id?: T;
       };
   emailAddresses?:
