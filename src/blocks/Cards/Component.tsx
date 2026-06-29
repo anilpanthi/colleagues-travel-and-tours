@@ -26,7 +26,6 @@ const cardSelectByCollection = (collectionSlug: keyof Config['collections']) => 
         tripGrade: true,
         elevation: true,
         Activity: true,
-        hero: true,
         updatedAt: true,
         createdAt: true,
       } as const

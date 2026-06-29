@@ -3,8 +3,13 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { draftMode } from 'next/headers'
 import type { Package } from '@/payload-types'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   try {
     let draft = false
     try {
@@ -37,6 +42,10 @@ export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
 
@@ -62,6 +71,10 @@ export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
 /** Up to `limit` other packages that share an Activity with `pkg`, newest first. */
 export const queryRelatedPackages = cache(
   async ({ pkg, limit = 6 }: { pkg: Package; limit?: number }): Promise<Package[]> => {
+    if (isPayloadBuildTime) {
+      return []
+    }
+
     let draft = false
     try {
       const { isEnabled } = await draftMode()
@@ -113,6 +126,10 @@ export const queryRelatedPackages = cache(
 )
 
 export const queryPages = cache(async () => {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const pages = await payload.find({
@@ -133,6 +150,10 @@ export const queryPages = cache(async () => {
 })
 
 export const queryPackages = cache(async () => {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
     const packages = await payload.find({
@@ -153,6 +174,10 @@ export const queryPackages = cache(async () => {
 })
 
 export const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   let draft = false
   try {
     const { isEnabled } = await draftMode()
@@ -177,6 +202,10 @@ export const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 export const queryFormsByTitle = cache(async ({ title }: { title: string }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   let draft = false
   try {
     const { isEnabled } = await draftMode()

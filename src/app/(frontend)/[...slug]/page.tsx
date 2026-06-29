@@ -23,7 +23,7 @@ import {
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 async function RelatedPackagesLoader({ pkg }: { pkg: Package }) {
@@ -136,6 +136,10 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  if (isPayloadBuildTime) {
+    return {}
+  }
+
   const { slug } = await paramsPromise
 
   if (slug && slug.length === 1 && slug[0] === 'home') {

@@ -1,5 +1,7 @@
 import CatchAllPage, { generateMetadata as generateCatchAllMetadata } from '../../[...slug]/page'
 
+export const dynamic = 'force-dynamic'
+
 type Args = {
   params: Promise<{
     slug?: string

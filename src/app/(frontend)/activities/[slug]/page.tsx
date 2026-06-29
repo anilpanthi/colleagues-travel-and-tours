@@ -183,6 +183,10 @@ export default async function ActivityPage({
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  if (isPayloadBuildTime) {
+    return {}
+  }
+
   const { slug = '' } = await paramsPromise
   const decodedSlug = decodeURIComponent(slug)
   const activity = await queryActivityBySlug({ slug: decodedSlug, draft: false })
@@ -191,6 +195,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryActivityBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({

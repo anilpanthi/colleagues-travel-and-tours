@@ -12,6 +12,7 @@ import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
 	const payload = await getPayload({ config: configPromise })

@@ -28,6 +28,8 @@ import styles from './singlePost.module.scss'
 import Content from '@/components/ui/Content/Index'
 import Row from '@/components/ui/Row'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateStaticParams() {
   if (isPayloadBuildTime) {
     return []
@@ -243,6 +245,10 @@ export default async function Post({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  if (isPayloadBuildTime) {
+    return {}
+  }
+
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
@@ -252,6 +258,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
+  if (isPayloadBuildTime) {
+    return null
+  }
+
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -274,6 +284,10 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 const queryRecentPosts = cache(async ({ currentSlug }: { currentSlug: string }) => {
+  if (isPayloadBuildTime) {
+    return []
+  }
+
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
@@ -298,6 +312,10 @@ const queryRecentPosts = cache(async ({ currentSlug }: { currentSlug: string }) 
 
 const queryRelatedPostsByCategory = cache(
   async ({ categoryId, currentPostId }: { categoryId: number; currentPostId: number }) => {
+    if (isPayloadBuildTime) {
+      return []
+    }
+
     const { isEnabled: draft } = await draftMode()
     const payload = await getPayload({ config: configPromise })
 

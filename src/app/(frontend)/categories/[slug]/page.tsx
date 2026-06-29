@@ -16,6 +16,7 @@ import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 type Args = {
   params: Promise<{
@@ -107,6 +108,10 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  if (isPayloadBuildTime) {
+    return {}
+  }
+
   const { slug } = await paramsPromise
   const category = await queryCategoryBySlug({ slug })
 

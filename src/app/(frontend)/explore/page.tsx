@@ -7,6 +7,7 @@ import { StaticHero } from '@/heros/StaticHero/StaticHero'
 import { Sparkles } from 'lucide-react'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Explore Packages | Colleagues Travel And Tours',
@@ -31,7 +32,6 @@ export default async function ExplorePage() {
         bestSeason: true,
         elevation: true,
         Activity: true,
-        hero: true,
         updatedAt: true,
         createdAt: true,
       },
@@ -49,7 +49,6 @@ export default async function ExplorePage() {
       overrideAccess: false,
       select: {
         title: true,
-        hero: true,
         slug: true,
         updatedAt: true,
         createdAt: true,

@@ -6,11 +6,13 @@ import { StaticHero } from '@/heros/StaticHero/StaticHero'
 import Cards from '@/components/ui/Card/Cards'
 import { Pagination } from '@/components/Pagination'
 import { PageRange } from '@/components/PageRange'
+import type { Activity } from '@/payload-types'
 
 import styles from './page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 export default async function ActivitiesPage() {
   const payload = await getPayload({ config: configPromise })
@@ -22,7 +24,6 @@ export default async function ActivitiesPage() {
     overrideAccess: false,
     select: {
       title: true,
-      hero: true,
       slug: true,
       meta: true,
       packageCount: true,
@@ -35,7 +36,7 @@ export default async function ActivitiesPage() {
   // Transform activities to the format required by the Cards component
   const selectedItems = activities.docs.map((activity) => ({
     relationTo: 'activities' as const,
-    value: activity,
+    value: activity as Activity,
   }))
 
   return (

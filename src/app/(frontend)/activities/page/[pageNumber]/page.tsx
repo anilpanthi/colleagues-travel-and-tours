@@ -15,6 +15,7 @@ import type { Activity } from '@/payload-types'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 type Args = {
   params: Promise<{
@@ -33,7 +34,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   let activities: PaginatedDocs<Activity>
 
   try {
-    activities = await payload.find({
+    activities = (await payload.find({
       collection: 'activities',
       depth: 1,
       limit: 6,
@@ -41,7 +42,6 @@ export default async function Page({ params: paramsPromise }: Args) {
       overrideAccess: false,
       select: {
         title: true,
-        hero: true,
         slug: true,
         meta: true,
         packageCount: true,
@@ -49,7 +49,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         updatedAt: true,
         createdAt: true,
       },
-    })
+    })) as PaginatedDocs<Activity>
   } catch (error) {
     console.error('Error fetching activities:', error)
     activities = {

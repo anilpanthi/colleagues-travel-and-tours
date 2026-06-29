@@ -13,6 +13,7 @@ import type { Post } from '@/payload-types'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 type Args = {
   params: Promise<{

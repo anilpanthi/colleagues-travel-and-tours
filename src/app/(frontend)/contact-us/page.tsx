@@ -10,6 +10,7 @@ import { draftMode } from 'next/headers'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { getSiteSettings } from '@/utilities/getSiteSettings'
 import { LazyEmbed } from '@/components/LazyEmbed'
+import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
@@ -200,6 +201,8 @@ export default async function ContactPage() {
 }
 
 export async function generateMetadata() {
+  if (isPayloadBuildTime) return {}
+
   const page = await queryPageBySlug({ slug: 'contact-us' })
   if (!page) return {}
 

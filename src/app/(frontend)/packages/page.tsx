@@ -15,6 +15,7 @@ import type { PaginatedDocs, Where } from 'payload'
 import type { Package } from '@/payload-types'
 
 export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 const tripFactFields = [
 	'tripDuration',
@@ -108,6 +109,9 @@ export default async function PackagesPage({
 		depth: 0,
 		overrideAccess: false,
 		sort: 'title',
+		select: {
+			title: true,
+		},
 	})
 
 	const whereClauses: Where[] = []
@@ -142,7 +146,7 @@ export default async function PackagesPage({
 	let packages: PaginatedDocs<Package>
 
 	try {
-		packages = await payload.find({
+		packages = (await payload.find({
 			collection: 'packages',
 			depth: 2,
 			limit: 6,
@@ -158,11 +162,10 @@ export default async function PackagesPage({
 				tripGrade: true,
 				elevation: true,
 				Activity: true,
-				hero: true,
 				updatedAt: true,
 				createdAt: true,
 			},
-		})
+		})) as PaginatedDocs<Package>
 	} catch (_error) {
 		packages = {
 			docs: [],

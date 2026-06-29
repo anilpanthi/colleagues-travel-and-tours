@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useState } from 'react'
-import { Activity, Package } from '@/payload-types'
+import type { Activity, Package } from '@/payload-types'
 import { Filter, Search, SlidersHorizontal, X } from 'lucide-react'
 import { cn } from '@/utilities/ui'
 import Content from '@/components/ui/Content/Index'
@@ -20,10 +20,12 @@ import containerStyles from '@/Styles/container.module.css'
 import style from './ExplorePage.module.scss'
 
 interface ExplorePageClientProps {
-  initialPackages: Package[]
-  activities: Activity[]
+  initialPackages: ExplorePackage[]
+  activities: ExploreActivity[]
 }
 
+type ExplorePackage = Omit<Package, 'hero'> & Partial<Pick<Package, 'hero'>>
+type ExploreActivity = Pick<Activity, 'id' | 'title'>
 type TripGrade = NonNullable<Package['tripGrade']>
 type BestSeason = NonNullable<Package['bestSeason']>[number]
 
@@ -139,7 +141,7 @@ export const ExplorePageClient: React.FC<ExplorePageClientProps> = ({
 
   const selectedItems = filteredPackages.map((pkg) => ({
     relationTo: 'packages' as const,
-    value: pkg,
+    value: pkg as Package,
   }))
 
   const totalPages = Math.ceil(selectedItems.length / ITEMS_PER_PAGE)
