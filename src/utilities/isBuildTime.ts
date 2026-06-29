@@ -1,1 +1,1 @@
-export const isPayloadBuildTime = process.env.PAYLOAD_IGNORE_MIGRATIONS === 'true'
+export const isPayloadBuildTime = process.env.PAYLOAD_BUILD_PHASE === 'true'
