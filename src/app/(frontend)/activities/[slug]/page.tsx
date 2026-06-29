@@ -195,10 +195,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 const queryActivityBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {
-  if (isPayloadBuildTime) {
-    return null
-  }
-
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
