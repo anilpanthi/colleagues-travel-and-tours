@@ -37,6 +37,7 @@ const TRIP_GRADES: { label: string; value: TripGrade }[] = [
 ]
 
 const SEASONS: { label: string; value: BestSeason }[] = [
+  { label: 'All Year Round', value: 'all-year-round' },
   { label: 'January', value: 'january' },
   { label: 'February', value: 'february' },
   { label: 'March', value: 'march' },
