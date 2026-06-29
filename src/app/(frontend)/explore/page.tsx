@@ -49,6 +49,7 @@ export default async function ExplorePage() {
       overrideAccess: false,
       select: {
         title: true,
+        hero: true,
         slug: true,
         updatedAt: true,
         createdAt: true,

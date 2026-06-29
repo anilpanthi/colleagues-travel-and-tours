@@ -41,6 +41,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       overrideAccess: false,
       select: {
         title: true,
+        hero: true,
         slug: true,
         meta: true,
         packageCount: true,

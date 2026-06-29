@@ -19,6 +19,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { slugField } from 'payload'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateActivity, revalidateDelete } from './hooks/revalidateActivity'
+import { hero } from '@/heros/config'
 
 import {
   MetaDescriptionField,
@@ -73,6 +74,10 @@ export const Activities: CollectionConfig = {
     {
       type: 'tabs',
       tabs: [
+        {
+          fields: [hero],
+          label: 'Hero',
+        },
         {
           fields: [
             {

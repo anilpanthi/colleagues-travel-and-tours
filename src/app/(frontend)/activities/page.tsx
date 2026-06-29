@@ -22,6 +22,7 @@ export default async function ActivitiesPage() {
     overrideAccess: false,
     select: {
       title: true,
+      hero: true,
       slug: true,
       meta: true,
       packageCount: true,

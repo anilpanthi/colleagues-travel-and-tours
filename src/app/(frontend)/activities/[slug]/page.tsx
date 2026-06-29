@@ -8,9 +8,9 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import PageClient from './page.client'
-import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import Content from '@/components/ui/Content/Index'
 import { StaticHero } from '@/heros/StaticHero/StaticHero'
+import { RenderHero } from '@/heros/RenderHero'
 import { Pagination } from '@/components/Pagination'
 import { PageRange } from '@/components/PageRange'
 import Cards from '@/components/ui/Card/Cards'
@@ -106,16 +106,36 @@ export default async function ActivityPage({
     value: pkg,
   }))
 
+  const hasConfiguredHero = Boolean(activity.hero?.type && activity.hero.type !== 'none')
+  const breadcrumbs = [
+    {
+      label: 'Activities',
+      url: '/activities',
+    },
+    {
+      label: activity.title,
+    },
+  ]
+
   return (
     <>
-      <StaticHero
-        title={activity.title}
-        scrollDot={false}
-        tagline={false}
-        subtitle={activity?.meta?.description}
-      />
+      <PageClient heroType={activity.hero?.type} hasFallbackStaticHero={!hasConfiguredHero} />
 
-      <PageClient />
+      {hasConfiguredHero ? (
+        <RenderHero
+          {...activity.hero}
+          breadcrumbs={breadcrumbs}
+          title={activity.hero?.title || activity.title}
+        />
+      ) : (
+        <StaticHero
+          title={activity.title}
+          scrollDot={false}
+          tagline={false}
+          subtitle={activity?.meta?.description}
+        />
+      )}
+
       {draft && <LivePreviewListener />}
       <PayloadRedirects disableNotFound url={url} />
       <Content>
