@@ -54,7 +54,7 @@ const getWhatsAppUrl = (number?: string | null): string => {
 
 const getViberUrl = (number?: string | null): string => {
   const dialableNumber = getDialableNumber(number)
-  return `viber://chat?number=${encodeURIComponent(dialableNumber)}`
+  return `https://viber.me/${dialableNumber}`
 }
 
 const WhatsAppIcon = () => (
@@ -159,6 +159,8 @@ export default async function ContactPage() {
                                 aria-label={`Message ${item.number} on Viber`}
                                 className={`${styles.messagingLink} ${styles.viberLink}`}
                                 href={getViberUrl(item.number)}
+                                rel="noopener noreferrer"
+                                target="_blank"
                               >
                                 <ViberIcon />
                               </a>
