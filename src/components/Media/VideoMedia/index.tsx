@@ -16,6 +16,7 @@ export const VideoMedia: React.FC<MediaProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(!playAfterPageLoad)
+  const [isVideoReady, setIsVideoReady] = useState(false)
 
   const videoUrl =
     resource && typeof resource === 'object'
@@ -24,11 +25,19 @@ export const VideoMedia: React.FC<MediaProps> = ({
           resource.updatedAt,
         )
       : null
-  const posterUrl =
-    poster ||
-    (resource && typeof resource === 'object'
-      ? getMediaUrl(resource.thumbnailURL || null, resource.updatedAt)
-      : undefined)
+  const posterUrl = (() => {
+    if (poster) return poster
+    if (!resource || typeof resource !== 'object') return undefined
+
+    const posterPath =
+      resource.thumbnailURL ||
+      resource.sizes?.xlarge?.url ||
+      resource.sizes?.large?.url ||
+      resource.sizes?.thumbnail?.url ||
+      null
+
+    return getMediaUrl(posterPath, resource.updatedAt)
+  })()
 
   useEffect(() => {
     if (!playAfterPageLoad) return
@@ -77,24 +86,45 @@ export const VideoMedia: React.FC<MediaProps> = ({
   if (!videoUrl || !resource || typeof resource !== 'object') return null
 
   return (
-    <video
-      autoPlay
-      className={cn(videoClassName)}
-      controls={false}
-      key={videoUrl}
-      loop
-      muted
-      onCanPlay={(event) => {
-        void event.currentTarget.play().catch(() => {
-          // Autoplay can be denied by user-agent preferences.
-        })
-      }}
-      onClick={onClick}
-      playsInline
-      poster={posterUrl || undefined}
-      preload={playAfterPageLoad ? 'none' : 'metadata'}
-      ref={videoRef}
-      src={shouldLoadVideo ? videoUrl : undefined}
-    />
+    <>
+      {posterUrl && (
+        <img
+          alt=""
+          aria-hidden="true"
+          className={cn(videoClassName)}
+          decoding="async"
+          src={posterUrl}
+          style={{
+            opacity: isVideoReady ? 0 : 1,
+            pointerEvents: 'none',
+            transition: 'opacity 300ms ease',
+          }}
+        />
+      )}
+      <video
+        autoPlay
+        className={cn(videoClassName)}
+        controls={false}
+        key={videoUrl}
+        loop
+        muted
+        onCanPlay={(event) => {
+          setIsVideoReady(true)
+          void event.currentTarget.play().catch(() => {
+            // Autoplay can be denied by user-agent preferences.
+          })
+        }}
+        onClick={onClick}
+        playsInline
+        poster={posterUrl || undefined}
+        preload={playAfterPageLoad ? 'none' : 'metadata'}
+        ref={videoRef}
+        src={shouldLoadVideo ? videoUrl : undefined}
+        style={{
+          opacity: posterUrl && !isVideoReady ? 0 : 1,
+          transition: 'opacity 300ms ease',
+        }}
+      />
+    </>
   )
 }

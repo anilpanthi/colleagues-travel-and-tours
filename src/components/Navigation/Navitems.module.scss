@@ -21,13 +21,13 @@
     }
 
     color: #ffa500;
-
-    .navItem_icon {
-      transform: rotate(180deg) scale(1.1);
-    }
   }
 
   &:hover {
+    .navItem_icon {
+      transform: rotate(180deg) scale(1.1);
+    }
+
     .navItem_dropdown {
       opacity: 1;
       visibility: visible;
