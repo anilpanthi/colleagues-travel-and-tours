@@ -22,7 +22,7 @@ type BookingToast = {
   minutesAgo: number
 }
 
-const firstToastDelay = 2000
+const firstToastDelay = 30 * 1000
 const secondToastDelay = 2 * 60 * 1000
 const recurringToastDelay = 5 * 60 * 1000
 const toastVisibleDuration = 30 * 1000

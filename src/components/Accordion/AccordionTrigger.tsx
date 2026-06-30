@@ -25,7 +25,7 @@ export const AccordionTrigger = memo(({ title, heading, isOpen, onClick }: Props
 			<div className={`${styles.titleWrapper} ${!hasDayLabel ? styles.titleWrapperNoDay : ''}`}>
 				{hasDayLabel && (
 					<span className={styles.day}>
-						{title} {':'}
+						{title}:
 					</span>
 				)}
 				<span className={styles.heading}>{heading}</span>

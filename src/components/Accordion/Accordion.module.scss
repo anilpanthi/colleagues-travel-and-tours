@@ -53,15 +53,16 @@
     min-width: 0;
     text-align: left;
     display: grid;
-    grid-template-columns: 7.4rem minmax(0, 1fr);
+    grid-template-columns: minmax(10.8rem, max-content) minmax(0, 1fr);
     align-items: stretch;
     gap: 2rem;
 
     .day {
       color: #fff;
       font-size: 1.6rem;
+      font-variant-numeric: tabular-nums;
       background: #48454291;
-      padding: 0 1.2rem;
+      padding: 0 1.4rem;
       margin: 0;
       display: flex;
       align-items: center;
@@ -112,12 +113,12 @@
     font-size: 1.5rem;
 
     .titleWrapper {
-      grid-template-columns: 6.8rem minmax(0, 1fr);
+      grid-template-columns: minmax(9.4rem, max-content) minmax(0, 1fr);
       gap: 1.4rem;
 
       .day {
         font-size: 1.5rem;
-        padding: 0 1rem;
+        padding: 0 1.2rem;
       }
     }
 
