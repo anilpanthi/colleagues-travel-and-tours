@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { getServerSideURL } from '@/utilities/getURL'
-import { isPayloadBuildTime } from '@/utilities/isBuildTime'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 3600 // Cache sitemap for 1 hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -49,11 +49,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  if (isPayloadBuildTime) {
+  let payload: Awaited<ReturnType<typeof getPayload>>
+  try {
+    payload = await getPayload({ config: configPromise })
+  } catch (error) {
+    console.error(`Error initializing Payload for sitemap: ${error}`)
     return staticRoutes
   }
-
-  const payload = await getPayload({ config: configPromise })
 
   // 2. Fetch pages
   let pageRoutes: MetadataRoute.Sitemap = []
@@ -69,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    pageRoutes = pages.docs.map((doc) => {
+    pageRoutes = pages.docs.filter((doc) => Boolean(doc.slug)).map((doc) => {
       const isHome = doc.slug === 'home'
       return {
         url: getURL(isHome ? '/' : doc.slug),
@@ -96,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    packageRoutes = packages.docs.map((doc) => ({
+    packageRoutes = packages.docs.filter((doc) => Boolean(doc.slug)).map((doc) => ({
       url: getURL(doc.slug),
       lastModified: getLocalDate(doc.updatedAt),
       changeFrequency: 'daily',
@@ -120,7 +122,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    activityRoutes = activities.docs.map((doc) => ({
+    activityRoutes = activities.docs.filter((doc) => Boolean(doc.slug)).map((doc) => ({
       url: getURL(`/activities/${doc.slug}`),
       lastModified: getLocalDate(doc.updatedAt),
       changeFrequency: 'weekly',
@@ -144,7 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    postRoutes = posts.docs.map((doc) => ({
+    postRoutes = posts.docs.filter((doc) => Boolean(doc.slug)).map((doc) => ({
       url: getURL(`/posts/${doc.slug}`),
       lastModified: getLocalDate(doc.updatedAt),
       changeFrequency: 'weekly',
@@ -168,7 +170,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    categoryRoutes = categories.docs.map((doc) => ({
+    categoryRoutes = categories.docs.filter((doc) => Boolean(doc.slug)).map((doc) => ({
       url: getURL(`/categories/${doc.slug}`),
       lastModified: getLocalDate(doc.updatedAt),
       changeFrequency: 'weekly',

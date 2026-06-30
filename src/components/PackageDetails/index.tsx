@@ -81,7 +81,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
         Book this package
       </Button>
       <Button appearance="outlineBlack" size="lg" onClick={() => openPopUp('enquiry')}>
-        Make an Enquiry
+        Customize This Trip
       </Button>
     </React.Fragment>
   )
