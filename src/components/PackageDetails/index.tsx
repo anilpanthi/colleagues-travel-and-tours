@@ -111,7 +111,20 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                 <td className={style.capitalize}>{pkg.tripGrade}</td>
               </tr>
             )}
-            {pkg.bestSeason && (
+            {pkg.bestSeason &&
+              (Array.isArray(pkg.bestSeason)
+                ? pkg.bestSeason.length > 0
+                : String(pkg.bestSeason).trim() !== '') && (
+                <tr>
+                  <th>Best Season:</th>
+                  <td>
+                    {Array.isArray(pkg.bestSeason)
+                      ? pkg.bestSeason.map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')
+                      : pkg.bestSeason}
+                  </td>
+                </tr>
+              )}
+            {/* {pkg.bestSeason && (
               <tr>
                 <th>Best Season:</th>
                 <td>
@@ -120,7 +133,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                     : pkg.bestSeason}
                 </td>
               </tr>
-            )}
+            )} */}
             {pkg.perDayHiking && (
               <tr>
                 <th>Per Day Hiking:</th>
@@ -240,11 +253,13 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                     <LazyEmbed src={pkg.mapIframe} title={`${pkg.title} map`} />
                   </div>
                 )}
-                {pkg.mapType === 'embedMap' && pkg.mapIframe && typeof pkg.mapIframe !== 'string' && (
-                  <div className={style.mapIframeRichText}>
-                    <RichText data={pkg.mapIframe} enableGutter={false} />
-                  </div>
-                )}
+                {pkg.mapType === 'embedMap' &&
+                  pkg.mapIframe &&
+                  typeof pkg.mapIframe !== 'string' && (
+                    <div className={style.mapIframeRichText}>
+                      <RichText data={pkg.mapIframe} enableGutter={false} />
+                    </div>
+                  )}
                 {pkg.mapType === 'imageUpload' &&
                   pkg.mapImage &&
                   typeof pkg.mapImage === 'object' && (
