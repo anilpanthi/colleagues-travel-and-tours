@@ -1,16 +1,18 @@
 'use client'
 
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import styles from './index.module.css'
+
+const PROGRESS_BAR_CONTAINER_ID = 'route-progress-bar'
+const PROGRESS_BAR_ID = 'route-progress-bar-inner'
 
 export const ProgressBar = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [progress, setProgress] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
   const startedAtRef = useRef<number | null>(null)
+  const progressRef = useRef(0)
+  const trickleIntervalRef = useRef<number | null>(null)
   const currentUrl = useMemo(() => {
     const queryString = searchParams.toString()
 
@@ -18,11 +20,54 @@ export const ProgressBar = () => {
   }, [pathname, searchParams])
   const previousUrlRef = useRef(currentUrl)
 
-  const startProgress = useCallback(() => {
-    startedAtRef.current = Date.now()
-    setIsVisible(true)
-    setProgress((currentProgress) => (currentProgress > 0 && currentProgress < 100 ? currentProgress : 12))
+  const getProgressBar = useCallback(() => {
+    let container = document.getElementById(PROGRESS_BAR_CONTAINER_ID)
+    let bar = document.getElementById(PROGRESS_BAR_ID)
+
+    if (!container) {
+      container = document.createElement('div')
+      container.id = PROGRESS_BAR_CONTAINER_ID
+      container.className = styles.progressBarContainer
+      document.body.appendChild(container)
+    }
+
+    if (!bar) {
+      bar = document.createElement('div')
+      bar.id = PROGRESS_BAR_ID
+      bar.className = styles.progressBar
+      container.appendChild(bar)
+    }
+
+    return { bar, container }
   }, [])
+
+  const stopTrickle = useCallback(() => {
+    if (trickleIntervalRef.current) {
+      window.clearInterval(trickleIntervalRef.current)
+      trickleIntervalRef.current = null
+    }
+  }, [])
+
+  const startProgress = useCallback(() => {
+    const { bar, container } = getProgressBar()
+
+    startedAtRef.current = Date.now()
+    progressRef.current =
+      progressRef.current > 0 && progressRef.current < 100 ? progressRef.current : 12
+
+    container.style.display = 'block'
+    bar.style.width = `${progressRef.current}%`
+
+    if (!trickleIntervalRef.current) {
+      trickleIntervalRef.current = window.setInterval(() => {
+        if (progressRef.current >= 90) return
+
+        const { bar: currentBar } = getProgressBar()
+        progressRef.current = progressRef.current + (90 - progressRef.current) * 0.1
+        currentBar.style.width = `${progressRef.current}%`
+      }, 400)
+    }
+  }, [getProgressBar])
 
   const completeProgress = useCallback(() => {
     const elapsed = startedAtRef.current ? Date.now() - startedAtRef.current : 0
@@ -30,19 +75,24 @@ export const ProgressBar = () => {
     const hideDelay = Math.max(450 - elapsed, 250)
 
     const completeTimeout = window.setTimeout(() => {
-      setProgress(100)
+      const { bar } = getProgressBar()
+      progressRef.current = 100
+      bar.style.width = '100%'
     }, completionDelay)
     const hideTimeout = window.setTimeout(() => {
+      const { bar, container } = getProgressBar()
+      stopTrickle()
       startedAtRef.current = null
-      setIsVisible(false)
-      setProgress(0)
+      progressRef.current = 0
+      container.style.display = 'none'
+      bar.style.width = '0%'
     }, hideDelay)
 
     return () => {
       window.clearTimeout(completeTimeout)
       window.clearTimeout(hideTimeout)
     }
-  }, [])
+  }, [getProgressBar, stopTrickle])
 
   useEffect(() => {
     if (previousUrlRef.current === currentUrl) return
@@ -87,30 +137,21 @@ export const ProgressBar = () => {
       }
     }
 
-    document.addEventListener('click', handleAnchorClick)
-    return () => document.removeEventListener('click', handleAnchorClick)
+    document.addEventListener('pointerdown', handleAnchorClick, { capture: true })
+    document.addEventListener('click', handleAnchorClick, { capture: true })
+
+    return () => {
+      document.removeEventListener('pointerdown', handleAnchorClick, { capture: true })
+      document.removeEventListener('click', handleAnchorClick, { capture: true })
+    }
   }, [startProgress])
 
   useEffect(() => {
-    if (!isVisible || progress >= 100) return
+    return () => {
+      stopTrickle()
+      document.getElementById(PROGRESS_BAR_CONTAINER_ID)?.remove()
+    }
+  }, [stopTrickle])
 
-    const interval = window.setInterval(() => {
-      setProgress((currentProgress) => {
-        if (currentProgress >= 90) return currentProgress
-
-        return currentProgress + (90 - currentProgress) * 0.1
-      })
-    }, 400)
-
-    return () => window.clearInterval(interval)
-  }, [isVisible, progress])
-
-  if (!isVisible || typeof document === 'undefined') return null
-
-  return createPortal(
-    <div className={styles.progressBarContainer}>
-      <div className={styles.progressBar} style={{ width: `${progress}%` }} />
-    </div>,
-    document.body,
-  )
+  return null
 }
