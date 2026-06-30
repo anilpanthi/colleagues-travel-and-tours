@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -23,6 +24,7 @@ import { HeaderClient } from '@/globals/Header/Header.client'
 import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
 
 const siteURL = getServerSideURL()
+const googleTagID = 'G-0W0BY09GS7'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteURL),
@@ -143,6 +145,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html className={cn(inter.variable, jost.variable)} lang="en" suppressHydrationWarning>
       <head>
+        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${googleTagID}`} />
+        <Script id="google-tag">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${googleTagID}');
+          `}
+        </Script>
         <InitTheme />
         <script
           dangerouslySetInnerHTML={{
