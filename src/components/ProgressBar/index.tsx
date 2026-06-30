@@ -43,8 +43,18 @@ export const ProgressBar = () => {
 
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return
+
       const target = e.target as HTMLElement
       const anchor = target.closest('a')
+      const rawHref = anchor?.getAttribute('href')
+      const isHashOnlyNavigation =
+        rawHref?.startsWith('#') ||
+        (anchor &&
+          anchor.origin === window.location.origin &&
+          anchor.pathname === window.location.pathname &&
+          anchor.search === window.location.search &&
+          anchor.hash !== window.location.hash)
 
       if (
         anchor &&
@@ -55,7 +65,8 @@ export const ProgressBar = () => {
         !e.shiftKey &&
         !e.altKey &&
         anchor.origin === window.location.origin &&
-        anchor.href !== window.location.href
+        anchor.href !== window.location.href &&
+        !isHashOnlyNavigation
       ) {
         startProgress()
       }

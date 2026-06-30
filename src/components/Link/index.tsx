@@ -23,6 +23,8 @@ type CMSLinkType = {
   ariaCurrent?: React.AriaAttributes['aria-current']
 }
 
+const isHashOnlyHref = (href: string) => href === '#' || href.startsWith('#')
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -58,6 +60,14 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   const size = appearance === 'inline' ? 'md' : sizeFromProps === 'clear' ? 'md' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
+  const shouldPreventNavigation = isHashOnlyHref(href)
+  const handleClick = (e: React.MouseEvent) => {
+    if (shouldPreventNavigation) {
+      e.preventDefault()
+    }
+
+    onClick?.(e)
+  }
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
@@ -67,7 +77,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
         className={cn(className)}
         href={href || url || ''}
         {...newTabProps}
-        onClick={onClick}
+        onClick={handleClick}
       >
         {label && label}
         {children && children}
@@ -82,7 +92,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
       href={href || url || ''}
       aria-current={ariaCurrent}
-      onClick={onClick}
+      onClick={handleClick}
       {...newTabProps}
     >
       {label && label}
