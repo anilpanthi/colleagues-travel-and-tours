@@ -22,8 +22,13 @@ import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
 import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
 
+const siteURL = getServerSideURL()
+
 export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
+  metadataBase: new URL(siteURL),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: mergeOpenGraph(),
   manifest: '/site.webmanifest',
   applicationName: 'Colleagues Travel and Tours',
@@ -106,10 +111,45 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     emails: siteSettings?.emailAddresses,
   }
 
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TravelAgency',
+    '@id': `${siteURL}/#organization`,
+    name: 'Colleagues Travel and Tours',
+    url: siteURL,
+    logo: `${siteURL}/apple-touch-icon.png`,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: siteSettings?.address || 'Indrayani Galli, Chhetrapati',
+      addressLocality: 'Kathmandu',
+      addressCountry: 'NP',
+    },
+    email: siteSettings?.emailAddresses?.[0]?.email,
+    telephone: siteSettings?.contactNumbers?.[0]?.number,
+    sameAs: siteSettings?.socialLinks?.map((item) => item.url).filter(Boolean),
+  }
+
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteURL}/#website`,
+    name: 'Colleagues Travel and Tours',
+    url: siteURL,
+    publisher: {
+      '@id': `${siteURL}/#organization`,
+    },
+  }
+
   return (
     <html className={cn(inter.variable, jost.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([organizationJsonLd, websiteJsonLd]),
+          }}
+          type="application/ld+json"
+        />
       </head>
       <body suppressHydrationWarning>
         <ServiceWorkerRegistration />

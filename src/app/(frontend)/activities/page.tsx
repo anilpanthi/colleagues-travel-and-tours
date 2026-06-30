@@ -81,6 +81,9 @@ export default async function ActivitiesPage() {
 
 export function generateMetadata(): Metadata {
   return {
+    alternates: {
+      canonical: '/activities',
+    },
     title: `Things To Do In Nepal`,
     description:
       'Explore the best trekking, wildlife, and cultural experiences in the heart of the Himalayas.',

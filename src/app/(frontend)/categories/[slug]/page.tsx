@@ -118,6 +118,9 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   if (!category) return {}
 
   return {
+    alternates: {
+      canonical: `/categories/${slug}`,
+    },
     title: `${category.title} | Category`,
     description: `Browse all posts in the ${category.title} category.`,
   }

@@ -191,7 +191,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const activity = await queryActivityBySlug({ slug: decodedSlug, draft: false })
 
-  return generateMeta({ doc: activity })
+  return generateMeta({ doc: activity, path: `/activities/${decodedSlug}` })
 }
 
 const queryActivityBySlug = cache(async ({ slug, draft }: { slug: string; draft: boolean }) => {

@@ -207,6 +207,9 @@ export async function generateMetadata() {
   if (!page) return {}
 
   return {
+    alternates: {
+      canonical: '/contact-us',
+    },
     title: page.meta?.title || page.title,
     description: page.meta?.description,
   }

@@ -21,17 +21,25 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
 export const generateMeta = async (args: {
 	doc: Partial<Page> | Partial<Post> | Partial<Activity> | Partial<Package> | null
+	path?: string
 }): Promise<Metadata> => {
-	const { doc } = args
+	const { doc, path } = args
 
 	const BrandName = 'Colleagues Travel And Tours'
 	const ogImage = getImageURL(doc?.meta?.image)
+	const slug = Array.isArray(doc?.slug) ? doc?.slug.join('/') : doc?.slug
+	const canonicalPath = path || (slug === 'home' ? '/' : slug ? `/${slug}` : '/')
 
 	const title = doc?.meta?.title
 		? doc?.meta?.title + ' | ' + BrandName
-		: doc?.title + ' | ' + BrandName
+		: doc?.title
+			? doc.title + ' | ' + BrandName
+			: BrandName
 
 	return {
+		alternates: {
+			canonical: canonicalPath,
+		},
 		description: doc?.meta?.description,
 		openGraph: mergeOpenGraph({
 			description: doc?.meta?.description || '',
@@ -43,7 +51,7 @@ export const generateMeta = async (args: {
 					]
 				: undefined,
 			title,
-			url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+			url: canonicalPath,
 		}),
 		title,
 	}

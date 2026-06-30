@@ -115,6 +115,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
+    alternates: {
+      canonical: `/activities/page/${pageNumber}`,
+    },
     title: `Activities | Colleagues Travel and Tours ${pageNumber || ''}`,
   }
 }

@@ -86,6 +86,9 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
 	return {
+		alternates: {
+			canonical: '/posts',
+		},
 		title: `Our Travel Stories | Blog`,
 		description: 'Follow our journey, tips, and updates about traveling in Nepal and beyond.',
 	}
