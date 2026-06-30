@@ -10,6 +10,7 @@ export const ProgressBar = () => {
   const searchParams = useSearchParams()
   const [progress, setProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const startedAtRef = useRef<number | null>(null)
   const currentUrl = useMemo(() => {
     const queryString = searchParams.toString()
 
@@ -18,8 +19,29 @@ export const ProgressBar = () => {
   const previousUrlRef = useRef(currentUrl)
 
   const startProgress = useCallback(() => {
+    startedAtRef.current = Date.now()
     setIsVisible(true)
     setProgress((currentProgress) => (currentProgress > 0 && currentProgress < 100 ? currentProgress : 12))
+  }, [])
+
+  const completeProgress = useCallback(() => {
+    const elapsed = startedAtRef.current ? Date.now() - startedAtRef.current : 0
+    const completionDelay = Math.max(120 - elapsed, 0)
+    const hideDelay = Math.max(450 - elapsed, 250)
+
+    const completeTimeout = window.setTimeout(() => {
+      setProgress(100)
+    }, completionDelay)
+    const hideTimeout = window.setTimeout(() => {
+      startedAtRef.current = null
+      setIsVisible(false)
+      setProgress(0)
+    }, hideDelay)
+
+    return () => {
+      window.clearTimeout(completeTimeout)
+      window.clearTimeout(hideTimeout)
+    }
   }, [])
 
   useEffect(() => {
@@ -27,19 +49,12 @@ export const ProgressBar = () => {
 
     previousUrlRef.current = currentUrl
 
-    const completeTimeout = window.setTimeout(() => {
-      setProgress(100)
-    }, 0)
-    const hideTimeout = window.setTimeout(() => {
-      setIsVisible(false)
-      setProgress(0)
-    }, 350)
-
-    return () => {
-      window.clearTimeout(completeTimeout)
-      window.clearTimeout(hideTimeout)
+    if (!startedAtRef.current) {
+      startProgress()
     }
-  }, [currentUrl])
+
+    return completeProgress()
+  }, [completeProgress, currentUrl, startProgress])
 
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
