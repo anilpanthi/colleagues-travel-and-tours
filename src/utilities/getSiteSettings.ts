@@ -1,5 +1,15 @@
 import { getCachedGlobal } from './getGlobals'
 
+const formSelect = {
+  id: true,
+  title: true,
+  fields: true,
+  submitButtonLabel: true,
+  confirmationType: true,
+  confirmationMessage: true,
+  redirect: true,
+} as const
+
 const baseSiteSettingsSelect = {
   logos: {
     logoDark: true,
@@ -14,18 +24,10 @@ const baseSiteSettingsSelect = {
   address: true,
   map: true,
   emailAddresses: true,
-  contactForm: {
-    items: true,
-  },
-  bookingForm: {
-    items: true,
-  },
-  flightBookingForm: {
-    items: true,
-  },
-  enquiryForm: {
-    items: true,
-  },
+  contactForm: formSelect,
+  bookingForm: formSelect,
+  flightBookingForm: formSelect,
+  enquiryForm: formSelect,
 } as const
 
 /**

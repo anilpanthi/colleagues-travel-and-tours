@@ -34,14 +34,35 @@ describe('reCAPTCHA verification', () => {
   })
 
   it.each([
-    ['development', false],
-    ['test', false],
-    ['production', true],
-  ])('is required only in production', (environment, expected) => {
-    vi.stubEnv('NODE_ENV', environment)
+    ['development', 'test-site-key', false],
+    ['test', 'test-site-key', false],
+    ['production', '', false],
+    ['production', 'test-site-key', true],
+  ])(
+    'is required in the browser only when production has a site key',
+    (environment, siteKey, expected) => {
+      vi.stubEnv('NODE_ENV', environment)
+      vi.stubEnv('NEXT_PUBLIC_RECAPTCHA_SITE_KEY', siteKey)
 
-    expect(isRecaptchaRequired()).toBe(expected)
-  })
+      expect(isRecaptchaRequired()).toBe(expected)
+    },
+  )
+
+  it.each([
+    ['', 'test-secret', false],
+    ['test-site-key', '', false],
+    ['test-site-key', 'test-secret', true],
+  ])(
+    'is required on the server only when production has both reCAPTCHA keys',
+    (siteKey, secretKey, expected) => {
+      vi.stubGlobal('window', undefined)
+      vi.stubEnv('NODE_ENV', 'production')
+      vi.stubEnv('NEXT_PUBLIC_RECAPTCHA_SITE_KEY', siteKey)
+      vi.stubEnv('RECAPTCHA_SECRET_KEY', secretKey)
+
+      expect(isRecaptchaRequired()).toBe(expected)
+    },
+  )
 
   it('rejects tokens with a mismatched hostname', async () => {
     vi.stubEnv('RECAPTCHA_SECRET_KEY', 'test-secret')

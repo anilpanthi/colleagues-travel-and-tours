@@ -1,0 +1,72 @@
+@import '~@payloadcms/ui/scss';
+
+.flight-reservation-view {
+  width: 100%;
+  max-width: 1280px;
+  padding: base(2) base(2.5);
+
+  &__eyebrow {
+    margin: 0 0 base(0.25);
+    color: var(--theme-elevation-500);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0 0 base(1.5);
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: base(1);
+    margin-bottom: base(1.5);
+
+    div {
+      min-height: base(4.5);
+      padding: base(0.9);
+      border: 1px solid var(--theme-elevation-200);
+      background: var(--theme-elevation-50);
+    }
+
+    span {
+      display: block;
+      margin-bottom: base(0.35);
+      color: var(--theme-elevation-600);
+    }
+
+    strong {
+      color: var(--theme-text);
+      font-size: 2rem;
+      line-height: 1;
+    }
+  }
+
+  &__panel {
+    min-height: base(12);
+    border: 1px solid var(--theme-elevation-200);
+    background: var(--theme-elevation-50);
+
+    h2 {
+      margin: 0;
+      padding: base(0.85) base(1);
+      border-bottom: 1px solid var(--theme-elevation-200);
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0;
+      padding: base(1);
+      color: var(--theme-elevation-600);
+    }
+  }
+
+  @include mid-break {
+    padding: base(1.5) base(1);
+
+    &__stats {
+      grid-template-columns: 1fr;
+    }
+  }
+}

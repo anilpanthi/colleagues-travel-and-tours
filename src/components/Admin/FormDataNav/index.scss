@@ -1,0 +1,24 @@
+@import '~@payloadcms/ui/scss';
+
+.form-data-nav {
+  margin-top: base(0.5);
+
+  &__link {
+    display: block;
+    padding: base(0.25) 0 base(0.25) base(0.8);
+    border-left: 1px solid var(--theme-elevation-200);
+    color: var(--theme-elevation-500);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--theme-elevation-1000);
+      outline: none;
+    }
+
+    &--active {
+      border-left-color: var(--theme-elevation-700);
+      color: var(--theme-text);
+    }
+  }
+}

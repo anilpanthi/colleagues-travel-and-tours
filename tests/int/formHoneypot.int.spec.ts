@@ -7,7 +7,7 @@ describe('form submission honeypot', () => {
     const response = await POST(
       new Request('http://localhost/api/form-submit', {
         body: JSON.stringify({
-          companyWebsite: 'https://spam.example',
+          botCheck: 'https://spam.example',
           form: 1,
           submissionData: [{ field: 'email', value: 'bot@example.com' }],
         }),

@@ -6,8 +6,7 @@ import { Plane } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Modal from '@/components/ui/Modal/Modal'
 import { FormBlock } from '@/blocks/Form/Component'
-import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
-import type { SiteSetting } from '@/payload-types'
+import type { Form as FormType, SiteSetting } from '@/payload-types'
 
 interface CtaProps {
   flightBookingForm: SiteSetting['flightBookingForm']
@@ -23,11 +22,7 @@ export default function Cta({ flightBookingForm }: CtaProps) {
       const flightBooking = params.get('flightBooking')
       const hash = window.location.hash
 
-      if (
-        hash === '#flight-booking' ||
-        modal === 'flight-booking' ||
-        flightBooking === 'true'
-      ) {
+      if (hash === '#flight-booking' || modal === 'flight-booking' || flightBooking === 'true') {
         setShowModal(true)
       }
     }

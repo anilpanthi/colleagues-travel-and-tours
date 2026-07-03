@@ -12,7 +12,7 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { Media } from '@/components/Media'
 import Modal from '@/components/ui/Modal/Modal'
 import { FormBlock } from '@/blocks/Form/Component'
-import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { Form as FormType } from '@/payload-types'
 import { LazyEmbed } from '@/components/LazyEmbed'
 
 import style from './index.module.scss'

@@ -4,6 +4,7 @@ import { CheckCircle2, X } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
+import { generatePath } from '@/utilities/generatePath'
 import styles from './index.module.css'
 
 export type LiveBookingPackage = {
@@ -235,10 +236,13 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
     const secondToast = window.setTimeout(showToast, firstToastDelay + secondToastDelay)
     let recurringToasts: number | undefined
 
-    const recurringStart = window.setTimeout(() => {
-      showToast()
-      recurringToasts = window.setInterval(showToast, recurringToastDelay)
-    }, firstToastDelay + secondToastDelay + recurringToastDelay)
+    const recurringStart = window.setTimeout(
+      () => {
+        showToast()
+        recurringToasts = window.setInterval(showToast, recurringToastDelay)
+      },
+      firstToastDelay + secondToastDelay + recurringToastDelay,
+    )
 
     return () => {
       window.clearTimeout(firstToast)
@@ -290,7 +294,7 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
         <p className={styles.eyebrow}>Live booking</p>
         <p className={styles.message}>
           <strong>{toast.name}</strong> just booked{' '}
-          <Link className={styles.packageLink} href={`/packages/${toast.package.slug}`}>
+          <Link className={styles.packageLink} href={generatePath('packages', toast.package.slug)}>
             {toast.package.title}
           </Link>
         </p>

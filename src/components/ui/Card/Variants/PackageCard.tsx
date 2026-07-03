@@ -2,10 +2,10 @@ import type { CardsBlock, Package, Media } from '@/payload-types'
 import Card from '../Primitives/Card'
 import styles from './PackageCard.module.scss'
 
-
-import {  Camera, Mountain, Compass } from 'lucide-react'
+import { Camera, Mountain, Compass } from 'lucide-react'
 
 import Link from 'next/link'
+import { generatePath } from '@/utilities/generatePath'
 
 export interface PackageCardProps {
   data: CardsBlock['selectedItems']
@@ -24,9 +24,8 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
 
         const { id, title, slug, featuredImage, meta } = doc
 
-        // Default to 'packages' if collection is not provided or 'none'
         const collectionSlug = collection && collection !== 'none' ? collection : 'packages'
-        const href = slug ? `/${collectionSlug}/${slug}` : `/${collectionSlug}/${id}`
+        const href = generatePath(collectionSlug, slug ?? String(id))
         const cardKey = `${collectionSlug}-${id ?? slug ?? index}`
         const tripDurationLabel = doc.tripDuration === 1 ? 'day' : 'days'
 
@@ -59,9 +58,7 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
             </Card.Div>
             {/* Dsiplaying title and facts */}
             <Card.Div className={styles.packageCard__content_top}>
-              <Card.Title className={styles.packageCard__title}>
-                {title}
-              </Card.Title>
+              <Card.Title className={styles.packageCard__title}>{title}</Card.Title>
               <Card.Div className={styles.packageCard__content_top_facts}>
                 {doc?.elevation && (
                   <Card.Div className={styles.packageCard__content_top_facts_elevation}>
@@ -75,7 +72,6 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
                       <Compass size={18} /> <Card.Span>{doc.Activity[0].title}</Card.Span>
                     </Card.Div>
                   )}
-
               </Card.Div>
             </Card.Div>
           </Card>

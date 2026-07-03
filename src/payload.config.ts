@@ -53,9 +53,17 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     components: {
+      afterNavLinks: ['/components/Admin/FormDataNav'],
       graphics: {
         Icon: '/components/Graphics/Icon#AdminIcon',
         Logo: '/components/Graphics/Logo#AdminLogo',
+      },
+      views: {
+        flightReservation: {
+          Component: '/components/Admin/FlightReservationView',
+          exact: true,
+          path: '/form-data/flight-reservation',
+        },
       },
     },
     importMap: {

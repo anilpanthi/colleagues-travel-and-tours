@@ -6,6 +6,7 @@ import { Media } from '@/components/Media'
 import { Package } from '@/payload-types'
 import { Clock, BarChart } from 'lucide-react'
 import { cn } from '@/utilities/ui'
+import { generatePath } from '@/utilities/generatePath'
 import style from './PackageCard.module.scss'
 
 interface PackageCardProps {
@@ -13,37 +14,20 @@ interface PackageCardProps {
 }
 
 export const PackageCard: React.FC<PackageCardProps> = ({ packageDoc }) => {
-  const {
-    title,
-    slug,
-    featuredImage,
-    price,
-    salePrice,
-    tripDuration,
-    tripGrade,
-  } = packageDoc
+  const { title, slug, featuredImage, price, salePrice, tripDuration, tripGrade } = packageDoc
 
-  const href = `/packages/${slug}`
+  const href = generatePath('packages', slug)
 
   return (
     <div className={style.card}>
       <Link href={href} className={style.imageWrapper}>
         {featuredImage && typeof featuredImage !== 'string' ? (
-          <Media
-            resource={featuredImage}
-            className={style.image}
-          />
+          <Media resource={featuredImage} className={style.image} />
         ) : (
-          <div className={style.noImage}>
-            No Image
-          </div>
+          <div className={style.noImage}>No Image</div>
         )}
-        
-        {salePrice && (
-          <div className={style.badge}>
-            Sale
-          </div>
-        )}
+
+        {salePrice && <div className={style.badge}>Sale</div>}
 
         <div className={style.overlay}>
           <span>View Details</span>
@@ -52,11 +36,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({ packageDoc }) => {
 
       <div className={style.content}>
         <div className={style.meta}>
-          {tripGrade && (
-            <span className={cn(style.grade, style[tripGrade])}>
-              {tripGrade}
-            </span>
-          )}
+          {tripGrade && <span className={cn(style.grade, style[tripGrade])}>{tripGrade}</span>}
         </div>
 
         <h3 className={style.title}>
@@ -85,7 +65,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({ packageDoc }) => {
               <span className={style.currentPrice}>{price ? `$${price}` : 'Contact Us'}</span>
             )}
           </div>
-          
+
           <Link href={href} className={style.btn}>
             Explore
           </Link>

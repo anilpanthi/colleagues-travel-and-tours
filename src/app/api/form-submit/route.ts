@@ -78,6 +78,18 @@ const parseSubmissionData = (value: unknown): SubmissionField[] | null => {
   return fields
 }
 
+const parseFormID = (value: unknown): number | null => {
+  if (typeof value === 'number' && Number.isInteger(value) && value > 0) return value
+
+  if (typeof value === 'string' && /^\d+$/.test(value)) {
+    const formID = Number(value)
+
+    return Number.isSafeInteger(formID) && formID > 0 ? formID : null
+  }
+
+  return null
+}
+
 export async function POST(request: Request) {
   let body: unknown
 
@@ -91,16 +103,21 @@ export async function POST(request: Request) {
     return errorResponse('Invalid request body.', 400)
   }
 
-  const form = 'form' in body ? body.form : null
-  const companyWebsite = 'companyWebsite' in body ? body.companyWebsite : null
+  const form = parseFormID('form' in body ? body.form : null)
+  const botCheck = 'botCheck' in body ? body.botCheck : null
   const recaptchaToken = 'recaptchaToken' in body ? body.recaptchaToken : null
   const submissionData = parseSubmissionData('submissionData' in body ? body.submissionData : null)
 
-  if (typeof form !== 'number' || !Number.isInteger(form) || form <= 0 || !submissionData) {
+  if (!form || !submissionData) {
     return errorResponse('Invalid form submission.', 400)
   }
 
-  if (companyWebsite !== null && companyWebsite !== '') {
+  if (typeof botCheck === 'string' && botCheck.trim() !== '') {
+    console.warn('Discarded form submission because the honeypot field was filled.', {
+      fields: submissionData.map(({ field }) => field),
+      form,
+    })
+
     return Response.json({ success: true }, { status: 201 })
   }
 

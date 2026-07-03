@@ -1,4 +1,4 @@
-import type { TextField } from '@payloadcms/plugin-form-builder/types'
+import type { Form } from '@/payload-types'
 import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
 
 import { Input } from '@/components/ui/Input'
@@ -9,15 +9,17 @@ import { Error } from '../Error'
 import { Width } from '../Width'
 import classes from '../index.module.scss'
 
+type NumberField = Extract<NonNullable<Form['fields']>[number], { blockType: 'number' }>
+
 export const Number: React.FC<
-    TextField & {
+  NumberField & {
     errors: Partial<FieldErrorsImpl>
     register: UseFormRegister<FieldValues>
     placeholder?: string
   }
 > = ({ name, defaultValue, errors, label, register, required, width, placeholder }) => {
   return (
-    <Width width={width}>
+    <Width width={width ?? undefined}>
       <Label className={classes.formBlock__label} htmlFor={name}>
         {label}
 
@@ -28,11 +30,11 @@ export const Number: React.FC<
         )}
       </Label>
       <Input
-        defaultValue={defaultValue}
+        defaultValue={defaultValue ?? undefined}
         id={name}
         type="number"
-        placeholder={placeholder}
-        {...register(name, { required: required })}
+        placeholder={placeholder ?? undefined}
+        {...register(name, { required: required ?? undefined })}
       />
       {errors[name] && <Error name={name} />}
     </Width>

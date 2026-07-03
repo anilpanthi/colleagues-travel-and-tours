@@ -50,7 +50,9 @@ import { ImportPreview as ImportPreview_cdf7e044479f899a31f804427d568b36 } from 
 import { ImportSaveButton as ImportSaveButton_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { AdminIcon as AdminIcon_70792e11c945b5527eef4fe85c659380 } from '../../../components/Graphics/Icon'
 import { AdminLogo as AdminLogo_e48138acfeadfc7de7237197bfa29526 } from '../../../components/Graphics/Logo'
+import { default as default_4042bf2dce4708aa96094ecea88cc964 } from '../../../components/Admin/FormDataNav'
 import { ImportExportProvider as ImportExportProvider_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
+import { default as default_3b9d4968c09be1b200bce1aae2b7aa91 } from '../../../components/Admin/FlightReservationView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -106,6 +108,8 @@ export const importMap = {
   "@payloadcms/plugin-import-export/rsc#ImportSaveButton": ImportSaveButton_cdf7e044479f899a31f804427d568b36,
   "/components/Graphics/Icon#AdminIcon": AdminIcon_70792e11c945b5527eef4fe85c659380,
   "/components/Graphics/Logo#AdminLogo": AdminLogo_e48138acfeadfc7de7237197bfa29526,
+  "/components/Admin/FormDataNav#default": default_4042bf2dce4708aa96094ecea88cc964,
   "@payloadcms/plugin-import-export/rsc#ImportExportProvider": ImportExportProvider_cdf7e044479f899a31f804427d568b36,
+  "/components/Admin/FlightReservationView#default": default_3b9d4968c09be1b200bce1aae2b7aa91,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

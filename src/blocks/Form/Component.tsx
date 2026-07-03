@@ -1,9 +1,9 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { Form as FormType } from '@/payload-types'
 
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useRef, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, type FieldValues } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/Button'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
@@ -16,6 +16,42 @@ import { executeRecaptcha, ReCaptchaScript } from '@/components/ReCaptcha'
 import { isRecaptchaRequired } from '@/utilities/recaptchaConfig'
 
 const RECAPTCHA_ACTION = 'form_submit'
+type FormFieldBlock = NonNullable<FormType['fields']>[number]
+type FormSubmissionResponse = {
+  id: number
+}
+type FormErrorResponse = {
+  errors?: {
+    message?: string
+  }[]
+  status?: string
+}
+
+const isFormSubmissionResponse = (value: unknown): value is FormSubmissionResponse => {
+  return Boolean(
+    value &&
+    typeof value === 'object' &&
+    'id' in value &&
+    typeof value.id === 'number' &&
+    Number.isInteger(value.id),
+  )
+}
+
+const isFormErrorResponse = (value: unknown): value is FormErrorResponse => {
+  return Boolean(value && typeof value === 'object')
+}
+
+const getDefaultValues = (formFields?: FormType['fields'] | null): FieldValues => {
+  const defaultValues: FieldValues = {}
+
+  for (const field of formFields || []) {
+    if ('name' in field && 'defaultValue' in field && field.defaultValue != null) {
+      defaultValues[field.name] = field.defaultValue
+    }
+  }
+
+  return defaultValues
+}
 
 export type FormBlockType = {
   blockName?: string
@@ -40,8 +76,8 @@ export const FormBlock: React.FC<
     introContent,
   } = props
 
-  const formMethods = useForm({
-    defaultValues: formFromProps.fields,
+  const formMethods = useForm<FieldValues>({
+    defaultValues: getDefaultValues(formFromProps.fields),
   })
   const {
     control,
@@ -55,16 +91,184 @@ export const FormBlock: React.FC<
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const honeypotRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const formElementID = formID ? `form-${formID}` : undefined
+  const formFields = formFromProps?.fields || []
+  const canRenderForm = Boolean(formID && formFields.length)
+
+  const renderField = (field: FormFieldBlock, index: number) => {
+    const key =
+      'id' in field && typeof field.id === 'string' ? field.id : `${field.blockType}-${index}`
+
+    switch (field.blockType) {
+      case 'checkbox':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.checkbox
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'country':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.country
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              control={control}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'date':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.date
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'email':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.email
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              placeholder={field.placeholder ?? undefined}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'message':
+        if (!field.message) return null
+
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.message message={field.message} />
+          </div>
+        )
+      case 'number':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.number
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              placeholder={field.placeholder ?? undefined}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'select':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.select
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              control={control}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              options={field.options || []}
+              placeholder={field.placeholder ?? undefined}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'state':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.state
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              control={control}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'text':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.text
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              placeholder={field.placeholder ?? undefined}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      case 'textarea':
+        return (
+          <div className={classes.formBlock__field} key={key}>
+            <fields.textarea
+              blockName={field.blockName ?? undefined}
+              blockType={field.blockType}
+              defaultValue={field.defaultValue ?? undefined}
+              errors={errors}
+              label={field.label ?? undefined}
+              name={field.name}
+              placeholder={field.placeholder ?? undefined}
+              register={register}
+              required={field.required ?? undefined}
+              width={field.width ?? undefined}
+            />
+          </div>
+        )
+      default:
+        return null
+    }
+  }
 
   const onSubmit = useCallback(
-    (data: FormFieldBlock[]) => {
+    (data: FieldValues) => {
       let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
-          value,
+          value: value == null ? '' : String(value),
         }))
 
         // delay loading indicator by 1s
@@ -73,9 +277,7 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const recaptchaToken = recaptchaRequired
-            ? await executeRecaptcha(RECAPTCHA_ACTION)
-            : null
+          const recaptchaToken = recaptchaRequired ? await executeRecaptcha(RECAPTCHA_ACTION) : null
 
           if (recaptchaRequired && !recaptchaToken) {
             clearTimeout(loadingTimerID)
@@ -87,7 +289,7 @@ export const FormBlock: React.FC<
           const req = await fetch(`${getClientSideURL()}/api/form-submit`, {
             body: JSON.stringify({
               form: formID,
-              companyWebsite: honeypotRef.current?.value || '',
+              botCheck: honeypotRef.current?.value || '',
               submissionData: dataToSend,
               recaptchaToken,
             }),
@@ -97,7 +299,7 @@ export const FormBlock: React.FC<
             method: 'POST',
           })
 
-          const res = await req.json()
+          const res: unknown = await req.json()
 
           clearTimeout(loadingTimerID)
 
@@ -105,8 +307,20 @@ export const FormBlock: React.FC<
             setIsLoading(false)
 
             setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status,
+              message: isFormErrorResponse(res)
+                ? res.errors?.[0]?.message || 'Internal Server Error'
+                : 'Internal Server Error',
+              status: isFormErrorResponse(res) ? res.status : String(req.status),
+            })
+
+            return
+          }
+
+          if (!isFormSubmissionResponse(res)) {
+            setIsLoading(false)
+            setError({
+              message: 'The form was not saved. Please try again.',
+              status: '500',
             })
 
             return
@@ -151,7 +365,7 @@ export const FormBlock: React.FC<
       )}
       <div className={classes.formBlock__container}>
         <FormProvider {...formMethods}>
-          {!isLoading && hasSubmitted && confirmationType === 'message' && (
+          {!isLoading && hasSubmitted && confirmationType === 'message' && confirmationMessage && (
             <RichText data={confirmationMessage} />
           )}
           {isLoading && !hasSubmitted && (
@@ -163,46 +377,38 @@ export const FormBlock: React.FC<
             >{`${error.status || '500'}: ${error.message || ''}`}</div>
           )}
           {!hasSubmitted && (
-            <form id={formID} className={classes.formBlock__form} onSubmit={handleFormSubmit}>
+            <form
+              id={formElementID}
+              className={classes.formBlock__form}
+              onSubmit={handleFormSubmit}
+            >
               <div aria-hidden="true" className={classes.formBlock__honeypot}>
-                <label htmlFor={`${formID}-company-website`}>Leave this field blank</label>
+                <label htmlFor={`${formID}-bot-check`}>Leave this field blank</label>
                 <input
                   autoComplete="off"
-                  id={`${formID}-company-website`}
-                  name="companyWebsite"
+                  id={`${formID}-bot-check`}
+                  name="reservation-confirmation"
+                  readOnly
                   ref={honeypotRef}
                   tabIndex={-1}
                   type="text"
+                  value=""
                 />
               </div>
 
               <div className={classes.formBlock__fieldsGroup}>
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className={classes.formBlock__field} key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
+                {canRenderForm ? (
+                  formFields.map(renderField)
+                ) : (
+                  <div className={classes.formBlock__errorMessage}>
+                    This form is not configured correctly.
+                  </div>
+                )}
               </div>
 
               <div className={classes.formBlock__submit}>
-                <Button form={formID} type="submit">
-                  {submitButtonLabel}
+                <Button disabled={!canRenderForm} form={formElementID} type="submit">
+                  {submitButtonLabel || 'Submit'}
                 </Button>
               </div>
             </form>
