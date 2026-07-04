@@ -262,25 +262,19 @@ export const FormBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FieldValues) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
+        setIsLoading(true)
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
           value: value == null ? '' : String(value),
         }))
 
-        // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true)
-        }, 1000)
-
         try {
           const recaptchaToken = recaptchaRequired ? await executeRecaptcha(RECAPTCHA_ACTION) : null
 
           if (recaptchaRequired && !recaptchaToken) {
-            clearTimeout(loadingTimerID)
             setIsLoading(false)
             setError({ message: 'Security verification failed. Please try again.', status: '400' })
             return
@@ -300,8 +294,6 @@ export const FormBlock: React.FC<
           })
 
           const res: unknown = await req.json()
-
-          clearTimeout(loadingTimerID)
 
           if (req.status >= 400) {
             setIsLoading(false)
@@ -368,9 +360,9 @@ export const FormBlock: React.FC<
           {!isLoading && hasSubmitted && confirmationType === 'message' && confirmationMessage && (
             <RichText data={confirmationMessage} />
           )}
-          {isLoading && !hasSubmitted && (
-            <p className={classes.formBlock__loading}>Loading, please wait...</p>
-          )}
+          <p aria-live="polite" className={classes.formBlock__srOnly} role="status">
+            {isLoading && !hasSubmitted ? 'Submitting your form. Please wait.' : ''}
+          </p>
           {error && (
             <div
               className={classes.formBlock__errorMessage}
@@ -407,8 +399,14 @@ export const FormBlock: React.FC<
               </div>
 
               <div className={classes.formBlock__submit}>
-                <Button disabled={!canRenderForm} form={formElementID} type="submit">
-                  {submitButtonLabel || 'Submit'}
+                <Button
+                  aria-busy={isLoading}
+                  disabled={!canRenderForm || isLoading}
+                  form={formElementID}
+                  iconLeft={isLoading ? <span className={classes.formBlock__spinner} /> : undefined}
+                  type="submit"
+                >
+                  {isLoading ? 'Submitting...' : submitButtonLabel || 'Submit'}
                 </Button>
               </div>
             </form>
