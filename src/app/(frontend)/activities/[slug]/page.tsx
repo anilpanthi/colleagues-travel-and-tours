@@ -139,14 +139,14 @@ export default async function ActivityPage({
       {draft && <LivePreviewListener />}
       <PayloadRedirects disableNotFound url={url} />
       <Content>
-        {/* {activity.content && (
-					<RichText
-						data={activity.content}
-						style={{
-							fontFamily: 'var(--font-jost)',
-						}}
-					/>
-				)} */}
+        {activity.content && (
+          <RichText
+            data={activity.content}
+            style={{
+              fontFamily: 'var(--font-jost)',
+            }}
+          />
+        )}
 
         {selectedItems.length > 0 && (
           <div className={`${containerStyles.container} ${styles.relatedSection}`}>

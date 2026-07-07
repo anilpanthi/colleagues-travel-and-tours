@@ -35,7 +35,7 @@ export const ThingsTodo: React.FC<ActivityProps> = ({
 							<ul className={style.thingstodo__content_list}>
 								{activities.map((activity) => {
 									if (typeof activity === 'number') return null
-									const { id, title, featuredIcon, meta } = activity
+									const { id, title, meta } = activity
 									const activityDescription =
 										meta?.description ||
 										'Explore unique local experiences, curated just for you to make your journey unforgettable.'

@@ -1,6 +1,7 @@
 User-agent: *
-Allow: /
+Allow: /api/media/file/
 Disallow: /admin
 Disallow: /api
 
 Sitemap: https://colleaguestravel.com/sitemap.xml
+
