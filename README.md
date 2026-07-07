@@ -10,6 +10,23 @@ Designed and Developed by: https://anilpanthi.com.np
 
 Powered by: https://antiqcode.com
 
+## Coolify Deployment
+
+Set the production environment URL to the canonical non-www domain:
+
+```env
+NEXT_PUBLIC_SERVER_URL=https://colleaguestravel.com
+```
+
+In Coolify, add both domains to the application so the proxy routes both hostnames to the container:
+
+```text
+https://colleaguestravel.com
+https://www.colleaguestravel.com
+```
+
+The app permanently redirects `www.colleaguestravel.com` requests to `colleaguestravel.com`. If `www.colleaguestravel.com` shows "No available server", Coolify is not routing that hostname to this app yet.
+
 ## Admin Panel
 
 - Login with email and password
@@ -27,6 +44,5 @@ Powered by: https://antiqcode.com
 - PWA features
 - Offline support
 - Push notifications
-
 
 

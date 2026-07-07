@@ -12,14 +12,23 @@ const getCanonicalURL = () => {
       return null
     }
 
+    url.hostname = url.hostname.replace(/^www\./i, '')
+
     return url
   } catch {
     return null
   }
 }
 
+const getForwardedValue = (value: string | null) => value?.split(',')[0]?.trim() || null
+
+const getRequestHost = (request: NextRequest) =>
+  getForwardedValue(request.headers.get('x-forwarded-host')) || request.headers.get('host')
+
+const getNonWWWHost = (host: string) => host.replace(/^www\./i, '')
+
 const getRequestProtocol = (request: NextRequest) => {
-  const forwardedProtocol = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim()
+  const forwardedProtocol = getForwardedValue(request.headers.get('x-forwarded-proto'))
 
   return forwardedProtocol ? `${forwardedProtocol}:` : request.nextUrl.protocol
 }
@@ -59,23 +68,25 @@ export function proxy(request: NextRequest) {
   }
 
   const canonicalURL = getCanonicalURL()
-
-  if (!canonicalURL) {
-    return NextResponse.next()
-  }
-
   const requestURL = request.nextUrl
-  const requestHost = request.headers.get('x-forwarded-host') || request.headers.get('host')
+  const requestHost = getRequestHost(request)
   const requestProtocol = getRequestProtocol(request)
   const redirectURL = new URL(requestURL)
   let shouldRedirect = false
 
-  if (requestHost !== canonicalURL.host) {
+  if (!requestHost) {
+    return NextResponse.next()
+  }
+
+  if (canonicalURL && requestHost !== canonicalURL.host) {
     redirectURL.host = canonicalURL.host
+    shouldRedirect = true
+  } else if (!canonicalURL && /^www\./i.test(requestHost)) {
+    redirectURL.host = getNonWWWHost(requestHost)
     shouldRedirect = true
   }
 
-  if (requestProtocol !== canonicalURL.protocol) {
+  if (canonicalURL && requestProtocol !== canonicalURL.protocol) {
     redirectURL.protocol = canonicalURL.protocol
     shouldRedirect = true
   }
