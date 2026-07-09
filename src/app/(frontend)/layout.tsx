@@ -15,7 +15,7 @@ import './global.css'
 
 import { DeferredProgressBar } from '@/components/ProgressBar/DeferredProgressBar'
 import { ServiceWorkerRegistration } from '@/components/PWA/ServiceWorkerRegistration'
-import { DeferredGDPRConsent } from '@/components/GDPRConsent/DeferredGDPRConsent'
+// import { DeferredGDPRConsent } from '@/components/GDPRConsent/DeferredGDPRConsent'
 
 import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
@@ -175,7 +175,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
             <LiveBookingToast packages={liveBookingPackages} />
-            <DeferredGDPRConsent />
+            {/* <DeferredGDPRConsent /> */}
           </div>
         </Providers>
       </body>
