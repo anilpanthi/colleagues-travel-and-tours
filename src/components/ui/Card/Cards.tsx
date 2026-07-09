@@ -6,10 +6,14 @@ import { Button } from '@/components/ui/Button/Button'
 import { ArrowRight } from 'lucide-react'
 
 type CardSectionProps = Omit<CardBlockProps, 'blockType' | 'id' | 'blockName'> & {
+	cardsClassName?: string
+	className?: string
 	variant?: CardBlockProps['cards']
 }
 
 export default function Cards({
+	cardsClassName,
+	className,
 	collection,
 	selectedItems,
 	variant,
@@ -22,8 +26,11 @@ export default function Cards({
 	const CardComponent = CardRegistry[variant as string]
 	if (!CardComponent) return null
 	return (
-		<div className={styles.container}>
-			<div className={styles.cards} style={{ '--grid-columns': columns } as React.CSSProperties}>
+		<div className={[styles.container, className].filter(Boolean).join(' ')}>
+			<div
+				className={[styles.cards, cardsClassName].filter(Boolean).join(' ')}
+				style={{ '--grid-columns': columns } as React.CSSProperties}
+			>
 				<CardComponent collection={collection} data={selectedItems} />
 			</div>
 			{enableLink && link && selectedItems && selectedItems.length > 0 && (

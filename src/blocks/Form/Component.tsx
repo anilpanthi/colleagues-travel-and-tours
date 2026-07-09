@@ -59,6 +59,9 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
+  submissionContext?: {
+    packageId: number
+  }
 }
 
 export const FormBlock: React.FC<
@@ -74,6 +77,7 @@ export const FormBlock: React.FC<
     className,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    submissionContext,
   } = props
 
   const formMethods = useForm<FieldValues>({
@@ -285,6 +289,7 @@ export const FormBlock: React.FC<
               form: formID,
               botCheck: honeypotRef.current?.value || '',
               submissionData: dataToSend,
+              submissionContext,
               recaptchaToken,
             }),
             headers: {
@@ -339,7 +344,7 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, recaptchaRequired],
+    [router, formID, redirect, confirmationType, recaptchaRequired, submissionContext],
   )
 
   const handleFormSubmit = useCallback(

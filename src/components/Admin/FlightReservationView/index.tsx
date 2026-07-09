@@ -2,6 +2,7 @@ import { DefaultTemplate } from '@payloadcms/next/templates'
 import { redirect } from 'next/navigation'
 import type { AdminViewServerProps, VisibleEntities } from 'payload'
 
+import FlightReservationManager from './Manager'
 import './index.scss'
 
 const getVisibleEntities = ({
@@ -18,12 +19,25 @@ const getVisibleEntities = ({
       : payload.config.globals.map(({ slug }) => slug),
 })
 
-export default function FlightReservationView(props: AdminViewServerProps) {
+export default async function FlightReservationView(props: AdminViewServerProps) {
   if (!props.initPageResult.permissions.canAccessAdmin) {
     redirect(props.payload.config.routes.admin)
   }
 
   const { initPageResult } = props
+  const { docs } = await props.payload.find({
+    collection: 'form-submissions',
+    depth: 1,
+    limit: 500,
+    overrideAccess: false,
+    sort: '-createdAt',
+    user: initPageResult.req.user,
+    where: {
+      submissionType: {
+        equals: 'flight-booking',
+      },
+    },
+  })
 
   return (
     <DefaultTemplate
@@ -34,30 +48,10 @@ export default function FlightReservationView(props: AdminViewServerProps) {
       user={initPageResult.req.user ?? undefined}
       visibleEntities={getVisibleEntities(props)}
     >
-      <main className="flight-reservation-view">
-        <p className="flight-reservation-view__eyebrow">Form Data</p>
-        <h1>Flight reservation</h1>
-
-        <section className="flight-reservation-view__stats" aria-label="Flight reservation summary">
-          <div>
-            <span>New requests</span>
-            <strong>0</strong>
-          </div>
-          <div>
-            <span>In progress</span>
-            <strong>0</strong>
-          </div>
-          <div>
-            <span>Confirmed</span>
-            <strong>0</strong>
-          </div>
-        </section>
-
-        <section className="flight-reservation-view__panel">
-          <h2>Reservations</h2>
-          <p>No flight reservations to display.</p>
-        </section>
-      </main>
+      <FlightReservationManager
+        adminRoute={props.payload.config.routes.admin}
+        initialReservations={docs}
+      />
     </DefaultTemplate>
   )
 }

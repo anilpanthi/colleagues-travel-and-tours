@@ -52,6 +52,8 @@ const shouldRunProdMigrations = process.env.PAYLOAD_IGNORE_MIGRATIONS !== 'true'
 export default buildConfig({
   admin: {
     user: Users.slug,
+    // Browser extensions can add attributes to <body> before React hydrates the admin layout.
+    suppressHydrationWarning: true,
     components: {
       afterNavLinks: ['/components/Admin/FormDataNav'],
       graphics: {
@@ -200,7 +202,51 @@ export default buildConfig({
       formSubmissionOverrides: {
         access: {
           create: ({ req: { user } }) => Boolean(user),
+          delete: ({ req: { user } }) => Boolean(user),
+          update: ({ req: { user } }) => Boolean(user),
         },
+        admin: {
+          defaultColumns: ['form', 'package', 'submissionType', 'status', 'createdAt'],
+        },
+        fields: ({ defaultFields }) => [
+          ...defaultFields,
+          {
+            name: 'package',
+            type: 'relationship',
+            relationTo: 'packages',
+            index: true,
+            admin: {
+              description: 'The package selected when this form was submitted.',
+            },
+          },
+          {
+            name: 'submissionType',
+            type: 'select',
+            options: [
+              { label: 'Booking', value: 'booking' },
+              { label: 'Enquiry', value: 'enquiry' },
+              { label: 'Flight Booking', value: 'flight-booking' },
+            ],
+            index: true,
+          },
+          {
+            name: 'status',
+            type: 'select',
+            label: 'Reservation status',
+            defaultValue: 'new',
+            options: [
+              { label: 'New', value: 'new' },
+              { label: 'In progress', value: 'in-progress' },
+              { label: 'Confirmed', value: 'confirmed' },
+              { label: 'Cancelled', value: 'cancelled' },
+            ],
+            index: true,
+            admin: {
+              description: 'Tracks the progress of this form submission.',
+              position: 'sidebar',
+            },
+          },
+        ],
       },
     }),
     nestedDocsPlugin({

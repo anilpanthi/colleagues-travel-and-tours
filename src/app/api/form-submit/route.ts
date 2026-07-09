@@ -11,6 +11,12 @@ type SubmissionField = {
   value: string
 }
 
+type SubmissionContext = {
+  packageId: number
+}
+
+type SubmissionType = 'booking' | 'enquiry' | 'flight-booking'
+
 const errorResponse = (message: string, status: number) =>
   Response.json({ errors: [{ message }], status: String(status) }, { status })
 
@@ -90,6 +96,22 @@ const parseFormID = (value: unknown): number | null => {
   return null
 }
 
+const parseSubmissionContext = (value: unknown): SubmissionContext | null => {
+  if (!value || typeof value !== 'object') return null
+
+  const packageId = 'packageId' in value ? parseFormID(value.packageId) : null
+
+  if (!packageId) return null
+
+  return { packageId }
+}
+
+const getRelationshipID = (value: unknown): number | null => {
+  if (value && typeof value === 'object' && 'id' in value) return parseFormID(value.id)
+
+  return parseFormID(value)
+}
+
 export async function POST(request: Request) {
   let body: unknown
 
@@ -107,8 +129,12 @@ export async function POST(request: Request) {
   const botCheck = 'botCheck' in body ? body.botCheck : null
   const recaptchaToken = 'recaptchaToken' in body ? body.recaptchaToken : null
   const submissionData = parseSubmissionData('submissionData' in body ? body.submissionData : null)
+  const hasSubmissionContext = 'submissionContext' in body && body.submissionContext != null
+  const submissionContext = parseSubmissionContext(
+    'submissionContext' in body ? body.submissionContext : null,
+  )
 
-  if (!form || !submissionData) {
+  if (!form || !submissionData || (hasSubmissionContext && !submissionContext)) {
     return errorResponse('Invalid form submission.', 400)
   }
 
@@ -139,12 +165,45 @@ export async function POST(request: Request) {
 
   try {
     const payload = await getPayload({ config })
+    const siteSettings = await payload.findGlobal({
+      slug: 'site-settings',
+      depth: 0,
+      overrideAccess: false,
+    })
+    let submissionType: SubmissionType | undefined
+
+    if (getRelationshipID(siteSettings.bookingForm) === form) {
+      submissionType = 'booking'
+    } else if (getRelationshipID(siteSettings.enquiryForm) === form) {
+      submissionType = 'enquiry'
+    } else if (getRelationshipID(siteSettings.flightBookingForm) === form) {
+      submissionType = 'flight-booking'
+    }
+
+    if (submissionContext) {
+      if (submissionType !== 'booking' && submissionType !== 'enquiry') {
+        return errorResponse('This form is not configured for package submissions.', 400)
+      }
+
+      try {
+        await payload.findByID({
+          collection: 'packages',
+          id: submissionContext.packageId,
+          depth: 0,
+          overrideAccess: false,
+        })
+      } catch {
+        return errorResponse('The selected package could not be found.', 400)
+      }
+    }
 
     const submission = await payload.create({
       collection: 'form-submissions',
       data: {
         form,
         submissionData,
+        package: submissionContext?.packageId,
+        submissionType,
       },
     })
 

@@ -1760,6 +1760,15 @@ export interface FormSubmission {
         id?: string | null;
       }[]
     | null;
+  /**
+   * The package selected when this form was submitted.
+   */
+  package?: (number | null) | Package;
+  submissionType?: ('booking' | 'enquiry' | 'flight-booking') | null;
+  /**
+   * Tracks the progress of this form submission.
+   */
+  status?: ('new' | 'in-progress' | 'confirmed' | 'cancelled') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2926,6 +2935,9 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  package?: T;
+  submissionType?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

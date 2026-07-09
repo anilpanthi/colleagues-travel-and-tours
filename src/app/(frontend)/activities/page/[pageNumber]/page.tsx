@@ -1,18 +1,19 @@
 import type { Metadata } from 'next/types'
 import Cards from '@/components/ui/Card/Cards'
-import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import { notFound } from 'next/navigation'
-import { StaticHero } from '@/heros/StaticHero/StaticHero'
 
 import styles from '../../page.module.css'
 import containerStyles from '@/Styles/container.module.css'
 import type { PaginatedDocs } from 'payload'
 import type { Activity } from '@/payload-types'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
+import PageClient from '../../page.client'
+import { activitiesPageDescription, activitiesPageTitle } from '../../seo'
+import { ResultsSummary } from '../../ResultsSummary'
 
 export const revalidate = 600
 export const dynamic = 'force-dynamic'
@@ -71,27 +72,25 @@ export default async function Page({ params: paramsPromise }: Args) {
     relationTo: 'activities' as const,
     value: activity,
   }))
+  const hasSingleActivity = selectedItems.length === 1
 
   return (
     <div className={styles.activitiesPage}>
-      <StaticHero
-        title="Things To Do In Nepal"
-        tagline="Epic Adventures"
-        subtitle="Explore the best trekking, wildlife, and cultural experiences in the heart of the Himalayas."
-        // imageSrc="/media/trekking-blog.jpg"
-      />
+      <PageClient />
 
-      <div className={`${containerStyles.container} ${styles.rangeSection}`}>
-        <PageRange
-          collection="activities"
-          currentPage={activities.page}
-          limit={6}
-          totalDocs={activities.totalDocs}
-        />
+      <section className={`${containerStyles.container} ${styles.pageHeader}`}>
+        <p className={styles.eyebrow}>Epic Adventures</p>
+        <h1 className={styles.title}>{activitiesPageTitle}</h1>
+        <p className={styles.description}>{activitiesPageDescription}</p>
+      </section>
+
+      <div className={`${containerStyles.container} ${styles.resultsBar}`}>
+        <ResultsSummary shownCount={activities.docs.length} totalDocs={activities.totalDocs} />
       </div>
 
       <div className={`${containerStyles.container} ${styles.cardsSection}`}>
         <Cards
+          cardsClassName={hasSingleActivity ? styles.singleActivityGrid : undefined}
           collection="activities"
           selectedItems={selectedItems}
           variant="activitiesCard"
@@ -118,7 +117,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     alternates: {
       canonical: `/activities/page/${pageNumber}`,
     },
-    title: `Activities | Colleagues Travel and Tours ${pageNumber || ''}`,
+    title: `${activitiesPageTitle} | Page ${pageNumber} | Colleagues Travel and Tours`,
+    description: activitiesPageDescription,
   }
 }
 

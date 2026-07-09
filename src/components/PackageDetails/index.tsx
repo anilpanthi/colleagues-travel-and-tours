@@ -324,6 +324,9 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
             <FormBlock
               form={formToDisplay}
               enableIntro={false}
+              submissionContext={{
+                packageId: pkg.id,
+              }}
               className={activeFormType === 'book' ? style.bookingForm : style.enquiryForm}
             />
           ) : (
