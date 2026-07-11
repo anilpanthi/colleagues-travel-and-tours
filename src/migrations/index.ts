@@ -17,6 +17,7 @@ import * as migration_20260629_164516_add_all_year_round_best_season from './202
 import * as migration_20260629_170149_add_contact_messaging_flags from './20260629_170149_add_contact_messaging_flags';
 import * as migration_20260709_023343_add_package_to_form_submissions from './20260709_023343_add_package_to_form_submissions';
 import * as migration_20260709_120000_add_form_submission_status from './20260709_120000_add_form_submission_status';
+import * as migration_20260711_054759_add_high_impact_mobile_poster from './20260711_054759_add_high_impact_mobile_poster';
 
 export const migrations = [
   {
@@ -107,11 +108,16 @@ export const migrations = [
   {
     up: migration_20260709_023343_add_package_to_form_submissions.up,
     down: migration_20260709_023343_add_package_to_form_submissions.down,
-    name: '20260709_023343_add_package_to_form_submissions'
+    name: '20260709_023343_add_package_to_form_submissions',
   },
   {
     up: migration_20260709_120000_add_form_submission_status.up,
     down: migration_20260709_120000_add_form_submission_status.down,
     name: '20260709_120000_add_form_submission_status',
+  },
+  {
+    up: migration_20260711_054759_add_high_impact_mobile_poster.up,
+    down: migration_20260711_054759_add_high_impact_mobile_poster.down,
+    name: '20260711_054759_add_high_impact_mobile_poster',
   },
 ];

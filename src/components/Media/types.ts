@@ -15,6 +15,7 @@ export interface Props {
   loading?: 'lazy' | 'eager' // for NextImage only
   playAfterPageLoad?: boolean // for VideoMedia only
   poster?: string // for VideoMedia only
+  posterOnlyOnMobile?: boolean // for VideoMedia only
   priority?: boolean // for NextImage only
   ref?: Ref<HTMLImageElement | HTMLVideoElement | null>
   resource?: MediaType | string | number | null // for Payload media

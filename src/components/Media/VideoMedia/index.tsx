@@ -11,11 +11,17 @@ export const VideoMedia: React.FC<MediaProps> = ({
   onClick,
   playAfterPageLoad,
   poster,
+  posterOnlyOnMobile,
   resource,
   videoClassName,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(!playAfterPageLoad)
+  const [isMobile, setIsMobile] = useState<boolean | null>(
+    posterOnlyOnMobile ? null : false,
+  )
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(
+    !playAfterPageLoad && !posterOnlyOnMobile,
+  )
   const [isVideoReady, setIsVideoReady] = useState(false)
 
   const videoUrl =
@@ -40,11 +46,31 @@ export const VideoMedia: React.FC<MediaProps> = ({
   })()
 
   useEffect(() => {
-    if (!playAfterPageLoad) return
+    if (!posterOnlyOnMobile) return
+
+    const mediaQuery = window.matchMedia('(max-width: 640px)')
+    const handleChange = () => {
+      setIsMobile(mediaQuery.matches)
+      if (mediaQuery.matches) setIsVideoReady(false)
+    }
+
+    handleChange()
+    mediaQuery.addEventListener('change', handleChange)
+
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [posterOnlyOnMobile])
+
+  useEffect(() => {
+    if (isMobile === null || isMobile) return
+
+    if (!playAfterPageLoad) {
+      const animationFrame = window.requestAnimationFrame(() => setShouldLoadVideo(true))
+      return () => window.cancelAnimationFrame(animationFrame)
+    }
 
     if (document.readyState === 'complete') {
-      setShouldLoadVideo(true)
-      return
+      const animationFrame = window.requestAnimationFrame(() => setShouldLoadVideo(true))
+      return () => window.cancelAnimationFrame(animationFrame)
     }
 
     const handlePageLoad = () => setShouldLoadVideo(true)
@@ -54,7 +80,7 @@ export const VideoMedia: React.FC<MediaProps> = ({
     return () => {
       window.removeEventListener('load', handlePageLoad)
     }
-  }, [playAfterPageLoad])
+  }, [isMobile, playAfterPageLoad])
 
   useEffect(() => {
     if (!shouldLoadVideo) return
@@ -101,30 +127,32 @@ export const VideoMedia: React.FC<MediaProps> = ({
           }}
         />
       )}
-      <video
-        autoPlay
-        className={cn(videoClassName)}
-        controls={false}
-        key={videoUrl}
-        loop
-        muted
-        onCanPlay={(event) => {
-          setIsVideoReady(true)
-          void event.currentTarget.play().catch(() => {
-            // Autoplay can be denied by user-agent preferences.
-          })
-        }}
-        onClick={onClick}
-        playsInline
-        poster={posterUrl || undefined}
-        preload={playAfterPageLoad ? 'none' : 'metadata'}
-        ref={videoRef}
-        src={shouldLoadVideo ? videoUrl : undefined}
-        style={{
-          opacity: posterUrl && !isVideoReady ? 0 : 1,
-          transition: 'opacity 300ms ease',
-        }}
-      />
+      {isMobile !== true && (
+        <video
+          autoPlay
+          className={cn(videoClassName)}
+          controls={false}
+          key={videoUrl}
+          loop
+          muted
+          onCanPlay={(event) => {
+            setIsVideoReady(true)
+            void event.currentTarget.play().catch(() => {
+              // Autoplay can be denied by user-agent preferences.
+            })
+          }}
+          onClick={onClick}
+          playsInline
+          poster={posterUrl || undefined}
+          preload={playAfterPageLoad ? 'none' : 'metadata'}
+          ref={videoRef}
+          src={shouldLoadVideo && isMobile === false ? videoUrl : undefined}
+          style={{
+            opacity: posterUrl && !isVideoReady ? 0 : 1,
+            transition: 'opacity 300ms ease',
+          }}
+        />
+      )}
     </>
   )
 }

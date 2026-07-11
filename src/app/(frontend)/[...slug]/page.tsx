@@ -23,7 +23,7 @@ import {
 } from './queries'
 import { RelatedPackages } from '@/components/PackageDetails/RelatedPackages'
 import { isPayloadBuildTime } from '@/utilities/isBuildTime'
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
 async function RelatedPackagesLoader({ pkg }: { pkg: Package }) {

@@ -53,6 +53,19 @@ export const hero: Field = {
 			relationTo: 'media',
 		},
 		{
+			name: 'backgroundVideoPoster',
+			label: 'Mobile Poster Image',
+			type: 'upload',
+			admin: {
+				condition: (_, { type } = {}) => type === 'highImpact',
+				description: 'Shown instead of loading the background video on mobile devices.',
+			},
+			filterOptions: {
+				mimeType: { contains: 'image' },
+			},
+			relationTo: 'media',
+		},
+		{
 			name: 'tagline',
 			type: 'text',
 			admin: {

@@ -10,6 +10,7 @@ import { icons, MapPin, ArrowRight, Play } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/Button/Button'
 import { generatePath } from '@/utilities/generatePath'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import Modal from '@/components/ui/Modal/Modal'
 
 type ActiveVideo = {
@@ -46,6 +47,7 @@ const getYouTubeEmbedUrl = (url: string): string | null => {
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   backgroundVideo,
+  backgroundVideoPoster,
   description,
   features,
   links,
@@ -54,6 +56,16 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   title,
 }) => {
   const [activeVideo, setActiveVideo] = useState<ActiveVideo | null>(null)
+  const mobilePosterUrl =
+    backgroundVideoPoster && typeof backgroundVideoPoster === 'object'
+      ? getMediaUrl(
+          backgroundVideoPoster.sizes?.xlarge?.url ||
+            backgroundVideoPoster.sizes?.large?.url ||
+            backgroundVideoPoster.url ||
+            (backgroundVideoPoster.filename ? `/media/${backgroundVideoPoster.filename}` : null),
+          backgroundVideoPoster.updatedAt,
+        )
+      : null
 
   return (
     <section className={cssClass.heroSection}>
@@ -62,6 +74,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
         <Media
           fill
           playAfterPageLoad
+          poster={mobilePosterUrl || undefined}
+          posterOnlyOnMobile={Boolean(mobilePosterUrl)}
           videoClassName={cssClass.heroVideo}
           priority
           resource={backgroundVideo}

@@ -337,6 +337,10 @@ export interface Activity {
      */
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     backgroundVideo?: (number | null) | Media;
+    /**
+     * Shown instead of loading the background video on mobile devices.
+     */
+    backgroundVideoPoster?: (number | null) | Media;
     tagline?: string | null;
     title?: string | null;
     subtitle?: string | null;
@@ -457,6 +461,10 @@ export interface Page {
      */
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     backgroundVideo?: (number | null) | Media;
+    /**
+     * Shown instead of loading the background video on mobile devices.
+     */
+    backgroundVideoPoster?: (number | null) | Media;
     tagline?: string | null;
     title?: string | null;
     subtitle?: string | null;
@@ -574,6 +582,10 @@ export interface Post {
      */
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     backgroundVideo?: (number | null) | Media;
+    /**
+     * Shown instead of loading the background video on mobile devices.
+     */
+    backgroundVideoPoster?: (number | null) | Media;
     tagline?: string | null;
     title?: string | null;
     subtitle?: string | null;
@@ -694,6 +706,10 @@ export interface Package {
      */
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     backgroundVideo?: (number | null) | Media;
+    /**
+     * Shown instead of loading the background video on mobile devices.
+     */
+    backgroundVideoPoster?: (number | null) | Media;
     tagline?: string | null;
     title?: string | null;
     subtitle?: string | null;
@@ -2144,6 +2160,7 @@ export interface ActivitiesSelect<T extends boolean = true> {
     | {
         type?: T;
         backgroundVideo?: T;
+        backgroundVideoPoster?: T;
         tagline?: T;
         title?: T;
         subtitle?: T;
@@ -2209,6 +2226,7 @@ export interface PackagesSelect<T extends boolean = true> {
     | {
         type?: T;
         backgroundVideo?: T;
+        backgroundVideoPoster?: T;
         tagline?: T;
         title?: T;
         subtitle?: T;
@@ -2316,6 +2334,7 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         type?: T;
         backgroundVideo?: T;
+        backgroundVideoPoster?: T;
         tagline?: T;
         title?: T;
         subtitle?: T;
@@ -2381,6 +2400,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         backgroundVideo?: T;
+        backgroundVideoPoster?: T;
         tagline?: T;
         title?: T;
         subtitle?: T;
