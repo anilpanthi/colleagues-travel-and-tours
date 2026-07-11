@@ -28,6 +28,10 @@ const baseSiteSettingsSelect = {
   bookingForm: formSelect,
   flightBookingForm: formSelect,
   enquiryForm: formSelect,
+  tawkChat: {
+    propertyId: true,
+    widgetId: true,
+  },
 } as const
 
 /**

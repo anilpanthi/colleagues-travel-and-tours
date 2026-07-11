@@ -3177,6 +3177,13 @@ export interface SiteSetting {
       }[]
     | null;
   /**
+   * Enter the IDs from your Tawk.to embed URL: https://embed.tawk.to/{propertyId}/{widgetId}. Leave either field empty to disable chat.
+   */
+  tawkChat?: {
+    propertyId?: string | null;
+    widgetId?: string | null;
+  };
+  /**
    * Select contact form to display in contact page.
    */
   contactForm?: (number | null) | Form;
@@ -3271,6 +3278,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         icon?: T;
         url?: T;
         id?: T;
+      };
+  tawkChat?:
+    | T
+    | {
+        propertyId?: T;
+        widgetId?: T;
       };
   contactForm?: T;
   bookingForm?: T;

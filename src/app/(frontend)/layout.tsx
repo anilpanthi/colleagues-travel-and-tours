@@ -22,6 +22,7 @@ import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
 import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
+import { ChatSupport } from '@/components/ChatSupport'
 
 const siteURL = getServerSideURL()
 const googleTagID = 'G-0W0BY09GS7'
@@ -101,7 +102,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     getLiveBookingPackages(),
   ])
 
-  const { mainNavigation, logos, flightBookingForm } = siteSettings
+  const { mainNavigation, logos, flightBookingForm, tawkChat } = siteSettings
 
   const footerData = {
     footerColumns: siteSettings?.footerColumns,
@@ -175,6 +176,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
             <LiveBookingToast packages={liveBookingPackages} />
+            <ChatSupport propertyId={tawkChat?.propertyId} widgetId={tawkChat?.widgetId} />
             {/* <DeferredGDPRConsent /> */}
           </div>
         </Providers>

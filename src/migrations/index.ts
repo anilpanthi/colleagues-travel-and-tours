@@ -18,6 +18,7 @@ import * as migration_20260629_170149_add_contact_messaging_flags from './202606
 import * as migration_20260709_023343_add_package_to_form_submissions from './20260709_023343_add_package_to_form_submissions';
 import * as migration_20260709_120000_add_form_submission_status from './20260709_120000_add_form_submission_status';
 import * as migration_20260711_054759_add_high_impact_mobile_poster from './20260711_054759_add_high_impact_mobile_poster';
+import * as migration_20260711_061050_add_tawk_chat_settings from './20260711_061050_add_tawk_chat_settings';
 
 export const migrations = [
   {
@@ -120,4 +121,9 @@ export const migrations = [
     down: migration_20260711_054759_add_high_impact_mobile_poster.down,
     name: '20260711_054759_add_high_impact_mobile_poster',
   },
-];
+  {
+    up: migration_20260711_061050_add_tawk_chat_settings.up,
+    down: migration_20260711_061050_add_tawk_chat_settings.down,
+    name: '20260711_061050_add_tawk_chat_settings',
+  },
+]

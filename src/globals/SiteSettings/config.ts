@@ -272,6 +272,38 @@ export const SiteSettings: GlobalConfig = {
           label: 'Miscellaneous',
           fields: [
             {
+              name: 'tawkChat',
+              type: 'group',
+              label: 'Tawk.to Chat Support',
+              admin: {
+                description:
+                  'Enter the IDs from your Tawk.to embed URL: https://embed.tawk.to/{propertyId}/{widgetId}. Leave either field empty to disable chat.',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'propertyId',
+                      type: 'text',
+                      label: 'Property ID',
+                      admin: {
+                        width: '50%',
+                      },
+                    },
+                    {
+                      name: 'widgetId',
+                      type: 'text',
+                      label: 'Widget ID',
+                      admin: {
+                        width: '50%',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               name: 'contactForm',
               label: 'Contact Form',
               type: 'relationship',
