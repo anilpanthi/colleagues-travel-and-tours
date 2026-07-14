@@ -80,7 +80,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
 
               return (
                 <div key={index} className={styles.footerCol}>
-                  <h4 className={styles.footerTitle}>{col.title}</h4>
+                  <h2 className={styles.footerTitle}>{col.title}</h2>
                   <ul className={styles.footerLinks}>
                     {col.navItems.map((navItem) => {
                       const link = navItem.link
@@ -102,7 +102,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
               const displayEmail = emails?.[0]?.email
               return (
                 <div key={index} className={styles.footerCol}>
-                  <h4 className={styles.footerTitle}>{col.title}</h4>
+                  <h2 className={styles.footerTitle}>{col.title}</h2>
                   <ul className={styles.contactInfo}>
                     {displayAddress && (
                       <li>

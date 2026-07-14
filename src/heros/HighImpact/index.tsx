@@ -170,7 +170,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                         )
                       )}
                     </div>
-                    <h3 className={cssClass.featureTitle}>{feature.title}</h3>
+                    <p className={cssClass.featureTitle}>{feature.title}</p>
                     <p className={cssClass.featureSubtitle}>{feature.description}</p>
                   </div>
                 )
