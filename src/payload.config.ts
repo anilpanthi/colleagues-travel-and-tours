@@ -114,40 +114,40 @@ export default buildConfig({
     prodMigrations: shouldRunProdMigrations ? migrations : undefined,
   }),
   sharp,
-  // email: nodemailerAdapter({
-  //   defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleagues-travel.com',
-  //   defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel',
-  //   transportOptions: {
-  //     host: process.env.SMTP_HOST,
-  //     port: Number(process.env.SMTP_PORT) || 587,
-  //     auth: {
-  //       user: process.env.SMTP_USER,
-  //       pass: process.env.SMTP_PASS,
-  //     },
-  //   },
-  // }),
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleagues-travel.com',
-    defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel',
-    // If SMTP_HOST is missing, we pass a dummy JSON transport to bypass verification completely
-    ...(process.env.SMTP_HOST
-      ? {
-          transportOptions: {
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT) || 587,
-            auth: {
-              user: process.env.SMTP_USER,
-              pass: process.env.SMTP_PASS,
-            },
-          },
-        }
-      : {
-          // Mock fallback: prevents Nodemailer from trying to connect to localhost:587
-          transportOptions: {
-            jsonTransport: true,
-          },
-        }),
+    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleaguestravel.com',
+    defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel And Tours',
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    },
   }),
+  // email: nodemailerAdapter({
+  //   defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleaguestravel.com',
+  //   defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel',
+  //   // If SMTP_HOST is missing, we pass a dummy JSON transport to bypass verification completely
+  //   ...(process.env.SMTP_HOST
+  //     ? {
+  //         transportOptions: {
+  //           host: process.env.SMTP_HOST,
+  //           port: Number(process.env.SMTP_PORT) || 587,
+  //           auth: {
+  //             user: process.env.SMTP_USER,
+  //             pass: process.env.SMTP_PASS,
+  //           },
+  //         },
+  //       }
+  //     : {
+  //         // Mock fallback: prevents Nodemailer from trying to connect to localhost:587
+  //         transportOptions: {
+  //           jsonTransport: true,
+  //         },
+  //       }),
+  // }),
   plugins: [
     importExportPlugin({
       collections: [
