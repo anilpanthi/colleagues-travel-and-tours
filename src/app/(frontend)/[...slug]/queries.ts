@@ -2,62 +2,115 @@ import { cache } from 'react'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { draftMode } from 'next/headers'
+import { unstable_cache } from 'next/cache'
 import type { Package } from '@/payload-types'
 
-export const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+type SlugQuery = {
+  draft?: boolean
+  slug: string
+}
+
+const getDraftModeEnabled = cache(async (): Promise<boolean> => {
   try {
-    let draft = false
-    try {
-      const { isEnabled } = await draftMode()
-      draft = isEnabled
-    } catch (_e) {
-      // draftMode() can throw when not called from a server component or during build in some cases
-    }
-    const payload = await getPayload({ config: configPromise })
+    const { isEnabled } = await draftMode()
+    return isEnabled
+  } catch (_error) {
+    // draftMode() can throw outside a request context or during parts of the build.
+    return false
+  }
+})
 
-    const result = await payload.find({
-      collection: 'pages',
-      depth: 5,
-      draft,
-      limit: 1,
-      pagination: false,
-      overrideAccess: draft,
-      where: {
-        slug: {
-          equals: slug,
-        },
+const findPageBySlug = async ({ slug, draft }: Required<SlugQuery>) => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'pages',
+    // Blocks can contain a selected document whose image is another relationship.
+    // Depth 2 preserves those existing card/testimonial visuals without the depth-5 overfetch.
+    depth: 2,
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    where: {
+      slug: {
+        equals: slug,
       },
-    })
+    },
+  })
 
-    return result.docs?.[0] || null
+  return result.docs?.[0] || null
+}
+
+const findPublishedPageBySlug = unstable_cache(
+  async (slug: string) => findPageBySlug({ draft: false, slug }),
+  ['published-page-by-slug'],
+  {
+    revalidate: 600,
+    tags: ['published-pages'],
+  },
+)
+
+const queryPageBySlugForRender = cache(async (slug: string, draft: boolean) => {
+  try {
+    return draft
+      ? await findPageBySlug({ draft: true, slug })
+      : await findPublishedPageBySlug(slug)
   } catch (error) {
     console.error(`Error querying page by slug "${slug}":`, error)
     return null
   }
 })
 
-export const queryPackageBySlug = cache(async ({ slug }: { slug: string }) => {
-  try {
-    const payload = await getPayload({ config: configPromise })
+export const queryPageBySlug = async ({ slug, draft }: SlugQuery) => {
+  const draftEnabled = draft ?? (await getDraftModeEnabled())
+  return queryPageBySlugForRender(slug, draftEnabled)
+}
 
-    const result = await payload.find({
-      collection: 'packages',
-      depth: 2,
-      limit: 1,
-      pagination: false,
-      where: {
-        slug: {
-          equals: slug,
-        },
+const findPackageBySlug = async ({ slug, draft }: Required<SlugQuery>) => {
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'packages',
+    depth: 2,
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    where: {
+      slug: {
+        equals: slug,
       },
-    })
+    },
+  })
 
-    return result.docs?.[0] || null
+  return result.docs?.[0] || null
+}
+
+const findPublishedPackageBySlug = unstable_cache(
+  async (slug: string) => findPackageBySlug({ draft: false, slug }),
+  ['published-package-by-slug'],
+  {
+    revalidate: 600,
+    tags: ['published-packages'],
+  },
+)
+
+const queryPackageBySlugForRender = cache(async (slug: string, draft: boolean) => {
+  try {
+    return draft
+      ? await findPackageBySlug({ draft: true, slug })
+      : await findPublishedPackageBySlug(slug)
   } catch (error) {
     console.error(`Error querying package by slug "${slug}":`, error)
     return null
   }
 })
+
+export const queryPackageBySlug = async ({ slug, draft }: SlugQuery) => {
+  const draftEnabled = draft ?? (await getDraftModeEnabled())
+  return queryPackageBySlugForRender(slug, draftEnabled)
+}
 
 /** Up to `limit` other packages that share an Activity with `pkg`, newest first. */
 export const queryRelatedPackages = cache(

@@ -1,5 +1,3 @@
-'use client'
-
 import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
@@ -65,7 +63,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={placeholderBlur}
         priority={priority}
-        quality={82}
+        quality={75}
         loading={loading}
         sizes={sizes}
         src={src}

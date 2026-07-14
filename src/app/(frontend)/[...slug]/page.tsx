@@ -81,8 +81,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   const decodedSlug = decodeURIComponent(currentSlug)
   const url = '/' + decodedSlug
 
-  // Try querying package first
-  const pkg = await queryPackageBySlug({ slug: decodedSlug })
+  // The homepage is always a Page document, so avoid a guaranteed package miss.
+  const pkg =
+    decodedSlug === 'home' ? null : await queryPackageBySlug({ draft, slug: decodedSlug })
 
   if (pkg) {
     const siteSettings = await getCachedSiteSettings()
@@ -106,6 +107,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   // Then try querying page
   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
+    draft,
     slug: decodedSlug,
   })
 
@@ -148,7 +150,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
   const decodedSlug = decodeURIComponent(slug ? slug.join('/') : 'home')
 
-  const pkg = await queryPackageBySlug({ slug: decodedSlug })
+  const pkg = decodedSlug === 'home' ? null : await queryPackageBySlug({ slug: decodedSlug })
   if (pkg) {
     return generateMeta({ doc: pkg })
   }

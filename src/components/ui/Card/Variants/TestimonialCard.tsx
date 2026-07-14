@@ -1,4 +1,3 @@
-'use client'
 import React from 'react'
 import type { Testimonial, Media as MediaType } from '@/payload-types'
 import Card from '../Primitives/Card'
@@ -51,7 +50,7 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
 			<Card.Div className={styles.testimonialCard__authorInfo}>
 				{avatar && typeof avatar === 'object' && (
 					<Card.Div className={styles.testimonialCard__avatar}>
-						<Card.Image resource={avatar as MediaType} alt={author} />
+						<Card.Image resource={avatar as MediaType} alt={author} size="56px" />
 					</Card.Div>
 				)}
 				<Card.Div className={styles.testimonialCard__authorDetails}>

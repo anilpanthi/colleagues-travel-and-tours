@@ -44,11 +44,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
   }, [pathname, setHeaderTheme, setHasHeroImage])
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-      const heroHeight = isFront ? window.innerHeight * 0.8 : window.innerHeight * 0.4
+    let scrollFrame: number | null = null
 
-      setIsPastHero(window.scrollY > heroHeight)
+    const updateScrollState = () => {
+      scrollFrame = null
+      const nextIsScrolled = window.scrollY > 20
+      const heroHeight = isFront ? window.innerHeight * 0.8 : window.innerHeight * 0.4
+      const nextIsPastHero = window.scrollY > heroHeight
+
+      setIsScrolled((current) => (current === nextIsScrolled ? current : nextIsScrolled))
+      setIsPastHero((current) => (current === nextIsPastHero ? current : nextIsPastHero))
+    }
+
+    const handleScroll = () => {
+      if (scrollFrame !== null) return
+      scrollFrame = window.requestAnimationFrame(updateScrollState)
     }
 
     const handleResize = () => {
@@ -57,16 +67,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleResize)
 
     // Initialize state on mount
-    handleScroll()
+    updateScrollState()
     handleResize()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
+      if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame)
     }
   }, [isFront])
 

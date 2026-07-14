@@ -17,6 +17,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
 
       try {
         revalidatePath(path)
+        revalidateTag('published-pages', { expire: 0 })
         revalidateTag('pages-sitemap', 'max')
       } catch (_err) {
         payload.logger.error(`Error revalidating page at path: ${path}`)
@@ -31,6 +32,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
 
       try {
         revalidatePath(oldPath)
+        revalidateTag('published-pages', { expire: 0 })
         revalidateTag('pages-sitemap', 'max')
       } catch (_err) {
         payload.logger.error(`Error revalidating old page at path: ${oldPath}`)
@@ -45,8 +47,9 @@ export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { 
     const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
     try {
       revalidatePath(path)
+      revalidateTag('published-pages', { expire: 0 })
       revalidateTag('pages-sitemap', 'max')
-    } catch (err) {
+    } catch (_err) {
       // Ignore errors during render
     }
   }

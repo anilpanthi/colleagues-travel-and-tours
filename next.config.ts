@@ -45,6 +45,7 @@ const nextConfig: NextConfig = {
     ]
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     localPatterns: [
       {
         pathname: '/api/media/file/**',
@@ -71,7 +72,8 @@ const nextConfig: NextConfig = {
           Boolean(item),
         )),
     ],
-    qualities: [75, 82, 100],
+    minimumCacheTTL: 2_678_400,
+    qualities: [70, 75, 82, 90],
   },
   output: 'standalone',
   webpack: (webpackConfig, { dev, isServer, webpack }) => {

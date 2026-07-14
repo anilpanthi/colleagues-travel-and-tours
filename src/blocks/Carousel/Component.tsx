@@ -1,8 +1,14 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import type { CarouselBlock as CarouselBlockProps, Config } from '@/payload-types'
+import type {
+	CarouselBlock as CarouselBlockProps,
+	Config,
+	Testimonial,
+} from '@/payload-types'
 import Carousel from '@/components/ui/Carousel/Carousel'
+import TestimonialCard from '@/components/ui/Card/Variants/TestimonialCard'
+import carouselStyles from '@/components/ui/Carousel/Carousel.module.scss'
 
 const carouselSelectByCollection = (collectionSlug: keyof Config['collections']) => {
 	switch (collectionSlug) {
@@ -31,11 +37,9 @@ const carouselSelectByCollection = (collectionSlug: keyof Config['collections'])
 export const CarouselBlock: React.FC<CarouselBlockProps> = async (props) => {
 	const {
 		selectedItems: selectedItemsFromProps,
-		enableLink,
 		collection,
 		populateBy,
 		limit,
-		link,
 	} = props
 
 	let items = selectedItemsFromProps
@@ -60,14 +64,32 @@ export const CarouselBlock: React.FC<CarouselBlockProps> = async (props) => {
 		)
 	}
 
-	return (
-		<Carousel
-			collection={collection}
-			selectedItems={items}
-			enableLink={enableLink}
-			link={link}
-		/>
-	)
+	const fallbackItems = items?.slice(0, 3).map((item, index) => {
+		if (typeof item.value === 'number') return null
+
+		return (
+			<div
+				className={carouselStyles.carouselFallbackItem}
+				key={`${item.relationTo}-${item.value.id ?? index}`}
+			>
+				{item.relationTo === 'testimonials' ? (
+					<TestimonialCard testimonial={item.value as Testimonial} />
+				) : (
+					<div className={carouselStyles.placeholderCard}>
+						<h3>
+							{(item.value as { title?: string; author?: string }).title ||
+								(item.value as { title?: string; author?: string }).author}
+						</h3>
+					</div>
+				)}
+			</div>
+		)
+	})
+	const fallback = fallbackItems?.some(Boolean) ? (
+		<div className={carouselStyles.carouselFallback}>{fallbackItems}</div>
+	) : null
+
+	return <Carousel fallback={fallback} selectedItems={items} />
 }
 
 export default CarouselBlock

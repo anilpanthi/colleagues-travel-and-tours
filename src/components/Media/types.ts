@@ -6,6 +6,7 @@ import type { Media as MediaType } from '@/payload-types'
 export interface Props {
   alt?: string
   className?: string
+  fetchPriority?: 'high' | 'low' | 'auto'
   fill?: boolean // for NextImage only
   htmlElement?: ElementType | null
   pictureClassName?: string

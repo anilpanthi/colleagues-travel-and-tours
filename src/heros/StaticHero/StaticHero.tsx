@@ -32,7 +32,7 @@ export const StaticHero: React.FC<StaticHeroProps> = ({
 				className={style.staticHero__image}
 				fill
 				priority
-				quality={2}
+				quality={75}
 				sizes="100vw"
 				src={heroImage}
 			/>

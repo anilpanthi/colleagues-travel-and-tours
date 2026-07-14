@@ -3,10 +3,22 @@
 import CtaStyle from './Cta.module.css'
 import { Button } from '@/components/ui/Button/Button'
 import { Plane } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import Modal from '@/components/ui/Modal/Modal'
-import { FormBlock } from '@/blocks/Form/Component'
-import type { Form as FormType, SiteSetting } from '@/payload-types'
+import type { SiteSetting } from '@/payload-types'
+import { DeferredDialogStatus } from '@/components/ui/DeferredDialogStatus'
+
+const loadFlightBookingModal = () =>
+  import('./FlightBookingModal').then((module) => module.FlightBookingModal)
+
+const FlightBookingModal = dynamic(loadFlightBookingModal, {
+  loading: () => <DeferredDialogStatus label="Loading flight booking form" />,
+  ssr: false,
+})
+
+const preloadFlightBookingModal = () => {
+  void loadFlightBookingModal()
+}
 
 interface CtaProps {
   flightBookingForm: SiteSetting['flightBookingForm']
@@ -40,38 +52,26 @@ export default function Cta({ flightBookingForm }: CtaProps) {
   const handleOpenModal = () => setShowModal(true)
   const handleCloseModal = () => setShowModal(false)
 
-  // Safe conversion between the two Form types
-  const form =
-    flightBookingForm && typeof flightBookingForm === 'object'
-      ? (flightBookingForm as unknown as FormType)
-      : null
-
   return (
     <>
       <Button
+        aria-expanded={showModal}
+        aria-haspopup="dialog"
         appearance="primary"
         size="sm"
         className={CtaStyle.ctaButton}
         iconLeft={<Plane className={CtaStyle.iconPlane} />}
         onClick={handleOpenModal}
+        onFocus={preloadFlightBookingModal}
+        onPointerDown={preloadFlightBookingModal}
+        onPointerEnter={preloadFlightBookingModal}
       >
         Book Your Flight
       </Button>
 
-      {showModal && (
-        <Modal
-          isOpen={showModal}
-          onClose={handleCloseModal}
-          title="Enter your flight details below to make your reservation."
-          size="xl"
-        >
-          {form ? (
-            <FormBlock form={form} enableIntro={false} className={CtaStyle.reservationForm} />
-          ) : (
-            <p>Form is not available at the moment.</p>
-          )}
-        </Modal>
-      )}
+      {showModal ? (
+        <FlightBookingModal flightBookingForm={flightBookingForm} onClose={handleCloseModal} />
+      ) : null}
     </>
   )
 }

@@ -60,6 +60,36 @@
   padding: 1rem 0 !important;
 }
 
+.carouselFallback {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.carouselFallbackItem:nth-child(n + 2) {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .carouselFallback {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .carouselFallbackItem:nth-child(2) {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carouselFallback {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .carouselFallbackItem:nth-child(3) {
+    display: block;
+  }
+}
+
 .swiper-slide-next {
   transform: scale(1.08);
   background-color: #374151;

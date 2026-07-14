@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import type { SiteSetting } from '@/payload-types'
 import styles from './Footer.module.scss'
@@ -45,7 +43,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
               return (
                 <div key={index} className={styles.footerCol}>
                   <Link href="/" className={styles.footerBrand}>
-                    <BrandImage fallbackSrc="/colleagues-white-logo.svg" src={src} />
+                    <BrandImage fallbackSrc="/colleagues-white-logo.svg" loading="lazy" src={src} />
                   </Link>
                   {col.description && <p className={styles.footerDesc}>{col.description}</p>}
                   {socialLinks && socialLinks.length > 0 && (
@@ -64,6 +62,7 @@ export const FooterClient: React.FC<FooterClientProps> = ({
                             <Media
                               resource={icon as MediaType}
                               imgClassName={styles.socialIconMedia}
+                              size="20px"
                             />
                           </a>
                         )

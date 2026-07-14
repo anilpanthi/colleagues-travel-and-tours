@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '@/utilities/ui'
+import NextImage from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 import type { Props as MediaProps } from '../types'
@@ -8,20 +9,20 @@ import type { Props as MediaProps } from '../types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 export const VideoMedia: React.FC<MediaProps> = ({
+  fetchPriority,
+  fill,
   onClick,
   playAfterPageLoad,
   poster,
   posterOnlyOnMobile,
+  priority,
   resource,
+  size,
   videoClassName,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isMobile, setIsMobile] = useState<boolean | null>(
-    posterOnlyOnMobile ? null : false,
-  )
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(
-    !playAfterPageLoad && !posterOnlyOnMobile,
-  )
+  const [isMobile, setIsMobile] = useState<boolean | null>(posterOnlyOnMobile ? null : false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(!playAfterPageLoad && !posterOnlyOnMobile)
   const [isVideoReady, setIsVideoReady] = useState(false)
 
   const videoUrl =
@@ -113,20 +114,43 @@ export const VideoMedia: React.FC<MediaProps> = ({
 
   return (
     <>
-      {posterUrl && (
-        <img
-          alt=""
-          aria-hidden="true"
-          className={cn(videoClassName)}
-          decoding="async"
-          src={posterUrl}
-          style={{
-            opacity: isVideoReady ? 0 : 1,
-            pointerEvents: 'none',
-            transition: 'opacity 300ms ease',
-          }}
-        />
-      )}
+      {posterUrl &&
+        (fill ? (
+          <NextImage
+            alt=""
+            aria-hidden="true"
+            className={cn(videoClassName)}
+            decoding="async"
+            fetchPriority={fetchPriority ?? (priority ? 'high' : undefined)}
+            fill
+            priority={priority}
+            quality={75}
+            sizes={size || '100vw'}
+            src={posterUrl}
+            style={{
+              opacity: isVideoReady ? 0 : 1,
+              pointerEvents: 'none',
+              transition: 'opacity 300ms ease',
+            }}
+          />
+        ) : (
+          // A raw image is retained for non-fill callers because a standalone poster URL has no
+          // reliable intrinsic dimensions. The full-viewport hero uses the optimized path above.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            alt=""
+            aria-hidden="true"
+            className={cn(videoClassName)}
+            decoding="async"
+            fetchPriority={fetchPriority ?? (priority ? 'high' : undefined)}
+            src={posterUrl}
+            style={{
+              opacity: isVideoReady ? 0 : 1,
+              pointerEvents: 'none',
+              transition: 'opacity 300ms ease',
+            }}
+          />
+        ))}
       {isMobile !== true && (
         <video
           autoPlay
@@ -143,7 +167,6 @@ export const VideoMedia: React.FC<MediaProps> = ({
           }}
           onClick={onClick}
           playsInline
-          poster={posterUrl || undefined}
           preload={playAfterPageLoad ? 'none' : 'metadata'}
           ref={videoRef}
           src={shouldLoadVideo && isMobile === false ? videoUrl : undefined}

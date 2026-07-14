@@ -1,8 +1,6 @@
-'use client'
 import { Activity } from 'src/payload-types'
 import Container from '@/components/ui/Container'
 import Row from '@/components/ui/Row'
-import { Media } from '@/components/Media'
 import SvgComponent from './Icon'
 import style from './ThingsToDo.module.scss'
 

@@ -1,5 +1,4 @@
-'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { RenderHero } from '@/heros/RenderHero'
 import RichText from '@/components/RichText'
 import Content from '@/components/ui/Content/Index'
@@ -8,15 +7,13 @@ import type { Package, SiteSetting } from '@/payload-types'
 import Gallery from '@/components/Gallery'
 import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import { ReadMore } from '@/components/ui/ReadMore'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { Media } from '@/components/Media'
-import Modal from '@/components/ui/Modal/Modal'
-import { FormBlock } from '@/blocks/Form/Component'
-import type { Form as FormType } from '@/payload-types'
 import { LazyEmbed } from '@/components/LazyEmbed'
 
 import style from './index.module.scss'
-import { Button } from '../ui/Button'
+import { BookingButtons } from './BookingButtons'
+import { BookingProvider } from './BookingProvider'
+import { PackageHeaderThemeEffect } from './PackageHeaderThemeEffect'
 
 interface PackageDetailsProps {
   pkg: Package
@@ -31,22 +28,9 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
   enquiryForm,
   children,
 }) => {
-  const { setHeaderTheme, setHasHeroImage } = useHeaderTheme()
-  const [showModal, setShowModal] = useState(false)
-  const [activeFormType, setActiveFormType] = useState<'book' | 'enquiry' | null>(null)
-
   const packageHasHeroImage = Boolean(
     pkg?.hero?.type && pkg?.hero?.type !== 'none' && pkg?.hero?.type !== 'lowImpact',
   )
-
-  useEffect(() => {
-    if (!packageHasHeroImage) {
-      setHeaderTheme('light')
-      setHasHeroImage(false)
-    } else {
-      setHasHeroImage(true)
-    }
-  }, [setHeaderTheme, setHasHeroImage, packageHasHeroImage])
 
   // Construct custom breadcrumbs: Home -> Activities -> [Activity Name] -> Package Name
   const activity =
@@ -59,32 +43,6 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
     ...(activity ? [{ label: activity.title, url: `/activities/${activity.slug}` }] : []),
     { label: pkg.title },
   ]
-
-  const handleCloseModal = () => {
-    setShowModal(false)
-    setActiveFormType(null)
-  }
-
-  const openPopUp = (type: 'book' | 'enquiry') => {
-    setActiveFormType(type)
-    setShowModal(true)
-  }
-
-  const activeForm =
-    activeFormType === 'book' ? bookingForm : activeFormType === 'enquiry' ? enquiryForm : null
-  const formToDisplay =
-    activeForm && typeof activeForm === 'object' ? (activeForm as unknown as FormType) : null
-
-  const renderContactButtons = () => (
-    <React.Fragment>
-      <Button appearance="primary" size="lg" onClick={() => openPopUp('book')}>
-        Book this package
-      </Button>
-      <Button appearance="outlineBlack" size="lg" onClick={() => openPopUp('enquiry')}>
-        Customize This Trip
-      </Button>
-    </React.Fragment>
-  )
 
   const tripFactsContent = (pkg.tripDuration ||
     pkg.tripGrade ||
@@ -171,7 +129,13 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
   )
 
   return (
-    <>
+    <BookingProvider
+      bookingForm={bookingForm}
+      enquiryForm={enquiryForm}
+      packageId={pkg.id}
+      packageTitle={pkg.title}
+    >
+      <PackageHeaderThemeEffect hasHeroImage={packageHasHeroImage} />
       <RenderHero {...pkg?.hero} title={pkg.title} breadcrumbs={customBreadcrumbs} />
 
       {(!pkg?.hero || pkg?.hero?.type === 'none') && (
@@ -302,7 +266,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
           <aside className={style.singlePackage__right}>
             <div className={style.tripFactsDesktop}>{tripFactsContent}</div>
             <div className={`${style.contactGroup} ${style.contactGroupDesktop}`}>
-              {renderContactButtons()}
+              <BookingButtons />
             </div>
           </aside>
         </div>
@@ -310,30 +274,8 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
       </Content>
 
       <div className={`${style.contactGroup} ${style.contactGroupMobile}`}>
-        {renderContactButtons()}
+        <BookingButtons />
       </div>
-
-      {showModal && (
-        <Modal
-          isOpen={showModal}
-          onClose={handleCloseModal}
-          title={activeFormType === 'book' ? `Book ${pkg.title}` : `Enquire about ${pkg.title}`}
-          size={activeFormType === 'enquiry' ? 'md' : 'lg'}
-        >
-          {formToDisplay ? (
-            <FormBlock
-              form={formToDisplay}
-              enableIntro={false}
-              submissionContext={{
-                packageId: pkg.id,
-              }}
-              className={activeFormType === 'book' ? style.bookingForm : style.enquiryForm}
-            />
-          ) : (
-            <p>Form is not available at the moment.</p>
-          )}
-        </Modal>
-      )}
-    </>
+    </BookingProvider>
   )
 }

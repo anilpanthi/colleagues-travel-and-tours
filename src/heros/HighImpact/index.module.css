@@ -380,3 +380,13 @@
 		opacity: 0;
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.featureCard,
+	.iconArrowRight,
+	.scrollIndicator,
+	.scrollDot {
+		animation: none;
+		transition: none;
+	}
+}

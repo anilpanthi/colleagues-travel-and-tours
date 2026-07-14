@@ -92,6 +92,7 @@ export const FormBlock: React.FC<
 
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
+  const [shouldLoadRecaptcha, setShouldLoadRecaptcha] = useState(false)
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const honeypotRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -356,7 +357,7 @@ export const FormBlock: React.FC<
 
   return (
     <div className={cn(classes.formBlock, className)}>
-      {recaptchaRequired && <ReCaptchaScript />}
+      {recaptchaRequired && shouldLoadRecaptcha && <ReCaptchaScript />}
       {enableIntro && introContent && !hasSubmitted && (
         <RichText className={classes.formBlock__intro} data={introContent} enableGutter={false} />
       )}
@@ -377,6 +378,8 @@ export const FormBlock: React.FC<
             <form
               id={formElementID}
               className={classes.formBlock__form}
+              onFocusCapture={() => setShouldLoadRecaptcha(true)}
+              onPointerDownCapture={() => setShouldLoadRecaptcha(true)}
               onSubmit={handleFormSubmit}
             >
               <div aria-hidden="true" className={classes.formBlock__honeypot}>

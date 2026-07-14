@@ -48,6 +48,10 @@ const isPublicMediaRequest = (request, url) =>
 const cacheMediaRequest = async (request) => {
   const cachedResponse = await caches.match(request)
 
+  if (cachedResponse) {
+    return cachedResponse
+  }
+
   try {
     const response = await fetch(request)
     if (response.status === 200) {
@@ -61,7 +65,7 @@ const cacheMediaRequest = async (request) => {
 
     return response
   } catch {
-    return cachedResponse
+    return Response.error()
   }
 }
 

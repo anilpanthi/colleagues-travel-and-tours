@@ -7,6 +7,7 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { Inter, Jost } from 'next/font/google'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getServerSideURL } from '@/utilities/getURL'
 import { cn } from '@/utilities/ui'
 
@@ -67,29 +68,42 @@ const jost = Jost({
   variable: '--font-jost',
 })
 
+const loadLiveBookingPackages = async (): Promise<LiveBookingPackage[]> => {
+  const payload = await getPayload({ config: configPromise })
+
+  const packages = await payload.find({
+    collection: 'packages',
+    draft: false,
+    limit: 12,
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+      title: true,
+    },
+    sort: '-updatedAt',
+  })
+
+  return packages.docs
+    .map((pkg) => ({
+      slug: pkg.slug,
+      title: pkg.title,
+    }))
+    .filter((pkg): pkg is LiveBookingPackage => Boolean(pkg.slug && pkg.title))
+}
+
+const getCachedLiveBookingPackages = unstable_cache(
+  loadLiveBookingPackages,
+  ['live-booking-packages'],
+  {
+    revalidate: 3600,
+    tags: ['live-booking-packages', 'published-packages'],
+  },
+)
+
 const getLiveBookingPackages = async (): Promise<LiveBookingPackage[]> => {
   try {
-    const payload = await getPayload({ config: configPromise })
-
-    const packages = await payload.find({
-      collection: 'packages',
-      draft: false,
-      limit: 50,
-      overrideAccess: false,
-      pagination: false,
-      select: {
-        slug: true,
-        title: true,
-      },
-      sort: '-updatedAt',
-    })
-
-    return packages.docs
-      .map((pkg) => ({
-        slug: pkg.slug,
-        title: pkg.title,
-      }))
-      .filter((pkg): pkg is LiveBookingPackage => Boolean(pkg.slug && pkg.title))
+    return await getCachedLiveBookingPackages()
   } catch (error) {
     console.error('Error loading packages for live booking notifications:', error)
     return []
@@ -146,8 +160,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html className={cn(inter.variable, jost.variable)} lang="en" suppressHydrationWarning>
       <head>
-        <Script async src={`https://www.googletagmanager.com/gtag/js?id=${googleTagID}`} />
-        <Script id="google-tag">
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleTagID}`}
+          strategy="lazyOnload"
+        />
+        <Script id="google-tag" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

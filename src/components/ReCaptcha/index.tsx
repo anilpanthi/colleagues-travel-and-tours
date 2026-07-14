@@ -14,8 +14,20 @@ declare global {
 }
 
 const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-const SCRIPT_WAIT_TIMEOUT_MS = 5000
+const SCRIPT_WAIT_TIMEOUT_MS = 10_000
 const SCRIPT_WAIT_INTERVAL_MS = 100
+
+function ensureRecaptchaScript(): void {
+  if (!siteKey || typeof document === 'undefined' || window.grecaptcha) return
+  if (document.getElementById('google-recaptcha')) return
+
+  const script = document.createElement('script')
+  script.async = true
+  script.defer = true
+  script.id = 'google-recaptcha'
+  script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+  document.head.appendChild(script)
+}
 
 export function ReCaptchaScript() {
   if (!siteKey) {
@@ -50,6 +62,9 @@ export async function executeRecaptcha(action: string): Promise<string | null> {
     return null
   }
 
+  // Interaction normally mounts ReCaptchaScript ahead of submit. This imperative fallback
+  // also covers autofill, programmatic submission, and a submit in the same render tick.
+  ensureRecaptchaScript()
   const grecaptcha = await waitForRecaptcha()
   if (!grecaptcha) {
     return null
