@@ -66,11 +66,21 @@ export default function CarouselInteractive({ selectedItems }: CarouselInteracti
         })}
       </Swiper>
 
-      <button aria-label="Previous slide" className={`${styles.navButton} ${styles.prev}`}>
-        <ChevronLeft />
+      <button
+        aria-label="Previous testimonial"
+        className={`${styles.navButton} ${styles.prev}`}
+        type="button"
+      >
+        <ChevronLeft aria-hidden="true" focusable="false" />
+        <span className={styles.srOnly}>Previous testimonial</span>
       </button>
-      <button aria-label="Next slide" className={`${styles.navButton} ${styles.next}`}>
-        <ChevronRight />
+      <button
+        aria-label="Next testimonial"
+        className={`${styles.navButton} ${styles.next}`}
+        type="button"
+      >
+        <ChevronRight aria-hidden="true" focusable="false" />
+        <span className={styles.srOnly}>Next testimonial</span>
       </button>
     </>
   )
