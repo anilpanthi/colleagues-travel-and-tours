@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { usePathname } from 'next/navigation'
 import type { SiteSetting } from '@/payload-types'
@@ -26,6 +26,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [isPastHero, setIsPastHero] = useState<boolean>(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
+  const mobileMenuToggleRef = useRef<HTMLButtonElement>(null)
 
   const [isFront, setIsFront] = useState<boolean>(true)
 
@@ -94,11 +95,29 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
   }, [isMobileMenuOpen])
 
   useEffect(() => {
+    if (!isMobileMenuOpen) return
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+
+      setIsMobileMenuOpen(false)
+      window.requestAnimationFrame(() => mobileMenuToggleRef.current?.focus())
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    return () => document.removeEventListener('keydown', closeOnEscape)
+  }, [isMobileMenuOpen])
+
+  useEffect(() => {
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
+  const toggleMobileMenu = () => setIsMobileMenuOpen((isOpen) => !isOpen)
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+    window.requestAnimationFrame(() => mobileMenuToggleRef.current?.focus())
+  }
 
   const menuItems =
     mainNavigation && typeof mainNavigation === 'object' ? mainNavigation.items : null
@@ -129,11 +148,19 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
             </div>
 
             <button
+              aria-controls="mobile-navigation"
+              aria-expanded={isMobileMenuOpen}
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               className={cn(cssClass.mobileMenuToggle, cssClass.mobileOnly)}
               onClick={toggleMobileMenu}
-              aria-label="Toggle Menu"
+              ref={mobileMenuToggleRef}
+              type="button"
             >
-              {isMobileMenuOpen ? <X /> : <Menu />}
+              {isMobileMenuOpen ? (
+                <X aria-hidden="true" focusable="false" />
+              ) : (
+                <Menu aria-hidden="true" focusable="false" />
+              )}
             </button>
           </div>
         </div>
@@ -142,10 +169,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ mainNavigation, logo
       {/* Mobile Navigation Drawer */}
       <div className={cn(cssClass.mobileOnly)}>
         <Navigation
+          id="mobile-navigation"
           isMobile={true}
           isOpen={isMobileMenuOpen}
           menuItems={menuItems}
-          onNavClick={() => setIsMobileMenuOpen(false)}
+          onNavClick={closeMobileMenu}
         />
       </div>
     </header>

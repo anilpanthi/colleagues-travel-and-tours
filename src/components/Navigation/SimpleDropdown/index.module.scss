@@ -19,5 +19,27 @@
       background-color: rgba(0, 0, 0, 0.03);
       color: var(--color-primary) !important;
     }
+
+    &:focus-visible {
+      outline: 0.2rem solid var(--color-primary);
+      outline-offset: -0.2rem;
+    }
+  }
+}
+
+@media (max-width: 1099px) {
+  .simpleDropdown {
+    padding: 0.2rem 0 0.8rem;
+
+    &_link {
+      display: flex;
+      align-items: center;
+      min-height: 4.4rem;
+      padding: 0.8rem 1rem 0.8rem 1.4rem;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
   }
 }

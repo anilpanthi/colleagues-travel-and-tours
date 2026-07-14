@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import type { Navigation as NavigationType } from '@/payload-types'
 import cssItem from './Navitems.module.scss'
 import { ChevronDown } from 'lucide-react'
@@ -23,6 +23,7 @@ interface NavItemsProp {
 export default function Navitems({ item, isMobile, onNavClick }: NavItemsProp) {
   const { label, dropdownType, simpleLinks, columns, linkType, internalLink, externalUrl } = item
   const [isOpen, setIsOpen] = useState(false)
+  const dropdownId = useId()
   const pathname = usePathname()
 
   const hasDropdown =
@@ -90,14 +91,21 @@ export default function Navitems({ item, isMobile, onNavClick }: NavItemsProp) {
     (path) => currentPath === path || (path !== '/' && currentPath.startsWith(`${path}/`)),
   )
 
-  const handleToggle = (e: React.MouseEvent) => {
-    if (isMobile && hasDropdown) {
-      e.preventDefault()
-      setIsOpen(!isOpen)
-    } else if (onNavClick) {
-      onNavClick()
-    }
-  }
+  const handleLinkClick = () => onNavClick?.()
+  const handleDropdownToggle = () => setIsOpen((open) => !open)
+
+  const linkContent = (
+    <>
+      <span>{label}</span>
+      {hasDropdown && (
+        <ChevronDown
+          aria-hidden="true"
+          className={cn(cssItem.navItem_icon, isOpen && cssItem.iconRotated)}
+          focusable="false"
+        />
+      )}
+    </>
+  )
 
   return (
     <li
@@ -108,22 +116,35 @@ export default function Navitems({ item, isMobile, onNavClick }: NavItemsProp) {
         isOpen && cssItem.isOpen,
       )}
     >
-      <CMSLink
-        ariaCurrent={isActive ? 'page' : undefined}
-        className={cssItem.navItem_link}
-        type={linkType === 'internal' ? 'reference' : 'custom'}
-        url={externalUrl}
-        reference={internalLink}
-        onClick={handleToggle}
-      >
-        <span>{label}</span>
-        {hasDropdown && (
-          <ChevronDown className={cn(cssItem.navItem_icon, isOpen && cssItem.iconRotated)} />
-        )}
-      </CMSLink>
+      {isMobile && hasDropdown ? (
+        <button
+          aria-controls={dropdownId}
+          aria-expanded={isOpen}
+          className={cn(cssItem.navItem_link, cssItem.navItem_toggle)}
+          onClick={handleDropdownToggle}
+          type="button"
+        >
+          {linkContent}
+        </button>
+      ) : (
+        <CMSLink
+          ariaCurrent={isActive ? 'page' : undefined}
+          className={cssItem.navItem_link}
+          onClick={isMobile ? handleLinkClick : undefined}
+          reference={internalLink}
+          type={linkType === 'internal' ? 'reference' : 'custom'}
+          url={externalUrl}
+        >
+          {linkContent}
+        </CMSLink>
+      )}
 
       {hasDropdown && (
-        <div className={cn(cssItem.navItem_dropdown, isMobile && cssItem.navItem_dropdownMobile)}>
+        <div
+          aria-hidden={isMobile && !isOpen ? true : undefined}
+          className={cn(cssItem.navItem_dropdown, isMobile && cssItem.navItem_dropdownMobile)}
+          id={isMobile ? dropdownId : undefined}
+        >
           {dropdownType === 'simple' && simpleLinks && (
             <SimpleDropdown links={simpleLinks} onNavClick={onNavClick} />
           )}

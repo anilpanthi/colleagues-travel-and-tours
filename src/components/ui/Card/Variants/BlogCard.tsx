@@ -160,8 +160,9 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 							)}
 							<Link href={href} className={styles.blogCard__link}>
 								Read More
+								<span className={styles.blogCard__srOnly}> about {title}</span>
 								{/* <span className={styles.blogCard__arrow}> */}
-								<ArrowRight size={16} />
+								<ArrowRight aria-hidden="true" focusable="false" size={16} />
 								{/* </span> */}
 							</Link>
 						</Card.Div>

@@ -2,6 +2,10 @@
   white-space: nowrap;
 }
 
+.compactLabel {
+  display: none;
+}
+
 .iconPlane {
   margin-right: 0.8rem;
   width: 2rem;
@@ -92,5 +96,15 @@
   .reservationForm [class$="__formBlock__fieldsGroup"] {
     grid-template-columns: 1fr;
     row-gap: 0.8rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .fullLabel {
+    display: none;
+  }
+
+  .compactLabel {
+    display: inline;
   }
 }

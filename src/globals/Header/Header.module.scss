@@ -82,6 +82,11 @@
     transform: scale(1.1);
   }
 
+  &:focus-visible {
+    outline: 0.3rem solid var(--color-primary);
+    outline-offset: 0.3rem;
+  }
+
   svg {
     width: 2.4rem;
     height: 2.4rem;

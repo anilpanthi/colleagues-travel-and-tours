@@ -66,7 +66,8 @@ export default function Cta({ flightBookingForm }: CtaProps) {
         onPointerDown={preloadFlightBookingModal}
         onPointerEnter={preloadFlightBookingModal}
       >
-        Book Your Flight
+        <span className={CtaStyle.fullLabel}>Book Your Flight</span>
+        <span className={CtaStyle.compactLabel}>Flights</span>
       </Button>
 
       {showModal ? (

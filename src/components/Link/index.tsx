@@ -23,6 +23,41 @@ type CMSLinkType = {
   ariaCurrent?: React.AriaAttributes['aria-current']
 }
 
+const genericLinkLabels = new Set([
+  'click here',
+  'here',
+  'information',
+  'learn more',
+  'more',
+  'read more',
+])
+
+const visuallyHiddenStyle: React.CSSProperties = {
+  border: 0,
+  clip: 'rect(0 0 0 0)',
+  height: 1,
+  margin: -1,
+  overflow: 'hidden',
+  padding: 0,
+  position: 'absolute',
+  whiteSpace: 'nowrap',
+  width: 1,
+}
+
+const getDestinationSubject = (href: string): string | null => {
+  const path = href.split(/[?#]/, 1)[0]
+  const segment = path.split('/').filter(Boolean).at(-1)
+  if (!segment) return null
+
+  try {
+    return decodeURIComponent(segment)
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, (character) => character.toUpperCase())
+  } catch {
+    return segment.replace(/[-_]+/g, ' ')
+  }
+}
+
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const {
     type,
@@ -62,19 +97,32 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   // and functions cannot cross the Server Component -> next/link client boundary. Explicit
   // handlers still work when CMSLink is consumed from an existing Client Component tree.
   const clickProps = onClick ? { onClick } : {}
+  const destinationSubject = getDestinationSubject(href)
+  const descriptiveSuffix =
+    label && genericLinkLabels.has(label.trim().toLowerCase()) && destinationSubject
+      ? ` about ${destinationSubject}`
+      : null
+  const descriptiveLabel = label && descriptiveSuffix ? `${label}${descriptiveSuffix}` : undefined
+  const content = (
+    <>
+      {label && label}
+      {descriptiveSuffix && <span style={visuallyHiddenStyle}>{descriptiveSuffix}</span>}
+      {children && children}
+    </>
+  )
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
       <Link
         aria-current={ariaCurrent}
+        aria-label={descriptiveLabel}
         className={cn(className)}
         href={href || url || ''}
         {...newTabProps}
         {...clickProps}
       >
-        {label && label}
-        {children && children}
+        {content}
       </Link>
     )
   }
@@ -86,11 +134,11 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       appearance={(appearance === 'default' ? 'primary' : appearance) as ButtonAppearance}
       href={href || url || ''}
       aria-current={ariaCurrent}
+      aria-label={descriptiveLabel}
       {...newTabProps}
       {...clickProps}
     >
-      {label && label}
-      {children && children}
+      {content}
     </Button>
   )
 }
