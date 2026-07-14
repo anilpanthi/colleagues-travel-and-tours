@@ -1,5 +1,4 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -10,6 +9,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { migrations } from './migrations'
+import { deliverableNodemailerAdapter } from './email/deliverableNodemailerAdapter'
 
 // Custom Collections
 import { Activities } from './collections/Activities'
@@ -114,7 +114,7 @@ export default buildConfig({
     prodMigrations: shouldRunProdMigrations ? migrations : undefined,
   }),
   sharp,
-  email: nodemailerAdapter({
+  email: deliverableNodemailerAdapter({
     defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleaguestravel.com',
     defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel And Tours',
     transportOptions: {
