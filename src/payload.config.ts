@@ -48,6 +48,14 @@ if (process.env.NODE_ENV === 'production') {
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 const sanitizedServerURL = serverURL.replace(/\/$/, '')
 const shouldRunProdMigrations = process.env.PAYLOAD_IGNORE_MIGRATIONS !== 'true'
+const resendAPIKey = process.env.RESEND_API_KEY
+const isBuildPhase = process.env.PAYLOAD_BUILD_PHASE === 'true'
+const useLocalEmailTransport =
+  !resendAPIKey && (process.env.NODE_ENV !== 'production' || isBuildPhase)
+
+if (process.env.NODE_ENV === 'production' && !resendAPIKey && !isBuildPhase) {
+  console.warn('WARNING: RESEND_API_KEY is not set. Application emails will not be delivered.')
+}
 
 export default buildConfig({
   admin: {
@@ -115,38 +123,38 @@ export default buildConfig({
   }),
   sharp,
   email: deliverableNodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleaguestravel.com',
-    defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel And Tours',
-    transportOptions: {
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    },
+    defaultFromAddress:
+      process.env.RESEND_FROM_ADDRESS || 'notifications@updates.colleaguestravel.com',
+    defaultFromName: process.env.RESEND_FROM_NAME || 'Colleagues Travel And Tours',
+    // Keep local builds usable before credentials are configured without attempting delivery.
+    transportOptions: useLocalEmailTransport
+      ? {
+          jsonTransport: true,
+        }
+      : {
+          host: 'smtp.resend.com',
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+            user: 'resend',
+            pass: resendAPIKey || '',
+          },
+        },
   }),
-  // email: nodemailerAdapter({
+  // Previous SMTP configuration retained as a fallback.
+  // To restore it, comment out the active Resend configuration above and uncomment this block.
+  // email: deliverableNodemailerAdapter({
   //   defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'info@colleaguestravel.com',
-  //   defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel',
-  //   // If SMTP_HOST is missing, we pass a dummy JSON transport to bypass verification completely
-  //   ...(process.env.SMTP_HOST
-  //     ? {
-  //         transportOptions: {
-  //           host: process.env.SMTP_HOST,
-  //           port: Number(process.env.SMTP_PORT) || 587,
-  //           auth: {
-  //             user: process.env.SMTP_USER,
-  //             pass: process.env.SMTP_PASS,
-  //           },
-  //         },
-  //       }
-  //     : {
-  //         // Mock fallback: prevents Nodemailer from trying to connect to localhost:587
-  //         transportOptions: {
-  //           jsonTransport: true,
-  //         },
-  //       }),
+  //   defaultFromName: process.env.SMTP_FROM_NAME || 'Colleagues Travel And Tours',
+  //   transportOptions: {
+  //     host: process.env.SMTP_HOST,
+  //     port: Number(process.env.SMTP_PORT) || 587,
+  //     auth: {
+  //       user: process.env.SMTP_USER,
+  //       pass: process.env.SMTP_PASS,
+  //     },
+  //   },
   // }),
   plugins: [
     importExportPlugin({
