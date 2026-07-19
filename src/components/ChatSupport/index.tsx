@@ -7,7 +7,7 @@ const TawkWidget = dynamic(() => import('./TawkWidget').then((module) => module.
   ssr: false,
 })
 
-const FALLBACK_DELAY_MS = 15_000
+const FALLBACK_DELAY_MS = 3_000
 
 interface ChatSupportProps {
   propertyId?: null | string
