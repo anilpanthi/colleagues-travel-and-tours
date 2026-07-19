@@ -1,6 +1,14 @@
 import { nodemailerAdapter, type NodemailerAdapterArgs } from '@payloadcms/email-nodemailer'
 import type { EmailAdapter, SendEmailOptions } from 'payload'
 
+import { getServerSideURL } from '@/utilities/getURL'
+
+import {
+  buildBrandedEmailHTML,
+  buildBrandedEmailText,
+  plainTextToEmailHTML,
+} from './brandedEmailLayout'
+
 const UNKNOWN_NODE_PATTERN = /<span[^>]*>\s*unknown node\s*<\/span>/gi
 
 const decodeHTMLEntities = (value: string): string =>
@@ -44,15 +52,27 @@ export const emailHTMLToPlainText = (html: string): string => {
     .trim()
 }
 
-const improveEmailMessage = (message: SendEmailOptions): SendEmailOptions => {
-  if (typeof message.html !== 'string') return message
+export const improveEmailMessage = (message: SendEmailOptions): SendEmailOptions => {
+  const sanitizedHTML =
+    typeof message.html === 'string' ? sanitizeEmailHTML(message.html) : undefined
+  const sourceText =
+    typeof message.text === 'string'
+      ? message.text
+      : sanitizedHTML
+        ? emailHTMLToPlainText(sanitizedHTML)
+        : undefined
 
-  const html = sanitizeEmailHTML(message.html)
+  if (!sanitizedHTML && !sourceText) return message
+
+  const websiteURL = getServerSideURL()
+  const html = buildBrandedEmailHTML(sanitizedHTML ?? plainTextToEmailHTML(sourceText ?? ''), {
+    websiteURL,
+  })
 
   return {
     ...message,
     html,
-    text: message.text ?? emailHTMLToPlainText(html),
+    text: sourceText ? buildBrandedEmailText(sourceText, { websiteURL }) : message.text,
   }
 }
 
