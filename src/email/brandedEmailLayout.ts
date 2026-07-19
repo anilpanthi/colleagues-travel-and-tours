@@ -67,6 +67,8 @@ export const buildBrandedEmailHTML = (
   const websiteLabel = getWebsiteLabel(websiteURL)
   const year = options.year ?? new Date().getFullYear()
   const brandNameHTML = escapeHTML(BRAND_NAME)
+  const coloredLogoURL = new URL('/email/colleagues-logo-colored.png', websiteURL).toString()
+  const whiteLogoURL = new URL('/email/colleagues-logo-white.png', websiteURL).toString()
 
   return `<!doctype html>
 <html lang="en">
@@ -90,7 +92,8 @@ export const buildBrandedEmailHTML = (
         .email-content { padding: 30px 22px !important; }
         .email-footer { padding: 26px 22px !important; }
         .email-header-link { display: none !important; }
-        .email-cta-copy, .email-cta-action { display: block !important; text-align: left !important; width: 100% !important; }
+        .email-cta-logo, .email-cta-copy, .email-cta-action { display: block !important; text-align: left !important; width: 100% !important; }
+        .email-cta-logo { padding: 0 0 14px !important; }
         .email-cta-action { padding: 16px 0 0 !important; }
       }
     </style>
@@ -112,9 +115,8 @@ export const buildBrandedEmailHTML = (
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                     <td valign="middle">
-                      <a href="${websiteURL}" style="color: #ffffff; display: inline-block; text-decoration: none;">
-                        <span style="color: #ffffff; display: block; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 2.4px; line-height: 24px;">COLLEAGUES</span>
-                        <span style="color: #e7aa18; display: block; font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; line-height: 16px; text-transform: uppercase;">Travel &amp; Tours</span>
+                      <a href="${websiteURL}" style="display: inline-block; text-decoration: none;">
+                        <img src="${whiteLogoURL}" alt="${brandNameHTML}" width="134" style="display: block; height: auto; max-width: 134px; width: 134px;" />
                       </a>
                     </td>
                     <td class="email-header-link" align="right" valign="middle">
@@ -133,6 +135,11 @@ export const buildBrandedEmailHTML = (
               <td style="background-color: #fff8e8; border-top: 1px solid #f5e5b9; padding: 22px 34px;">
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                   <tr>
+                    <td class="email-cta-logo" width="106" valign="middle" style="padding-right: 20px;">
+                      <a href="${websiteURL}" style="display: inline-block; text-decoration: none;">
+                        <img src="${coloredLogoURL}" alt="${brandNameHTML}" width="92" style="display: block; height: auto; max-width: 92px; width: 92px;" />
+                      </a>
+                    </td>
                     <td class="email-cta-copy" style="color: #5b4820; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 21px;">
                       <strong style="color: #172033;">Ready for your next journey?</strong><br />
                       Discover thoughtfully curated trips across Nepal and beyond.
@@ -147,7 +154,7 @@ export const buildBrandedEmailHTML = (
             <tr>
               <td class="email-footer" style="background-color: #172033; padding: 28px 34px; text-align: center;">
                 <p style="color: #d8deea; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 21px; margin: 0 0 9px;">
-                  You&rsquo;re receiving this message from ${brandNameHTML}.
+                  You&rsquo;re receiving this message because you contacted our travel team or have an account with us.
                 </p>
                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 21px; margin: 0 0 14px;">
                   <a href="${websiteURL}" style="color: #e7aa18; font-weight: 700; text-decoration: none;">${websiteLabel}</a>

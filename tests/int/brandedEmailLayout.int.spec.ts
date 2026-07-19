@@ -21,7 +21,9 @@ describe('branded email layout', () => {
     const html = buildBrandedEmailHTML('<h1>Your booking</h1><p>We received it.</p>', layoutOptions)
 
     expect(html).toContain('data-colleagues-email="true"')
-    expect(html).toContain('COLLEAGUES')
+    expect(html).toContain('/email/colleagues-logo-white.png')
+    expect(html).toContain('/email/colleagues-logo-colored.png')
+    expect(html).not.toContain('letter-spacing: 2.4px')
     expect(html).toContain('<h1>Your booking</h1><p>We received it.</p>')
     expect(html).toContain('https://colleaguestravel.com')
     expect(html).toContain('&copy; 2026 Colleagues Travel &amp; Tours')
