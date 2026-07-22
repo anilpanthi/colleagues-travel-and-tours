@@ -137,11 +137,9 @@ export const ProgressBar = () => {
       }
     }
 
-    document.addEventListener('pointerdown', handleAnchorClick, { capture: true })
     document.addEventListener('click', handleAnchorClick, { capture: true })
 
     return () => {
-      document.removeEventListener('pointerdown', handleAnchorClick, { capture: true })
       document.removeEventListener('click', handleAnchorClick, { capture: true })
     }
   }, [startProgress])
