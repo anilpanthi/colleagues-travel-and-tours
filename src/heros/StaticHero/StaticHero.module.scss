@@ -57,7 +57,7 @@
 	gap: 0.8rem;
 	margin-bottom: 2rem;
 	padding: 0.4rem 0.8rem;
-	font-size: 1rem;
+	font-size: var(--type-label);
 	font-weight: 500;
 	display: inline-flex;
 }
@@ -70,9 +70,9 @@
 	color: var(--color-white);
 	letter-spacing: -0.025em;
 	margin-bottom: 0rem;
-	font-size: 4rem;
+	font-size: var(--type-page-title);
 	font-weight: 400;
-	line-height: 1.1;
+	line-height: var(--leading-tight);
 	text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -82,7 +82,7 @@
 	font-weight: 400;
 	max-width: 65rem;
 	margin: 0 auto;
-	line-height: 1.6;
+	line-height: var(--leading-body);
 	font-family: var(--font-jost);
 }
 

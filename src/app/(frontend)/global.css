@@ -35,6 +35,24 @@
   --font-xs: 1.4rem;
   --font-xxs: 1.2rem;
 
+  /* Responsive type scale */
+  --type-display: clamp(3.6rem, 7vw, 7.2rem);
+  --type-page-title: clamp(3.2rem, 4.5vw, 5.6rem);
+  --type-content-title: clamp(3rem, 4vw, 4rem);
+  --type-section-title: clamp(2.4rem, 3vw, 3.2rem);
+  --type-subsection-title: clamp(2rem, 2.4vw, 2.4rem);
+  --type-card-title: clamp(1.8rem, 2vw, 2.1rem);
+  --type-body-lg: clamp(1.6rem, 1.35vw, 1.8rem);
+  --type-body: 1.6rem;
+  --type-body-sm: 1.4rem;
+  --type-label: 1.2rem;
+
+  /* Line heights */
+  --leading-tight: 1.1;
+  --leading-heading: 1.2;
+  --leading-body: 1.65;
+  --leading-reading: 1.75;
+
   /* Font Weights */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -103,7 +121,7 @@ textarea::placeholder
   font-family: var(--font-jost);
   color: #dfdcdc;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: var(--type-body-sm);
   opacity: 0.3;
 }
 
@@ -113,7 +131,7 @@ input::placeholder
   font-family: var(--font-jost);
   color: #dfdcdc;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: var(--type-body-sm);
   opacity: 0.3;
 } 
 
@@ -124,7 +142,8 @@ input::placeholder
   {
     color: #1a202c;
     margin-bottom: 2rem;
-    font-size: 2.4rem;
+    font-size: var(--type-subsection-title);
+    line-height: var(--leading-heading);
     font-weight: 600;
     font-family: var(--font-inter);
 
@@ -134,7 +153,8 @@ input::placeholder
   {
     color: #1a202c;
     margin-bottom: 2.5rem;
-    font-size: 2.8rem;
+    font-size: var(--type-section-title);
+    line-height: var(--leading-heading);
     font-weight: 600;
     font-family: var(--font-inter);
   }
@@ -144,8 +164,8 @@ input::placeholder
   .msc p
   {
     color: #4a5568;
-    font-size: 1.8rem;
-    line-height: 1.8;
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-reading);
     font-family: var(--font-jost);
 
   }
@@ -242,14 +262,14 @@ input::placeholder
   padding-left: 1.2rem;
   list-style-type: none;
   font-family: var(--font-jost);
-  font-size: 1.8rem;
+  font-size: var(--type-body-lg);
 }
 
 .msc .list-bullet li
 {
   color: #4a5568;
-  font-size: 1.8rem;
-  line-height: 1.5;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-body);
   font-family: var(--font-jost);
   padding-left: 1.5rem;
   position: relative;

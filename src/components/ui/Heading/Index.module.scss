@@ -1,5 +1,6 @@
 .heading {
 	font-family: var(--font-inter);
-	font-size: 3.2rem;
+	font-size: var(--type-section-title);
+	line-height: var(--leading-heading);
 	font-weight: 600;
 }
