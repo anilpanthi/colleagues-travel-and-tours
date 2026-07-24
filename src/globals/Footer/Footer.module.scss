@@ -191,13 +191,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: var(--type-label);
+  font-size: 1rem;
   color: var(--color-gray-300);
   margin: 0; // Reset p margin
   a {
     text-decoration: none;
     color: var(--color-gray-300);
-    font-size: var(--type-label);
+    font-size: 1.2rem;
     transition: opacity 0.3s;
     &:hover {
       opacity: 0.8;

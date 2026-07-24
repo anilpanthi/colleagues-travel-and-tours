@@ -31,8 +31,8 @@
   }
 
   &__quote {
-    font-size: var(--type-body);
-    line-height: var(--leading-reading);
+    font-size: 16px;
+    line-height: 1.8;
     color: #555;
     text-align: center;
     font-weight: 500;
@@ -59,7 +59,7 @@
 
   &__starIcon {
     color: #ffc107;
-    font-size: var(--type-body);
+    font-size: 16px;
   }
 
   &__bgQuote {
@@ -67,7 +67,7 @@
     left: 50%;
     transform: translateX(-50%);
     bottom: -40px;
-    font-size: 14rem;
+    font-size: 140px;
     color: #f6f6f6;
     font-family: serif;
     line-height: 1;
@@ -80,7 +80,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    font-size: var(--type-body-sm);
+    font-size: 13px;
     color: #4b5563;
     font-weight: 500;
     z-index: 2;
@@ -114,14 +114,14 @@
 
   &__authorName {
     margin: 0;
-    font-size: var(--type-card-title);
+    font-size: 18px;
     font-weight: 700;
     color: #111;
   }
 
   &__authorLocation {
     margin: 4px 0 0 0;
-    font-size: var(--type-body-sm);
+    font-size: 14px;
     color: #4b5563;
   }
 }

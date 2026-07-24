@@ -9,7 +9,7 @@
       display: inline-flex;
       align-items: center;
       padding: 0.4rem 1rem;
-      font-size: var(--type-label);
+      font-size: 1rem;
       font-weight: 600;
       letter-spacing: 0.04em;
       border-radius: 999px;
@@ -21,13 +21,12 @@
     }
 
     &_heading {
-      font-size: var(--type-section-title);
-      line-height: var(--leading-heading);
+      font-size: 3.2rem;
       font-weight: 600;
     }
 
     &_description {
-      font-size: var(--type-body);
+      font-size: 1.6rem;
       font-weight: 300;
       color: var(--text-color);
     }
@@ -75,14 +74,13 @@
         }
       }
       &_title {
-        font-size: var(--type-card-title);
+        font-size: 1.8rem;
         font-weight: 600;
         padding-top: 1rem;
       }
       &_description {
         font-family: var(--font-jost);
-        font-size: var(--type-body);
-        line-height: var(--leading-body);
+        font-size: 1.6rem;
         font-weight: 400;
         text-align: center;
       }

@@ -79,7 +79,7 @@
 	backdrop-filter: blur(0.4rem);
 	border: 1px solid var(--color-primary-30);
 	color: var(--color-white);
-	font-size: var(--type-label);
+	font-size: 1rem;
 	font-weight: 500;
 }
 
@@ -90,12 +90,30 @@
 }
 
 .heroTitle {
-	font-size: var(--type-display);
+	font-size: 4.8rem;
 	font-weight: 400;
 	color: var(--color-white);
 	margin-bottom: 2.4rem;
 	letter-spacing: -0.025em;
-	line-height: var(--leading-tight);
+	line-height: 1.1;
+}
+
+@media (min-width: 640px) {
+
+	/* sm breakpoint */
+	.heroTitle {
+		font-size: 6rem;
+		/* sm:text-6xl */
+	}
+}
+
+@media (min-width: 1024px) {
+
+	/* lg breakpoint */
+	.heroTitle {
+		font-size: 7.2rem;
+		/* lg:text-7xl */
+	}
 }
 
 .heroTitleGradient {
@@ -108,7 +126,7 @@
 }
 
 .heroSubtitle {
-	font-size: clamp(1.6rem, 2vw, 2rem);
+	font-size: 1.4rem;
 	margin-bottom: 4.8rem;
 	max-width: 76.8rem;
 	margin-left: auto;
@@ -116,6 +134,11 @@
 }
 
 @media (min-width: 640px) {
+	.heroSubtitle {
+		font-size: 2rem;
+		/* sm:text-xl */
+	}
+
 	.heroActions {
 		flex-direction: row;
 	}
@@ -305,7 +328,7 @@
 .featureTitle {
 	color: var(--color-white);
 	font-weight: 700;
-	font-size: var(--type-body);
+	font-size: 1.6rem;
 	/* font-semibold */
 	margin-bottom: 0.8rem;
 	/* mb-2 */
@@ -314,7 +337,7 @@
 .featureSubtitle {
 	color: var(--color-gray-300);
 	font-family: var(--font-jost);
-	font-size: var(--type-body-sm);
+	font-size: 1.4rem;
 	/* text-sm */
 	text-align: center;
 }

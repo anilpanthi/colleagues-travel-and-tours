@@ -66,18 +66,18 @@
 }
 
 .mainTitle {
-  font-size: var(--type-page-title);
+  font-size: 4.8rem;
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 0;
   color: var(--color-foreground);
-  line-height: var(--leading-tight);
+  line-height: 1.1;
   font-family: var(--font-inter);
 }
 
 .richText {
-  font-size: var(--type-body-lg);
-  line-height: var(--leading-reading);
+  font-size: 1.8rem;
+  line-height: 1.8;
   color: var(--text-color);
   font-family: var(--font-jost);
   margin-bottom: 8rem;
@@ -108,8 +108,7 @@
 }
 
 .relatedTitle {
-  font-size: var(--type-section-title);
-  line-height: var(--leading-heading);
+  font-size: 3.2rem;
   font-weight: 700;
   margin-bottom: 4rem;
   text-align: center;
@@ -137,6 +136,10 @@
 
   .article {
     padding: 0 1rem;
+  }
+
+  .richText {
+    font-size: 1.7rem;
   }
 
   .postHeader {

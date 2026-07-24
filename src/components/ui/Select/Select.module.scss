@@ -25,7 +25,7 @@
     }
 
     span {
-      font-size: var(--type-body);
+      font-size: 1.2rem;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -75,7 +75,7 @@
     align-items: center;
     border-radius: 0.2rem;
     padding: 0.6rem 0.8rem 0.6rem 3.2rem;
-    font-size: var(--type-body);
+    font-size: 1.6rem;
     outline: none;
 
     &:focus {
@@ -109,7 +109,7 @@
 
   &__label {
     padding: 0.6rem 0.8rem 0.6rem 3.2rem;
-    font-size: var(--type-body-sm);
+    font-size: 1.4rem;
     font-weight: 600;
   }
 

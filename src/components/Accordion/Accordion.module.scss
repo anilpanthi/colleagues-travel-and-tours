@@ -5,7 +5,7 @@
 }
 
 .title {
-  font-size: var(--type-subsection-title);
+  font-size: 2.4rem;
   font-weight: 700;
 
   margin-bottom: 2rem;
@@ -36,7 +36,7 @@
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
-  font-size: var(--type-body);
+  font-size: 1.6rem;
   font-weight: 600;
   color: #3d3b3b;
   cursor: pointer;
@@ -59,7 +59,7 @@
 
     .day {
       color: #fff;
-      font-size: var(--type-body);
+      font-size: 1.6rem;
       font-variant-numeric: tabular-nums;
       background: #48454291;
       padding: 0 1.4rem;
@@ -103,17 +103,21 @@
 }
 
 @media (max-width: 480px) {
+  .title {
+    font-size: 2.2rem;
+  }
+
   .trigger {
     min-height: 7.2rem;
     padding-right: 1.4rem;
-    font-size: var(--type-body-sm);
+    font-size: 1.5rem;
 
     .titleWrapper {
       grid-template-columns: minmax(9.4rem, max-content) minmax(0, 1fr);
       gap: 1.4rem;
 
       .day {
-        font-size: var(--type-body-sm);
+        font-size: 1.5rem;
         padding: 0 1.2rem;
       }
     }
@@ -134,8 +138,8 @@
   color: #787878;
   font-family: var(--font-jost);
   font-weight: 400;
-  font-size: var(--type-body-lg);
-  line-height: var(--leading-body);
+  font-size: 1.8rem;
+  line-height: 1.6;
   border-radius: 0 0 8px 8px;
   // background: #fff; // Removed to prevent animation flicker
 }

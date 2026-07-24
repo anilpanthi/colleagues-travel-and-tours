@@ -99,7 +99,7 @@
 }
 
 .grade {
-  font-size: var(--type-label);
+  font-size: 1rem;
   text-transform: uppercase;
   font-weight: 700;
   padding: 0.2rem 0.8rem;
@@ -132,7 +132,7 @@
 }
 
 .title {
-  font-size: var(--type-card-title);
+  font-size: 1.8rem;
   font-weight: 700;
   color: #111827;
   margin-bottom: 1.2rem;
@@ -162,7 +162,7 @@
   align-items: center;
   gap: 0.8rem;
   color: #6b7280;
-  font-size: var(--type-body-sm);
+  font-size: 1.2rem;
   font-weight: 500;
 }
 
@@ -200,7 +200,7 @@
   color: white;
   padding: 0.8rem 1.6rem;
   border-radius: 0.8rem;
-  font-size: var(--type-body-sm);
+  font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
   transition: background 0.2s ease;

@@ -30,8 +30,8 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                     style={{
                       color: '#4a5568',
                       fontFamily: 'var(--font-jost)',
-                      fontSize: 'var(--type-body-lg)',
-                      lineHeight: 'var(--leading-reading)',
+                      fontSize: '1.8rem',
+                      lineHeight: '1.8',
                     }}
                   />
                 )}

@@ -105,8 +105,8 @@
 
         &_text {
           color: var(--text-color);
-          font-size: var(--type-body-lg);
-          line-height: var(--leading-reading);
+          font-size: 1.8rem;
+          line-height: 1.8;
           font-family: var(--font-jost);
           p {
             margin-bottom: 1.4rem;
@@ -154,7 +154,7 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 
         &_title {
-          font-size: var(--type-subsection-title);
+          font-size: 2.22rem;
           font-weight: 700;
           margin-bottom: 2rem;
           color: #1f1f1f;
@@ -255,7 +255,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: var(--type-label);
+            font-size: 1.1rem;
             color: rgba(31, 31, 31, 0.5);
             margin: 0;
             font-style: italic;

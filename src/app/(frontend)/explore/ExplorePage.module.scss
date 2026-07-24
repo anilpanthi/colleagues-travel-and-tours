@@ -32,9 +32,9 @@
   max-width: 68rem;
   margin: 0;
   color: #111827;
-  font-size: var(--type-content-title);
+  font-size: clamp(2.6rem, 4vw, 4.4rem);
   font-weight: 500;
-  line-height: var(--leading-tight);
+  line-height: 1.08;
 }
 
 .introText {
@@ -42,8 +42,8 @@
   margin: 1rem 0 0;
   color: #64748b;
   font-family: var(--font-jost);
-  font-size: var(--type-body-lg);
-  line-height: var(--leading-body);
+  font-size: 1.7rem;
+  line-height: 1.6;
 }
 
 .stats {
@@ -71,7 +71,7 @@
     display: block;
     margin-top: 0.5rem;
     color: #64748b;
-    font-size: var(--type-label);
+    font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -106,7 +106,7 @@
 
 .sidebarTitle {
   margin: 0;
-  font-size: var(--type-subsection-title);
+  font-size: 2.1rem;
   font-weight: 700;
   color: #0f172a;
 }
@@ -134,7 +134,7 @@
 
 .filterTitle {
   margin: 0;
-  font-size: var(--type-card-title);
+  font-size: 1.9rem;
   font-weight: 700;
   color: #0f172a;
   display: flex;
@@ -161,7 +161,7 @@
 .groupLabel {
   margin: 0 0 0.7rem;
   font-weight: 600;
-  font-size: var(--type-label);
+  font-size: 1.1rem;
   color: #0f172a;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -185,7 +185,7 @@
   border: 1px solid #d3dae6;
   border-radius: 0.8rem;
   padding: 1.05rem 1.2rem 1.05rem 3.9rem;
-  font-size: var(--type-body);
+  font-size: 1.4rem;
   background: #fcfdff;
   transition:
     border-color 0.2s ease,
@@ -219,7 +219,7 @@
   display: flex;
   gap: 0.8rem;
   align-items: center;
-  font-size: var(--type-body-sm);
+  font-size: 1.3rem;
   color: #1e293b;
   padding: 0.75rem 0.85rem;
   border-radius: 0.8rem;
@@ -278,7 +278,7 @@
   background-color: #f8fbff;
   color: #1f2937;
   font-weight: 600;
-  font-size: var(--type-body-sm);
+  font-size: 1.3rem;
   width: 100%;
   transition: all 0.2s ease;
 
@@ -298,7 +298,7 @@
   background-color: #1f2937;
   color: #ffffff;
   font-weight: 600;
-  font-size: var(--type-body-sm);
+  font-size: 1.3rem;
   width: 100%;
   transition: all 0.2s ease;
 
@@ -338,19 +338,19 @@
 
 .resultsTitle {
   margin: 0;
-  font-size: var(--type-subsection-title);
-  line-height: var(--leading-heading);
+  font-size: 2.2rem;
+  line-height: 1.2;
   color: #0f172a;
 }
 
 .resultsMeta {
   margin: 0.35rem 0 0;
-  font-size: var(--type-body-sm);
+  font-size: 1.35rem;
   color: #64748b;
 }
 
 .activeFilterBadge {
-  font-size: var(--type-label);
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--color-primary-dark);
   border: 1px solid rgba(245, 158, 11, 0.36);
@@ -393,7 +393,7 @@
   h4 {
     margin: 0 0 0.8rem;
     color: #0f172a;
-    font-size: var(--type-card-title);
+    font-size: 1.9rem;
   }
 
   p {
@@ -465,7 +465,11 @@
   }
 
   .introTitle {
-    font-size: var(--type-content-title);
+    font-size: 2.8rem;
+  }
+
+  .introText {
+    font-size: 1.55rem;
   }
 
   .stats {

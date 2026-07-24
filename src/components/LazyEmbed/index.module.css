@@ -54,11 +54,11 @@
 }
 
 .title {
-  font-size: var(--type-body);
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
 .hint {
-  font-size: var(--type-body-sm);
+  font-size: 1.3rem;
   opacity: 0.86;
 }

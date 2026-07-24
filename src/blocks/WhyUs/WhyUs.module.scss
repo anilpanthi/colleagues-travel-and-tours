@@ -41,7 +41,7 @@
     }
 
     &_title {
-      font-size: var(--type-card-title);
+      font-size: 2rem;
       font-weight: 600;
       color: #000;
       text-align: center;
@@ -49,9 +49,9 @@
 
     &_description {
       font-family: var(--font-jost);
-      font-size: var(--type-body);
+      font-size: 1.6rem;
       font-weight: 400;
-      line-height: var(--leading-body);
+      line-height: 1.6;
       color: var(--text-color);
       text-align: center;
     }

@@ -12,16 +12,14 @@
 }
 
 .heroTitle {
-  font-size: var(--type-page-title);
-  line-height: var(--leading-tight);
+  font-size: 4.8rem;
   font-weight: 700;
   margin-bottom: 2rem;
   font-family: var(--font-inter);
 }
 
 .heroSubtitle {
-  font-size: var(--type-body-lg);
-  line-height: var(--leading-body);
+  font-size: 1.8rem;
   max-width: 60rem;
   margin: 0 auto;
   opacity: 0.9;
@@ -55,8 +53,7 @@
 }
 
 .formTitle {
-  font-size: var(--type-section-title);
-  line-height: var(--leading-heading);
+  font-size: 2.8rem;
   font-weight: 700;
   margin-bottom: 3.5rem;
   color: var(--color-foreground);
@@ -72,8 +69,7 @@
 }
 
 .contactTitle {
-  font-size: var(--type-subsection-title);
-  line-height: var(--leading-heading);
+  font-size: 2.4rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: var(--color-foreground);
@@ -81,10 +77,10 @@
 }
 
 .contactDesc {
-  font-size: var(--type-body);
+  font-size: 1.6rem;
   color: var(--text-color);
   margin-bottom: 4rem;
-  line-height: var(--leading-body);
+  line-height: 1.7;
   font-family: var(--font-jost);
 }
 
@@ -114,7 +110,7 @@
 }
 
 .infoText h4 {
-  font-size: var(--type-card-title);
+  font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 0.6rem;
   color: var(--color-foreground);
@@ -122,7 +118,7 @@
 }
 
 .infoText p {
-  font-size: var(--type-body-sm);
+  font-size: 1.5rem;
   color: var(--text-color);
   line-height: 1.6;
   font-family: var(--font-jost);
