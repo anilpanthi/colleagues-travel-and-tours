@@ -3,6 +3,8 @@ import { afterEach, describe, expect, it } from 'vitest'
 
 import { TawkWidget } from '@/components/ChatSupport/TawkWidget'
 
+const initialInnerWidth = window.innerWidth
+
 const removeTawkScript = () => {
   document.querySelectorAll('script[src^="https://embed.tawk.to/"]').forEach((script) => {
     script.remove()
@@ -15,9 +17,13 @@ describe('Tawk chat widget', () => {
     removeTawkScript()
     delete window.Tawk_API
     delete window.Tawk_LoadStart
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: initialInnerWidth,
+    })
   })
 
-  it('loads the standard Tawk embed without the incompatible React callback bridge', () => {
+  it('loads the standard Tawk embed above the mobile booking bar', () => {
     render(<TawkWidget propertyId="property-id" widgetId="widget-id" />)
 
     const script = document.querySelector<HTMLScriptElement>(
@@ -31,15 +37,41 @@ describe('Tawk chat widget', () => {
     expect(window.Tawk_API).toEqual({
       customStyle: {
         visibility: {
+          desktop: {
+            position: 'br',
+            xOffset: 0,
+            yOffset: 120,
+          },
           mobile: {
             position: 'br',
             xOffset: 0,
             yOffset: 120,
           },
         },
+        zIndex: '2147483001 !important',
       },
     })
     expect(window.Tawk_LoadStart).toBeInstanceOf(Date)
+  })
+
+  it('leaves the desktop position unchanged above the site mobile breakpoint', () => {
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: 1280,
+    })
+
+    render(<TawkWidget propertyId="property-id" widgetId="widget-id" />)
+
+    expect(window.Tawk_API?.customStyle).toEqual({
+      visibility: {
+        mobile: {
+          position: 'br',
+          xOffset: 0,
+          yOffset: 120,
+        },
+      },
+      zIndex: '2147483001 !important',
+    })
   })
 
   it('does not insert a duplicate widget script', () => {
