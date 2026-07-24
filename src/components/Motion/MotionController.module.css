@@ -27,7 +27,13 @@
 }
 
 .card {
-  --motion-distance: 3.6rem;
+  --motion-distance: 4.8rem;
+
+  scale: 0.985;
+  transition:
+    opacity 1250ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay),
+    translate 1450ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay),
+    scale 1450ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay);
 }
 
 .action {
@@ -51,6 +57,10 @@
   scale: 1;
 }
 
+.card.visible {
+  scale: 1;
+}
+
 @media (max-width: 768px) {
   .reveal {
     --motion-distance: 2.8rem;
@@ -58,9 +68,18 @@
     transition-duration: 950ms;
   }
 
-  .copy,
-  .card {
+  .copy {
     --motion-distance: 2.4rem;
+  }
+
+  .card {
+    --motion-distance: 3rem;
+
+    scale: 0.992;
+    transition:
+      opacity 1000ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay),
+      translate 1150ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay),
+      scale 1150ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay);
   }
 
   .hero {
@@ -77,7 +96,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .reveal,
-  .media {
+  .reveal.card,
+  .reveal.media {
     opacity: 1;
     translate: none;
     scale: none;

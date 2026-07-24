@@ -105,7 +105,7 @@ export function MotionController() {
       const explicitOrder = Number.parseInt(element.dataset.motionOrder ?? '', 10)
       const hasExplicitOrder = Number.isFinite(explicitOrder)
       const itemOrder = hasExplicitOrder ? explicitOrder : groupCount
-      const delayStep = kind === 'hero' ? 180 : kind === 'card' ? 120 : 160
+      const delayStep = kind === 'hero' || kind === 'card' ? 180 : 160
       const baseDelay = kind === 'hero' ? 120 : 0
       const delay = baseDelay + Math.min(itemOrder, 5) * delayStep
 
