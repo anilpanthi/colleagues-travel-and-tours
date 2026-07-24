@@ -40,9 +40,11 @@
   border: 1px solid #d3dae6;
   border-radius: 1.2rem;
   padding: 1.1rem 1.2rem;
-  font-size: 1.45rem;
+  font-size: var(--type-body);
   background: #fcfdff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .searchInput:focus {
@@ -72,14 +74,14 @@
 
 .filterTitle {
   margin: 0;
-  font-size: 1.9rem;
+  font-size: var(--type-card-title);
   font-weight: 700;
   color: #0f172a;
 }
 
 .filterSubtitle {
   margin: 0.7rem 0 0;
-  font-size: 1.3rem;
+  font-size: var(--type-body-sm);
   color: #64748b;
   line-height: 1.5;
 }
@@ -99,7 +101,7 @@
 .groupLabel {
   margin: 0 0 0.7rem;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: var(--type-label);
   color: #0f172a;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -111,9 +113,11 @@
   border: 1px solid #d3dae6;
   border-radius: 1.1rem;
   padding: 0.95rem 1rem;
-  font-size: 1.35rem;
+  font-size: var(--type-body);
   background: #fcfdff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .input:focus,
@@ -135,7 +139,7 @@
   display: flex;
   gap: 0.8rem;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: var(--type-body-sm);
   color: #1e293b;
   padding: 0.3rem 0.1rem;
 }
@@ -153,7 +157,7 @@
 }
 
 .selectLabel > span {
-  font-size: 1.25rem;
+  font-size: var(--type-body-sm);
   color: #334155;
   font-weight: 500;
 }
@@ -172,7 +176,7 @@
   background-color: #f8fbff;
   color: #0f5a9c;
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: var(--type-body-sm);
   width: 100%;
 }
 
@@ -193,19 +197,19 @@
 
 .resultsTitle {
   margin: 0;
-  font-size: 2.1rem;
-  line-height: 1.2;
+  font-size: var(--type-subsection-title);
+  line-height: var(--leading-heading);
   color: #0f172a;
 }
 
 .resultsMeta {
   margin: 0.35rem 0 0;
-  font-size: 1.35rem;
+  font-size: var(--type-body-sm);
   color: #64748b;
 }
 
 .activeFilterBadge {
-  font-size: 1.15rem;
+  font-size: var(--type-label);
   font-weight: 600;
   color: #0f5a9c;
   border: 1px solid #bfd9ef;
@@ -231,7 +235,7 @@
 .emptyState h4 {
   margin: 0 0 0.8rem;
   color: #0f172a;
-  font-size: 1.9rem;
+  font-size: var(--type-card-title);
 }
 
 .emptyState p {

@@ -1,192 +1,208 @@
 .contactPage {
-	--brand-primary: var(--color-primary);
-	--brand-dark: var(--color-primary-dark);
-	--brand-light: var(--color-primary-30);
+  --brand-primary: var(--color-primary);
+  --brand-dark: var(--color-primary-dark);
+  --brand-light: var(--color-primary-30);
 }
 
 /* Contact Hero Gradient - following the site's primary color pattern */
 .contactHero {
-	
-	color: rgb(0, 0, 0.4);
-	padding: 10rem 2rem;
-	text-align: center;
+  color: rgb(0, 0, 0.4);
+  padding: 10rem 2rem;
+  text-align: center;
 }
 
 .heroTitle {
-	font-size: 4.8rem;
-	font-weight: 700;
-	margin-bottom: 2rem;
-	font-family: var(--font-inter);
+  font-size: var(--type-page-title);
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  font-family: var(--font-inter);
 }
 
 .heroSubtitle {
-	font-size: 1.8rem;
-	max-width: 60rem;
-	margin: 0 auto;
-	opacity: 0.9;
-	font-family: var(--font-jost);
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-body);
+  max-width: 60rem;
+  margin: 0 auto;
+  opacity: 0.9;
+  font-family: var(--font-jost);
 }
 
 .contactContainer {
-	max-width: 1200px;
-	margin: -6rem auto 8rem;
-	padding: 0 2rem;
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 4rem;
-	position: relative;
-	z-index: 2;
+  max-width: 1200px;
+  margin: -6rem auto 8rem;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 992px) {
-	.contactContainer {
-		grid-template-columns: 1.5fr 1fr;
-		align-items: start;
-	}
+  .contactContainer {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
+  }
 }
 
 .formWrapper {
-	background: #fff;
-	padding: 5rem;
-	border-radius: 1.6rem;
-	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-	animation: fadeUp 0.6s ease-out both;
+  background: #fff;
+  padding: 5rem;
+  border-radius: 1.6rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 0.6s ease-out both;
 }
 
 .formTitle {
-	font-size: 2.8rem;
-	font-weight: 700;
-	margin-bottom: 3.5rem;
-	color: var(--color-foreground);
-	font-family: var(--font-inter);
+  font-size: var(--type-section-title);
+  line-height: var(--leading-heading);
+  font-weight: 700;
+  margin-bottom: 3.5rem;
+  color: var(--color-foreground);
+  font-family: var(--font-inter);
 }
 
 .contactInfo {
-	background-color: white;
-	padding: 4rem;
-	border-radius: 1.6rem;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-	height: auto;
+  background-color: white;
+  padding: 4rem;
+  border-radius: 1.6rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  height: auto;
 }
 
 .contactTitle {
-	font-size: 2.4rem;
-	font-weight: 700;
-	margin-bottom: 1.5rem;
-	color: var(--color-foreground);
-	font-family: var(--font-inter);
+  font-size: var(--type-subsection-title);
+  line-height: var(--leading-heading);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-foreground);
+  font-family: var(--font-inter);
 }
 
 .contactDesc {
-	font-size: 1.6rem;
-	color: var(--text-color);
-	margin-bottom: 4rem;
-	line-height: 1.7;
-	font-family: var(--font-jost);
+  font-size: var(--type-body);
+  color: var(--text-color);
+  margin-bottom: 4rem;
+  line-height: var(--leading-body);
+  font-family: var(--font-jost);
 }
 
 .infoList {
-	list-style: none;
-	padding: 0;
-	margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .infoItem {
-	display: flex;
-	align-items: flex-start;
-	gap: 2rem;
-	margin-bottom: 3.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
 }
 
 .infoIcon {
-	width: 5rem;
-	height: 5rem;
-	background: var(--brand-light);
-	color: var(--brand-primary);
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
+  width: 5rem;
+  height: 5rem;
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .infoText h4 {
-	font-size: 1.8rem;
-	font-weight: 700;
-	margin-bottom: 0.6rem;
-	color: var(--color-foreground);
-	font-family: var(--font-inter);
+  font-size: var(--type-card-title);
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: var(--color-foreground);
+  font-family: var(--font-inter);
 }
 
 .infoText p {
-	font-size: 1.5rem;
-	color: var(--text-color);
-	line-height: 1.6;
-	font-family: var(--font-jost);
+  font-size: var(--type-body-sm);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-family: var(--font-jost);
+}
+
+@media (max-width: 640px) {
+  .contactHero {
+    padding: 7rem 1.6rem;
+  }
+
+  .formWrapper,
+  .contactInfo {
+    padding: 2.4rem 1.8rem;
+  }
 }
 
 .phoneLine {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 0.8rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
 }
 
 .messagingLinks {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .messagingLink {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 2.6rem;
-	height: 2.6rem;
-	border-radius: 999px;
-	color: #fff;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  color: #fff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .messagingLink:hover {
-	transform: translateY(-1px);
-	box-shadow: 0 0.6rem 1.4rem rgba(0, 0, 0, 0.16);
+  transform: translateY(-1px);
+  box-shadow: 0 0.6rem 1.4rem rgba(0, 0, 0, 0.16);
 }
 
 .messagingLink svg {
-	width: 1.7rem;
-	height: 1.7rem;
+  width: 1.7rem;
+  height: 1.7rem;
 }
 
 .whatsAppLink {
-	background: #25d366;
+  background: #25d366;
 }
 
 .viberLink {
-	background: #7360f2;
+  background: #7360f2;
 }
 
 .mapSection {
-	width: 100%;
-	height: 500px;
-	margin-bottom: -2rem; /* Pull it towards the footer */
+  width: 100%;
+  height: 500px;
+  margin-bottom: -2rem; /* Pull it towards the footer */
 }
 
 .mapSection iframe,
 .mapSection div {
-	width: 100% !important;
-	height: 100% !important;
-	border: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
 }
 
 @keyframes fadeUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -65,7 +65,7 @@
   .info {
     .name {
       display: block;
-      font-size: 1.6rem;
+      font-size: var(--type-card-title);
       font-weight: 700;
       color: var(--footer-bg);
       margin-bottom: 0.5rem;
@@ -74,7 +74,7 @@
 
     .role {
       display: block;
-      font-size: 0.9rem;
+      font-size: var(--type-label);
       font-weight: 500;
       color: var(--theme-primary-600);
       text-transform: uppercase;

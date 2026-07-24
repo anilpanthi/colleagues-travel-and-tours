@@ -4,10 +4,10 @@
   padding: 2rem 0;
 
   .mainTitle {
-    font-size: 4rem;
+    font-size: var(--type-content-title);
     font-weight: 700;
     color: #1a202c;
-    line-height: 1.2;
+    line-height: var(--leading-heading);
   }
 }
 
@@ -45,7 +45,7 @@
 
 .overviewSection {
   .title {
-    font-size: 2.8rem;
+    font-size: var(--type-section-title);
     font-weight: 600;
     margin-bottom: 2rem;
     color: #1a202c;
@@ -53,8 +53,8 @@
 }
 
 .textDesc {
-  font-size: 1.8rem;
-  line-height: 1.8;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-reading);
   color: #4a5568;
   font-family: var(--font-jost);
 
@@ -70,7 +70,7 @@
 .detailedItinerary,
 .highlightsSection {
   .title {
-    font-size: 2.8rem;
+    font-size: var(--type-section-title);
     font-weight: 600;
     margin-bottom: 2rem;
     color: #1a202c;
@@ -79,7 +79,7 @@
 
 .includeExcludeSection {
   .title {
-    font-size: 2.8rem;
+    font-size: var(--type-section-title);
     font-weight: 600;
     margin-bottom: 2.5rem;
     color: #1a202c;
@@ -88,7 +88,7 @@
 
 .mapSection {
   .title {
-    font-size: 2.8rem;
+    font-size: var(--type-section-title);
     font-weight: 600;
     margin-bottom: 2rem;
     color: #1a202c;
@@ -142,8 +142,8 @@
     position: relative;
     padding-left: 3rem;
     font-family: var(--font-jost);
-    font-size: 1.8rem;
-    line-height: 1.6;
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-body);
     color: #4a5568;
 
     &::before {
@@ -267,7 +267,7 @@
   flex-direction: column;
   gap: 1.5rem;
 
-  &>* {
+  & > * {
     width: 100%;
   }
 }
@@ -295,7 +295,7 @@
     box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.14);
     isolation: isolate;
 
-    &>* {
+    & > * {
       flex: 1;
       width: 100%;
     }
@@ -329,7 +329,7 @@
 }
 
 .priceValue {
-  font-size: 4rem;
+  font-size: var(--type-content-title);
   font-weight: 800;
   color: #1a202c;
   margin: 0.5rem 0;
@@ -348,7 +348,7 @@
 }
 
 .sidebarTitle {
-  font-size: 1.8rem;
+  font-size: var(--type-card-title);
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 2rem;
@@ -380,9 +380,9 @@
   li {
     position: relative;
     padding-left: 3rem;
-    font-size: 1.8rem;
+    font-size: var(--type-body-lg);
     color: #4a5568;
-    line-height: 1.5;
+    line-height: var(--leading-body);
     font-family: var(--font-jost);
 
     &::before {
@@ -411,7 +411,7 @@
 }
 
 .relatedPackages__title {
-  font-size: 2.4rem;
+  font-size: var(--type-subsection-title);
   font-weight: 700;
   color: #1a202c;
   margin: 0 0 1rem;
@@ -423,7 +423,7 @@
   max-width: none !important;
   // padding: 1rem;
 
-  &>div {
+  & > div {
     border: none;
     // padding: 1rem ;
   }
@@ -445,12 +445,12 @@
     row-gap: 1rem;
   }
 
-  [class*='formBlock__fieldsGroup']>* {
+  [class*='formBlock__fieldsGroup'] > * {
     grid-column: 1 / -1;
     width: 100%;
   }
 
-  [class*='formBlock__field']>div {
+  [class*='formBlock__field'] > div {
     max-width: 100% !important;
     width: 100%;
   }
@@ -458,7 +458,7 @@
   @media (max-width: 640px) {
     padding: 1.5rem 0;
 
-    &>div {
+    & > div {
       padding: 0.5rem 1rem;
     }
 

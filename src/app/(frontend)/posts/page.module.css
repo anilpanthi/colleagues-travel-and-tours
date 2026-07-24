@@ -1,10 +1,10 @@
 .rangeSection {
-	margin-top: 4.8rem;
-	margin-bottom: 3.2rem;
-	text-align: center;
-	font-size: 1.8rem;
+  margin-top: 4.8rem;
+  margin-bottom: 3.2rem;
+  text-align: center;
+  font-size: var(--type-body-lg);
 }
 
 .cardsSection {
-	margin-bottom: 4.8rem;
+  margin-bottom: 4.8rem;
 }

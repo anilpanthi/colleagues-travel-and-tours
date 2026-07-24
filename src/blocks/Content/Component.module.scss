@@ -1,7 +1,7 @@
 .content {
   color: var(--text-color);
-  font-size: 1.8rem;
-  line-height: 1.8;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-reading);
   font-family: var(--font-jost);
 
   b {

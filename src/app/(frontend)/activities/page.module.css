@@ -1,110 +1,95 @@
-.activitiesPage
-{
-	background: #f8fafc;
-	padding-bottom: 5.6rem;
+.activitiesPage {
+  background: #f8fafc;
+  padding-bottom: 5.6rem;
 }
 
-.pageHeader
-{
-	padding-top: calc(var(--nav-h) + 0rem);
-	padding-bottom: 2.8rem;
+.pageHeader {
+  padding-top: calc(var(--nav-h) + 0rem);
+  padding-bottom: 2.8rem;
 }
 
-.eyebrow
-{
-	color: #b76a13;
-	font-size: 1.25rem;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	margin: 0 0 0.8rem;
-	text-transform: uppercase;
+.eyebrow {
+  color: #b76a13;
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.8rem;
+  text-transform: uppercase;
 }
 
-.title
-{
-	color: #0f172a;
-	font-family: var(--font-primary);
-	font-size: clamp(3.2rem, 4.5vw, 5.6rem);
-	font-weight: 500;
-	line-height: 1.05;
-	margin: 0;
-	max-width: 78rem;
+.title {
+  color: #0f172a;
+  font-family: var(--font-primary);
+  font-size: var(--type-page-title);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  margin: 0;
+  max-width: 78rem;
 }
 
-.description
-{
-	color: #475569;
-	font-size: clamp(1.6rem, 2vw, 1.9rem);
-	line-height: 1.7;
-	margin: 1.4rem 0 0;
-	max-width: 68rem;
+.description {
+  color: #475569;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-body);
+  margin: 1.4rem 0 0;
+  max-width: 68rem;
 }
 
-.resultsBar
-{
-	margin-bottom: 1.2rem;
-	text-align: right;
+.resultsBar {
+  margin-bottom: 1.2rem;
+  text-align: right;
 }
 
-.resultCount
-{
-	background: #f8fafc;
-	border: 1px solid #e2e8f0;
-	border-radius: 999px;
-	color: #475569;
-	display: inline-flex;
-	font-size: 1.25rem;
-	font-weight: 600;
-	letter-spacing: 0.02em;
-	line-height: 1.2;
-	margin: 0;
-	padding: 0.7rem 1.1rem;
+.resultCount {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  color: #475569;
+  display: inline-flex;
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0.7rem 1.1rem;
 }
 
-.cardsSection
-{
-	background: #fff;
-	border: 1px solid #e6ebf2;
-	border-radius: 1.6rem;
-	box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.06);
-	margin-bottom: 4.8rem;
-	padding: 1.6rem;
+.cardsSection {
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  border-radius: 1.6rem;
+  box-shadow: 0 1rem 3rem rgba(15, 23, 42, 0.06);
+  margin-bottom: 4.8rem;
+  padding: 1.6rem;
 }
 
-.singleActivityGrid
-{
-	grid-template-columns: minmax(28rem, 42rem);
-	justify-content: center;
-	padding: 2.4rem 0;
+.singleActivityGrid {
+  grid-template-columns: minmax(28rem, 42rem);
+  justify-content: center;
+  padding: 2.4rem 0;
 }
 
-@media (max-width: 640px)
-{
-	.pageHeader
-	{
-		padding-top: calc(var(--nav-h) + 3.2rem);
-		padding-bottom: 2.2rem;
-	}
+@media (max-width: 640px) {
+  .pageHeader {
+    padding-top: calc(var(--nav-h) + 3.2rem);
+    padding-bottom: 2.2rem;
+  }
 
-	.resultsBar
-	{
-		text-align: left;
-	}
+  .resultsBar {
+    text-align: left;
+  }
 
-	.resultCount
-	{
-		font-size: 1.2rem;
-	}
+  .resultCount {
+    font-size: 1.2rem;
+  }
 
-	.cardsSection
-	{
-		border-radius: 1.2rem;
-		padding: 1.2rem;
-	}
+  .cardsSection {
+    border-radius: 1.2rem;
+    padding: 1.2rem;
+  }
 
-	.singleActivityGrid
-	{
-		grid-template-columns: 1fr;
-		padding: 1.2rem 0;
-	}
+  .singleActivityGrid {
+    grid-template-columns: 1fr;
+    padding: 1.2rem 0;
+  }
 }

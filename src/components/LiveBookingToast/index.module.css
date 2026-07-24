@@ -39,7 +39,7 @@
   margin: 0 0 0.2rem;
   color: #b45309;
   font-family: var(--font-jost);
-  font-size: 1.1rem;
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.2;
