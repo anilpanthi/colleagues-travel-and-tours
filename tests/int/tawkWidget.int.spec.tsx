@@ -1,6 +1,7 @@
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
+import { ChatSupport } from '@/components/ChatSupport'
 import { TawkWidget } from '@/components/ChatSupport/TawkWidget'
 
 const initialInnerWidth = window.innerWidth
@@ -52,6 +53,18 @@ describe('Tawk chat widget', () => {
       },
     })
     expect(window.Tawk_LoadStart).toBeInstanceOf(Date)
+  })
+
+  it('starts loading as soon as chat support renders', () => {
+    render(<ChatSupport propertyId="property-id" widgetId="widget-id" />)
+
+    expect(document.querySelector('script#tawk-chat-script')).not.toBeNull()
+  })
+
+  it('does not load without both widget identifiers', () => {
+    render(<ChatSupport propertyId="property-id" />)
+
+    expect(document.querySelector('script#tawk-chat-script')).toBeNull()
   })
 
   it('leaves the desktop position unchanged above the site mobile breakpoint', () => {
