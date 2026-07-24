@@ -32,7 +32,25 @@ describe('branded email layout', () => {
     expect(html).toContain('tel:+977015910770')
     expect(html).toContain('+977 98510 00001')
     expect(html).toContain('mailto:info@colleaguestravel.com')
+    expect(html).toMatch(
+      /href="https:\/\/colleaguestravel\.com"[^>]*target="_blank" rel="noopener noreferrer"/,
+    )
+    expect(html).not.toMatch(
+      /href="tel:\+977015910770"[^>]*target="_blank" rel="noopener noreferrer"/,
+    )
     expect(html).toContain('&copy; 2026 Colleagues Travel &amp; Tours')
+  })
+
+  it('opens web links from the message content in a new tab', () => {
+    const html = buildBrandedEmailHTML(
+      '<p><a href="https://example.com/package" target="_self">View package</a></p>',
+      layoutOptions,
+    )
+
+    expect(html).toContain(
+      'href="https://example.com/package" target="_blank" rel="noopener noreferrer"',
+    )
+    expect(html).not.toContain('target="_self"')
   })
 
   it('preserves styles and body content from complete HTML documents', () => {

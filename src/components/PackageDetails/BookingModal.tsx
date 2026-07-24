@@ -26,14 +26,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   packageId,
   packageTitle,
 }) => {
+  const [hasSubmitted, setHasSubmitted] = React.useState(false)
   const activeForm = activeFormType === 'book' ? bookingForm : enquiryForm
   const formToDisplay = activeForm && typeof activeForm === 'object' ? activeForm : null
+  const modalTitle = hasSubmitted
+    ? activeFormType === 'book'
+      ? 'Booking Request Received'
+      : 'Enquiry Received'
+    : activeFormType === 'book'
+      ? `Book ${packageTitle}`
+      : `Enquire about ${packageTitle}`
 
   return (
     <Modal
       isOpen
       onClose={onClose}
-      title={activeFormType === 'book' ? `Book ${packageTitle}` : `Enquire about ${packageTitle}`}
+      title={modalTitle}
       size={activeFormType === 'enquiry' ? 'md' : 'lg'}
     >
       {formToDisplay ? (
@@ -41,6 +49,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           className={activeFormType === 'book' ? style.bookingForm : style.enquiryForm}
           enableIntro={false}
           form={formToDisplay}
+          onSubmissionSuccess={() => setHasSubmitted(true)}
           submissionContext={{
             packageId,
           }}

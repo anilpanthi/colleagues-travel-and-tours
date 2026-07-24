@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import { FormBlock } from '@/blocks/Form/Component'
 import Modal from '@/components/ui/Modal/Modal'
 import type { Form as FormType, SiteSetting } from '@/payload-types'
@@ -12,6 +14,7 @@ interface FlightBookingModalProps {
 }
 
 export function FlightBookingModal({ flightBookingForm, onClose }: FlightBookingModalProps) {
+  const [hasSubmitted, setHasSubmitted] = useState(false)
   const form =
     flightBookingForm && typeof flightBookingForm === 'object'
       ? (flightBookingForm as FormType)
@@ -21,11 +24,20 @@ export function FlightBookingModal({ flightBookingForm, onClose }: FlightBooking
     <Modal
       isOpen
       onClose={onClose}
-      title="Enter your flight details below to make your reservation."
+      title={
+        hasSubmitted
+          ? 'Flight Request Received'
+          : 'Enter your flight details below to make your reservation.'
+      }
       size="xl"
     >
       {form ? (
-        <FormBlock form={form} enableIntro={false} className={CtaStyle.reservationForm} />
+        <FormBlock
+          form={form}
+          enableIntro={false}
+          className={CtaStyle.reservationForm}
+          onSubmissionSuccess={() => setHasSubmitted(true)}
+        />
       ) : (
         <p>Form is not available at the moment.</p>
       )}

@@ -56,6 +56,20 @@ const getTelephoneURL = (phoneNumber: string): string => {
   return `${phoneNumber.startsWith('+') ? '+' : ''}${digits}`
 }
 
+const openWebLinksInNewTab = (html: string): string =>
+  html.replace(/<a\b([^>]*)>/gi, (anchor, attributes: string) => {
+    const hrefMatch = attributes.match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i)
+    const href = hrefMatch?.[1] ?? hrefMatch?.[2] ?? hrefMatch?.[3]
+
+    if (!href || /^(?:mailto|sms|tel):/i.test(href)) return anchor
+
+    const newTabAttributes = attributes
+      .replace(/\s+target\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+      .replace(/\s+rel\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+
+    return `<a${newTabAttributes} target="_blank" rel="noopener noreferrer">`
+  })
+
 const extractDocumentParts = (html: string): { content: string; styles: string } => {
   const bodyMatch = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)
   const styles = [...html.matchAll(/<style\b[^>]*>[\s\S]*?<\/style>/gi)]
@@ -107,7 +121,7 @@ export const buildBrandedEmailHTML = (
     .filter(Boolean)
     .join('<span style="color: #66728a;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>')
 
-  return `<!doctype html>
+  return openWebLinksInNewTab(`<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -220,7 +234,7 @@ export const buildBrandedEmailHTML = (
       </tr>
     </table>
   </body>
-</html>`
+</html>`)
 }
 
 export const buildBrandedEmailText = (

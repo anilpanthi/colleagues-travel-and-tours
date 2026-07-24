@@ -171,6 +171,7 @@ export async function POST(request: Request) {
       overrideAccess: false,
     })
     let submissionType: SubmissionType | undefined
+    let packageName: string | undefined
 
     if (getRelationshipID(siteSettings.bookingForm) === form) {
       submissionType = 'booking'
@@ -186,12 +187,14 @@ export async function POST(request: Request) {
       }
 
       try {
-        await payload.findByID({
+        const selectedPackage = await payload.findByID({
           collection: 'packages',
           id: submissionContext.packageId,
           depth: 0,
           overrideAccess: false,
         })
+
+        packageName = selectedPackage.title
       } catch {
         return errorResponse('The selected package could not be found.', 400)
       }
@@ -201,7 +204,9 @@ export async function POST(request: Request) {
       collection: 'form-submissions',
       data: {
         form,
-        submissionData,
+        submissionData: packageName
+          ? [...submissionData, { field: 'packageName', value: packageName }]
+          : submissionData,
         package: submissionContext?.packageId,
         submissionType,
       },

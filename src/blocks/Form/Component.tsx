@@ -59,6 +59,7 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
+  onSubmissionSuccess?: () => void
   submissionContext?: {
     packageId: number
   }
@@ -77,6 +78,7 @@ export const FormBlock: React.FC<
     className,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    onSubmissionSuccess,
     submissionContext,
   } = props
 
@@ -326,6 +328,7 @@ export const FormBlock: React.FC<
 
           setIsLoading(false)
           setHasSubmitted(true)
+          onSubmissionSuccess?.()
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
@@ -345,7 +348,15 @@ export const FormBlock: React.FC<
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType, recaptchaRequired, submissionContext],
+    [
+      router,
+      formID,
+      redirect,
+      confirmationType,
+      recaptchaRequired,
+      submissionContext,
+      onSubmissionSuccess,
+    ],
   )
 
   const handleFormSubmit = useCallback(
