@@ -1,11 +1,11 @@
 .carouselContainer {
   width: 100%;
   position: relative;
+  padding-bottom: 6.4rem;
 
   .navButton {
     position: absolute;
-    top: 35%;
-    transform: translateY(-35%);
+    bottom: 0;
     width: 4.5rem;
     height: 4.5rem;
     border-radius: 50%;
@@ -25,22 +25,50 @@
     }
 
     &.prev {
-      left: 10px;
-      @media (min-width: 1400px) {
-        left: -60px;
-      }
+      left: calc(50% - 5.4rem);
     }
 
     &.next {
-      right: 10px;
-      @media (min-width: 1400px) {
-        right: -60px;
-      }
+      right: calc(50% - 5.4rem);
     }
 
     svg {
       width: 20px;
       height: 20px;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .carouselContainer {
+    padding-bottom: 0;
+
+    .navButton {
+      top: 35%;
+      bottom: auto;
+      transform: translateY(-35%);
+
+      &.prev {
+        left: -5.5rem;
+      }
+
+      &.next {
+        right: -5.5rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 1400px) {
+  .carouselContainer {
+    .navButton {
+      &.prev {
+        left: -6rem;
+      }
+
+      &.next {
+        right: -6rem;
+      }
     }
   }
 }

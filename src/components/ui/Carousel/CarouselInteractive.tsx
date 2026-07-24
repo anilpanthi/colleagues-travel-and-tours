@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Autoplay, Navigation, Pagination } from 'swiper/modules'
+import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import type { CarouselBlock as CarouselBlockProps, Testimonial } from '@/payload-types'
@@ -9,7 +9,6 @@ import TestimonialCard from '../Card/Variants/TestimonialCard'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 import styles from './Carousel.module.scss'
 
@@ -21,7 +20,7 @@ export default function CarouselInteractive({ selectedItems }: CarouselInteracti
   return (
     <>
       <Swiper
-        modules={[Navigation, Autoplay, Pagination]}
+        modules={[Navigation, Autoplay]}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
@@ -32,7 +31,6 @@ export default function CarouselInteractive({ selectedItems }: CarouselInteracti
           nextEl: `.${styles.next}`,
           prevEl: `.${styles.prev}`,
         }}
-        pagination={{ clickable: true }}
         breakpoints={{
           640: {
             slidesPerView: 1,
