@@ -19,7 +19,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({ packageDoc }) => {
   const href = generatePath('packages', slug)
 
   return (
-    <div className={style.card}>
+    <div className={style.card} data-motion-card="true">
       <Link href={href} className={style.imageWrapper}>
         {featuredImage && typeof featuredImage !== 'string' ? (
           <Media resource={featuredImage} className={style.image} />

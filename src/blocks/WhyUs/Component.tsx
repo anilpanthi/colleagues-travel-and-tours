@@ -1,7 +1,10 @@
 import React from 'react'
 import type { WhyUsBlock as WhyUsBlockType } from '@/payload-types'
 import * as LucideIcons from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import styles from './WhyUs.module.scss'
+
+const lucideIconMap = LucideIcons as unknown as Record<string, LucideIcon>
 
 export const WhyUsBlock: React.FC<WhyUsBlockType> = (props) => {
 	const { features } = props
@@ -13,10 +16,14 @@ export const WhyUsBlock: React.FC<WhyUsBlockType> = (props) => {
 
 				// Dynamic Icon component
 				const IconComponent =
-					icon && (LucideIcons as any)[icon] ? (LucideIcons as any)[icon] : LucideIcons.HelpCircle
+					(icon && lucideIconMap[icon]) || LucideIcons.HelpCircle
 
 				return (
-					<li key={id || index} className={styles.whyus__content_list_item}>
+					<li
+						key={id || index}
+						className={styles.whyus__content_list_item}
+						data-motion-card="true"
+					>
 						<div className={styles.whyus__content_list_item_icon}>
 							<IconComponent strokeWidth={1.5} />
 						</div>

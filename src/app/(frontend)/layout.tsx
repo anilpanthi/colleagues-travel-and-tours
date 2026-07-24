@@ -24,6 +24,7 @@ import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
 import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
 import { ChatSupport } from '@/components/ChatSupport'
+import { MotionController } from '@/components/Motion/MotionController'
 
 const siteURL = getServerSideURL()
 const googleTagID = 'G-0W0BY09GS7'
@@ -183,6 +184,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body suppressHydrationWarning>
         <ServiceWorkerRegistration />
+        <MotionController />
         <Providers>
           <div className="layout-wrapper">
             <DeferredProgressBar />

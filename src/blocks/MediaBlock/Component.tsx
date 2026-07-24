@@ -35,6 +35,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
 
   return (
     <div
+      data-motion-media="true"
       className={cn(
         style.mediaBlock,
         {

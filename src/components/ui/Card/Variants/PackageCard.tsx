@@ -30,7 +30,13 @@ export default function PackageCard({ data, collection }: PackageCardProps) {
         const tripDurationLabel = doc.tripDuration === 1 ? 'day' : 'days'
 
         return (
-          <Card key={cardKey} className={styles.packageCard} as={Link} href={href}>
+          <Card
+            key={cardKey}
+            className={styles.packageCard}
+            as={Link}
+            href={href}
+            data-motion-card="true"
+          >
             {doc.tripDuration && (
               <Card.Span className={styles.packageCard__batch_duration}>
                 {doc.tripDuration} {tripDurationLabel}

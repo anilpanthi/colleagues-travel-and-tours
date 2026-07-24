@@ -69,14 +69,24 @@ export const Button: React.FC<ButtonProps> = ({
 
 	if (href) {
 		return (
-			<Link href={href} prefetch className={classes} {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+			<Link
+				href={href}
+				prefetch
+				className={classes}
+				data-motion-action="true"
+				{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+			>
 				{content}
 			</Link>
 		)
 	}
 
 	return (
-		<button className={classes} {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+		<button
+			className={classes}
+			data-motion-action="true"
+			{...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+		>
 			{content}
 		</button>
 	)

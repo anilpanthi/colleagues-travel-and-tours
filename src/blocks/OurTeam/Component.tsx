@@ -15,7 +15,7 @@ export const OurTeamBlock: React.FC<
     <div className={cn(styles.ourTeam, className)}>
       <div className={styles.grid}>
         {members.map((member, index) => (
-          <div key={index} className={styles.memberCard}>
+          <div key={index} className={styles.memberCard} data-motion-card="true">
             <div className={styles.imageWrapper}>
               <MediaComponent
                 resource={member.profilePicture}

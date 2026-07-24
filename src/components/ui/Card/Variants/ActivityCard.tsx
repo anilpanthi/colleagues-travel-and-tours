@@ -21,7 +21,13 @@ export default function ActivityCard({ data, collection }: ActivityCardProps) {
 				const cardImage = meta?.image || featuredIcon
 
 				return (
-					<Card as={Link} href={href} key={index} className={styles.activityCard}>
+					<Card
+						as={Link}
+						href={href}
+						key={index}
+						className={styles.activityCard}
+						data-motion-card="true"
+					>
 						{cardImage ? (
 							<Card.Image
 								resource={cardImage as Media}

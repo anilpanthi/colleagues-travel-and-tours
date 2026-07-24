@@ -20,7 +20,7 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
 	const formattedDate = createdAt ? getFormattedDate(createdAt) : ''
 
 	return (
-		<Card className={styles.testimonialCard}>
+		<Card className={styles.testimonialCard} data-motion-card="true">
 			<Card.Div className={styles.testimonialCard__bubble}>
 				<Card.Div className={styles.testimonialCard__quote}>
 					{quote && <RichText data={quote} enableGutter={false} enableProse={false} />}

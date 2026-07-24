@@ -118,7 +118,7 @@ export default function BlogCard({ data, collection }: BlogCardProps) {
 				const readingTime = content ? calculateReadingTime(content) : null
 
 				return (
-					<Card key={cardKey} className={styles.blogCard}>
+					<Card key={cardKey} className={styles.blogCard} data-motion-card="true">
 						<Card.Div className={styles.blogCard__image_container}>
 							{cardImage ? (
 								<Card.Image

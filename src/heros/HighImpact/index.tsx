@@ -61,7 +61,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
       : null
 
   return (
-    <section className={cssClass.heroSection}>
+    <section className={cssClass.heroSection} data-motion-hero="true">
       {/* Background Video */}
       {backgroundVideo && typeof backgroundVideo === 'object' && (
         <Media
@@ -81,27 +81,43 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
       <div className={`${containerStyle.container} ${cssClass.heroContentWrapper}`}>
         <div className={cssClass.heroTextArea}>
           {tagline && (
-            <div className={cssClass.heroTagline}>
+            <div
+              className={cssClass.heroTagline}
+              data-motion-hero-item="tagline"
+              data-motion-order="0"
+            >
               <MapPin className={cssClass.iconPin} />
               <span>{tagline}</span>
             </div>
           )}
 
           {title && (
-            <h1 className={cssClass.heroTitle}>
+            <h1
+              className={cssClass.heroTitle}
+              data-motion-hero-item="title"
+              data-motion-order="1"
+            >
               {title}
               {subtitle && <span className={cssClass.heroTitleGradient}>{subtitle}</span>}
             </h1>
           )}
 
           {description && (
-            <div className={cssClass.heroSubtitle}>
+            <div
+              className={cssClass.heroSubtitle}
+              data-motion-hero-item="description"
+              data-motion-order="2"
+            >
               <RichText data={description} enableGutter={false} className={cssClass.heroDesc} />
             </div>
           )}
 
           {Array.isArray(links) && links.length > 0 && (
-            <div className={cssClass.heroActions}>
+            <div
+              className={cssClass.heroActions}
+              data-motion-hero-item="actions"
+              data-motion-order="3"
+            >
               {links.map(({ link }, i) => {
                 const isPrimary = link?.appearance === 'default'
 
@@ -146,7 +162,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           )}
 
           {Array.isArray(features) && features.length > 0 && (
-            <div className={cssClass.heroFeatures}>
+            <div
+              className={cssClass.heroFeatures}
+              data-motion-hero-item="features"
+              data-motion-order="4"
+            >
               {features.map((feature, i) => {
                 const IconComponent =
                   typeof feature?.icon === 'string'
@@ -154,7 +174,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                     : null
 
                 return (
-                  <div key={i} className={cssClass.featureCard}>
+                  <div key={i} className={cssClass.featureCard} data-motion-card="true">
                     <div className={cssClass.featureIconBg}>
                       {IconComponent ? (
                         <IconComponent className={cssClass.iconFeature} size={24} />

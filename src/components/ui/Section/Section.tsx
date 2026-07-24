@@ -31,7 +31,7 @@ export default function Section({ sectionData }: SectionProps) {
 	}
 
 	return (
-		<section className={styles.sectionBlock} style={sectionStyle}>
+		<section className={styles.sectionBlock} data-motion-section="true" style={sectionStyle}>
 			{backgroundType === 'image' && backgroundImage && typeof backgroundImage === 'object' && backgroundImage.url && (
 				<>
 					<Image

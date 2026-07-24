@@ -38,7 +38,11 @@ export const ThingsTodo: React.FC<ActivityProps> = ({
 										meta?.description ||
 										'Explore unique local experiences, curated just for you to make your journey unforgettable.'
 									return (
-										<li key={id} className={style.thingstodo__content_list_item}>
+										<li
+											key={id}
+											className={style.thingstodo__content_list_item}
+											data-motion-card="true"
+										>
 											<div className={style.thingstodo__content_list_item_icon}>
 												<SvgComponent />
 											</div>
