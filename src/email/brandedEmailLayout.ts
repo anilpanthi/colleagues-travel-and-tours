@@ -1,9 +1,12 @@
 const BRAND_MARKER = 'data-colleagues-email="true"'
 const BRAND_NAME = 'Colleagues Travel & Tours'
+const BRAND_TAGLINE = 'Explore more. Experience better.'
 const FALLBACK_WEBSITE_URL = 'https://colleaguestravel.com'
-const PLAIN_TEXT_HEADER = 'COLLEAGUES TRAVEL & TOURS\nThoughtful journeys, made personal.'
+const PLAIN_TEXT_HEADER = `COLLEAGUES TRAVEL & TOURS\n${BRAND_TAGLINE}`
 
-type BrandedEmailLayoutOptions = {
+export type BrandedEmailLayoutOptions = {
+  contactNumbers?: readonly string[]
+  emailAddress?: string
   websiteURL?: string
   year?: number
 }
@@ -41,6 +44,18 @@ const getWebsiteLabel = (websiteURL: string): string => {
   }
 }
 
+const getContactNumbers = (contactNumbers?: readonly string[]): string[] =>
+  (contactNumbers ?? [])
+    .map((number) => number.trim())
+    .filter((number, index, numbers) => Boolean(number) && numbers.indexOf(number) === index)
+    .slice(0, 3)
+
+const getTelephoneURL = (phoneNumber: string): string => {
+  const digits = phoneNumber.replace(/\D/g, '')
+
+  return `${phoneNumber.startsWith('+') ? '+' : ''}${digits}`
+}
+
 const extractDocumentParts = (html: string): { content: string; styles: string } => {
   const bodyMatch = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)
   const styles = [...html.matchAll(/<style\b[^>]*>[\s\S]*?<\/style>/gi)]
@@ -65,10 +80,32 @@ export const buildBrandedEmailHTML = (
   const { content, styles } = extractDocumentParts(emailContent)
   const websiteURL = normalizeWebsiteURL(options.websiteURL)
   const websiteLabel = getWebsiteLabel(websiteURL)
+  const contactNumbers = getContactNumbers(options.contactNumbers)
+  const emailAddress = options.emailAddress?.trim()
   const year = options.year ?? new Date().getFullYear()
   const brandNameHTML = escapeHTML(BRAND_NAME)
+  const brandTaglineHTML = escapeHTML(BRAND_TAGLINE)
   const coloredLogoURL = new URL('/email/colleagues-logo-colored.png', websiteURL).toString()
   const whiteLogoURL = new URL('/email/colleagues-logo-white.png', websiteURL).toString()
+  const phoneLinksHTML = contactNumbers
+    .map((phoneNumber) => {
+      const telephoneURL = getTelephoneURL(phoneNumber)
+      const phoneNumberHTML = escapeHTML(phoneNumber)
+
+      return telephoneURL
+        ? `<a href="tel:${telephoneURL}" style="color: #ffffff; font-weight: 700; text-decoration: none;">${phoneNumberHTML}</a>`
+        : phoneNumberHTML
+    })
+    .join('<span style="color: #66728a;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>')
+  const emailLinkHTML = emailAddress
+    ? `<a href="mailto:${escapeHTML(emailAddress)}" style="color: #ffffff; font-weight: 700; text-decoration: none;">${escapeHTML(emailAddress)}</a>`
+    : ''
+  const primaryContactLinksHTML = [
+    emailLinkHTML,
+    `<a href="${websiteURL}" style="color: #ffffff; font-weight: 700; text-decoration: none;">${escapeHTML(websiteLabel)}</a>`,
+  ]
+    .filter(Boolean)
+    .join('<span style="color: #66728a;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span>')
 
   return `<!doctype html>
 <html lang="en">
@@ -153,11 +190,25 @@ export const buildBrandedEmailHTML = (
             </tr>
             <tr>
               <td class="email-footer" style="background-color: #172033; padding: 28px 34px; text-align: center;">
-                <p style="color: #d8deea; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 21px; margin: 0 0 9px;">
-                  You&rsquo;re receiving this message because you contacted our travel team or have an account with us.
+                <p style="color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 17px; font-weight: 800; line-height: 24px; margin: 0 0 4px;">
+                  ${brandNameHTML}
                 </p>
-                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 21px; margin: 0 0 14px;">
-                  <a href="${websiteURL}" style="color: #e7aa18; font-weight: 700; text-decoration: none;">${websiteLabel}</a>
+                <p style="color: #e7aa18; font-family: Georgia, 'Times New Roman', serif; font-size: 14px; font-style: italic; line-height: 22px; margin: 0 0 17px;">
+                  ${brandTaglineHTML}
+                </p>
+                ${
+                  phoneLinksHTML
+                    ? `<p style="color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 23px; margin: 0 0 5px;">
+                  ${phoneLinksHTML}
+                </p>`
+                    : ''
+                }
+                <p style="color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 23px; margin: 0;">
+                  ${primaryContactLinksHTML}
+                </p>
+                <div style="border-top: 1px solid #344058; font-size: 0; line-height: 0; margin: 22px 0 18px;">&nbsp;</div>
+                <p style="color: #b8c1d1; font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 19px; margin: 0 0 10px;">
+                  You&rsquo;re receiving this message because you contacted our travel team or have an account with us.
                 </p>
                 <p style="color: #8f9ab0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 18px; margin: 0;">
                   &copy; ${year} ${brandNameHTML}. All rights reserved.
@@ -179,7 +230,14 @@ export const buildBrandedEmailText = (
   if (emailContent.startsWith(PLAIN_TEXT_HEADER)) return emailContent
 
   const websiteURL = normalizeWebsiteURL(options.websiteURL)
+  const contactNumbers = getContactNumbers(options.contactNumbers)
+  const emailAddress = options.emailAddress?.trim()
   const year = options.year ?? new Date().getFullYear()
+  const contactLines = [
+    contactNumbers.length > 0 ? `Phone: ${contactNumbers.join(' · ')}` : undefined,
+    emailAddress ? `Email: ${emailAddress}` : undefined,
+    `Website: ${websiteURL}`,
+  ].filter((line): line is string => Boolean(line))
 
-  return `${PLAIN_TEXT_HEADER}\n\n${emailContent.trim()}\n\n---\nReady for your next journey? Explore trips at ${websiteURL}\n\n© ${year} ${BRAND_NAME}. All rights reserved.`
+  return `${PLAIN_TEXT_HEADER}\n\n${emailContent.trim()}\n\n---\n${contactLines.join('\n')}\n\n© ${year} ${BRAND_NAME}. All rights reserved.`
 }

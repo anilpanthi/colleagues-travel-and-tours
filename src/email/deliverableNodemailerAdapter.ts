@@ -7,6 +7,7 @@ import {
   buildBrandedEmailHTML,
   buildBrandedEmailText,
   plainTextToEmailHTML,
+  type BrandedEmailLayoutOptions,
 } from './brandedEmailLayout'
 
 const UNKNOWN_NODE_PATTERN = /<span[^>]*>\s*unknown node\s*<\/span>/gi
@@ -52,7 +53,12 @@ export const emailHTMLToPlainText = (html: string): string => {
     .trim()
 }
 
-export const improveEmailMessage = (message: SendEmailOptions): SendEmailOptions => {
+type EmailCompanyDetails = Pick<BrandedEmailLayoutOptions, 'contactNumbers' | 'emailAddress'>
+
+export const improveEmailMessage = (
+  message: SendEmailOptions,
+  companyDetails: EmailCompanyDetails = {},
+): SendEmailOptions => {
   const sanitizedHTML =
     typeof message.html === 'string' ? sanitizeEmailHTML(message.html) : undefined
   const sourceText =
@@ -66,13 +72,16 @@ export const improveEmailMessage = (message: SendEmailOptions): SendEmailOptions
 
   const websiteURL = getServerSideURL()
   const html = buildBrandedEmailHTML(sanitizedHTML ?? plainTextToEmailHTML(sourceText ?? ''), {
+    ...companyDetails,
     websiteURL,
   })
 
   return {
     ...message,
     html,
-    text: sourceText ? buildBrandedEmailText(sourceText, { websiteURL }) : message.text,
+    text: sourceText
+      ? buildBrandedEmailText(sourceText, { ...companyDetails, websiteURL })
+      : message.text,
   }
 }
 
@@ -86,7 +95,30 @@ export const deliverableNodemailerAdapter = async (
 
     return {
       ...initializedAdapter,
-      sendEmail: (message) => initializedAdapter.sendEmail(improveEmailMessage(message)),
+      sendEmail: async (message) => {
+        let companyDetails: EmailCompanyDetails = {}
+
+        try {
+          const siteSettings = await payload.findGlobal({
+            slug: 'site-settings',
+            depth: 0,
+          })
+
+          companyDetails = {
+            contactNumbers: siteSettings.contactNumbers
+              ?.map(({ number }) => number?.trim())
+              .filter((number): number is string => Boolean(number))
+              .slice(0, 3),
+            emailAddress: siteSettings.emailAddresses
+              ?.map(({ email }) => email?.trim())
+              .find((email): email is string => Boolean(email)),
+          }
+        } catch (error) {
+          console.error('Unable to load company details for the email footer', error)
+        }
+
+        return initializedAdapter.sendEmail(improveEmailMessage(message, companyDetails))
+      },
     }
   }
 }

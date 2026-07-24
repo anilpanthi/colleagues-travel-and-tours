@@ -12,6 +12,8 @@ import {
 } from '@/email/deliverableNodemailerAdapter'
 
 const layoutOptions = {
+  contactNumbers: ['+977 01-5910770', '+977 98510 00001', '+977 98010 00002'],
+  emailAddress: 'info@colleaguestravel.com',
   websiteURL: 'https://colleaguestravel.com',
   year: 2026,
 }
@@ -26,6 +28,10 @@ describe('branded email layout', () => {
     expect(html).not.toContain('letter-spacing: 2.4px')
     expect(html).toContain('<h1>Your booking</h1><p>We received it.</p>')
     expect(html).toContain('https://colleaguestravel.com')
+    expect(html).toContain('Explore more. Experience better.')
+    expect(html).toContain('tel:+977015910770')
+    expect(html).toContain('+977 98510 00001')
+    expect(html).toContain('mailto:info@colleaguestravel.com')
     expect(html).toContain('&copy; 2026 Colleagues Travel &amp; Tours')
   })
 
@@ -44,7 +50,10 @@ describe('branded email layout', () => {
     const text = buildBrandedEmailText('Your enquiry was received.', layoutOptions)
 
     expect(text).toContain('COLLEAGUES TRAVEL & TOURS')
+    expect(text).toContain('Explore more. Experience better.')
     expect(text).toContain('Your enquiry was received.')
+    expect(text).toContain('Phone: +977 01-5910770 · +977 98510 00001 · +977 98010 00002')
+    expect(text).toContain('Email: info@colleaguestravel.com')
     expect(text).toContain('© 2026 Colleagues Travel & Tours')
     expect(buildBrandedEmailText(text, layoutOptions)).toBe(text)
   })
