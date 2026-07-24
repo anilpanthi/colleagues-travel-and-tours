@@ -134,7 +134,11 @@ export function MotionController() {
 
       element.dataset.motionRegistered = 'true'
       element.style.setProperty('--motion-delay', `${delay}ms`)
-      element.classList.add(styles.reveal, kindClass[kind])
+      if (kind === 'card') {
+        element.classList.add(styles.card)
+      } else {
+        element.classList.add(styles.reveal, kindClass[kind])
+      }
       registered.add(element)
 
       if (observer) {
