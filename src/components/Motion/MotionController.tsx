@@ -6,6 +6,11 @@ import styles from './MotionController.module.css'
 
 type MotionKind = 'action' | 'card' | 'copy' | 'media' | 'text'
 
+type CardRow = {
+  count: number
+  top: number
+}
+
 const targetSelector = [
   '[data-motion-card]',
   '[data-motion-media]',
@@ -68,7 +73,8 @@ export function MotionController() {
     if (reducedMotion) return
 
     const registered = new Set<HTMLElement>()
-    const groupCounts = new Map<HTMLElement, number>()
+    const groupCounts = new WeakMap<HTMLElement, number>()
+    const cardRows = new WeakMap<HTMLElement, CardRow[]>()
 
     const reveal = (element: HTMLElement) => {
       element.classList.add(styles.visible)
@@ -90,6 +96,23 @@ export function MotionController() {
           )
         : null
 
+    const getCardRowOrder = (element: HTMLElement): number => {
+      const container = element.parentElement ?? root
+      const rows = cardRows.get(container) ?? []
+      const top = element.offsetTop
+      const currentRow = rows.find((row) => Math.abs(row.top - top) <= 4)
+
+      if (currentRow) {
+        const order = currentRow.count
+        currentRow.count += 1
+        return order
+      }
+
+      rows.push({ count: 1, top })
+      cardRows.set(container, rows)
+      return 0
+    }
+
     const register = (element: HTMLElement) => {
       const kind = getMotionKind(element)
       if (shouldSkip(element, root, kind)) return
@@ -98,9 +121,14 @@ export function MotionController() {
       const groupCount = groupCounts.get(group) ?? 0
       const explicitOrder = Number.parseInt(element.dataset.motionOrder ?? '', 10)
       const hasExplicitOrder = Number.isFinite(explicitOrder)
-      const itemOrder = hasExplicitOrder ? explicitOrder : groupCount
+      const itemOrder = hasExplicitOrder
+        ? explicitOrder
+        : kind === 'card'
+          ? getCardRowOrder(element)
+          : groupCount
       const delayStep = kind === 'card' ? 180 : 160
-      const delay = Math.min(itemOrder, 5) * delayStep
+      const maximumOrder = kind === 'card' ? 3 : 5
+      const delay = Math.min(itemOrder, maximumOrder) * delayStep
 
       groupCounts.set(group, Math.max(groupCount + 1, itemOrder + 1))
 
