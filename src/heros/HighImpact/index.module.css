@@ -1,4 +1,6 @@
 .heroSection {
+	--hero-reveal-distance: 6.4rem;
+
 	position: relative;
 	min-height: 100vh;
 	display: flex;
@@ -81,6 +83,7 @@
 	color: var(--color-white);
 	font-size: 1rem;
 	font-weight: 500;
+	animation: hero-content-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
 }
 
 .iconPin {
@@ -96,6 +99,7 @@
 	margin-bottom: 2.4rem;
 	letter-spacing: -0.025em;
 	line-height: 1.1;
+	animation: hero-content-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
 }
 
 @media (min-width: 640px) {
@@ -131,6 +135,7 @@
 	max-width: 76.8rem;
 	margin-left: auto;
 	margin-right: auto;
+	animation: hero-content-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 440ms both;
 }
 
 @media (min-width: 640px) {
@@ -159,6 +164,7 @@
 	justify-content: center;
 	gap: 1.6rem;
 	margin-bottom: 6.4rem;
+	animation: hero-content-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 620ms both;
 }
 
 .heroActions :is(a, button) {
@@ -264,6 +270,7 @@
 	max-width: 76.8rem;
 	margin-left: auto;
 	margin-right: auto;
+	animation: hero-content-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 800ms both;
 }
 
 @media (max-width: 640px) {
@@ -389,6 +396,18 @@
 	}
 }
 
+@keyframes hero-content-reveal {
+	from {
+		opacity: 0;
+		transform: translate3d(0, var(--hero-reveal-distance), 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
 @keyframes scroll-dot-move {
 	0% {
 		transform: translateY(0);
@@ -402,6 +421,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.heroTagline,
+	.heroTitle,
+	.heroSubtitle,
+	.heroActions,
+	.heroFeatures,
 	.heroActions :is(a, button),
 	.featureCard,
 	.iconArrowRight,
@@ -409,5 +433,11 @@
 	.scrollDot {
 		animation: none;
 		transition: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.heroSection {
+		--hero-reveal-distance: 3.6rem;
 	}
 }

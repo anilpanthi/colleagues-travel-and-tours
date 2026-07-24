@@ -4,13 +4,12 @@ import { useLayoutEffect } from 'react'
 
 import styles from './MotionController.module.css'
 
-type MotionKind = 'action' | 'card' | 'copy' | 'hero' | 'media' | 'text'
+type MotionKind = 'action' | 'card' | 'copy' | 'media' | 'text'
 
 const targetSelector = [
   '[data-motion-card]',
   '[data-motion-media]',
   '[data-motion-action]',
-  '[data-motion-hero-item]',
   'h1',
   'h2',
   'h3',
@@ -22,13 +21,11 @@ const kindClass: Record<MotionKind, string> = {
   action: styles.action,
   card: styles.card,
   copy: styles.copy,
-  hero: styles.hero,
   media: styles.media,
   text: styles.text,
 }
 
 const getMotionKind = (element: HTMLElement): MotionKind => {
-  if (element.matches('[data-motion-hero-item]')) return 'hero'
   if (element.matches('[data-motion-card]')) return 'card'
   if (element.matches('[data-motion-media]')) return 'media'
   if (element.matches('[data-motion-action]')) return 'action'
@@ -55,9 +52,6 @@ const shouldSkip = (element: HTMLElement, root: HTMLElement, kind: MotionKind): 
 
   const card = element.closest<HTMLElement>('[data-motion-card]')
   if (card && card !== element) return true
-
-  const heroItem = element.closest<HTMLElement>('[data-motion-hero-item]')
-  if (heroItem && heroItem !== element) return true
 
   const richText = element.closest<HTMLElement>('.payload-richtext')
   if (kind === 'text' && richText && richText !== element) return true
@@ -105,9 +99,8 @@ export function MotionController() {
       const explicitOrder = Number.parseInt(element.dataset.motionOrder ?? '', 10)
       const hasExplicitOrder = Number.isFinite(explicitOrder)
       const itemOrder = hasExplicitOrder ? explicitOrder : groupCount
-      const delayStep = kind === 'hero' || kind === 'card' ? 180 : 160
-      const baseDelay = kind === 'hero' ? 120 : 0
-      const delay = baseDelay + Math.min(itemOrder, 5) * delayStep
+      const delayStep = kind === 'card' ? 180 : 160
+      const delay = Math.min(itemOrder, 5) * delayStep
 
       groupCounts.set(group, Math.max(groupCount + 1, itemOrder + 1))
 
@@ -156,7 +149,6 @@ export function MotionController() {
           styles.action,
           styles.card,
           styles.copy,
-          styles.hero,
           styles.media,
           styles.text,
         )
