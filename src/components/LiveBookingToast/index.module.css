@@ -147,6 +147,13 @@
   }
 }
 
+@media (max-width: 1024px) {
+  :global(body:has([data-mobile-booking-bar])) .toast {
+    /* 7.2rem booking bar + 2.4rem gap keeps the toast clear throughout its entrance animation. */
+    bottom: calc(9.6rem + env(safe-area-inset-bottom));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .toast {
     animation: none;

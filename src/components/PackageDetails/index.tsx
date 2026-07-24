@@ -273,7 +273,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
         {children}
       </Content>
 
-      <div className={`${style.contactGroup} ${style.contactGroupMobile}`}>
+      <div className={`${style.contactGroup} ${style.contactGroupMobile}`} data-mobile-booking-bar>
         <BookingButtons />
       </div>
     </BookingProvider>
