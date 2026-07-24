@@ -41,7 +41,9 @@
 
 @media (min-width: 768px) {
   .carouselContainer {
+    padding-right: 6rem;
     padding-bottom: 0;
+    padding-left: 6rem;
 
     .navButton {
       top: 35%;
@@ -49,25 +51,11 @@
       transform: translateY(-35%);
 
       &.prev {
-        left: -5.5rem;
+        left: 0;
       }
 
       &.next {
-        right: -5.5rem;
-      }
-    }
-  }
-}
-
-@media (min-width: 1400px) {
-  .carouselContainer {
-    .navButton {
-      &.prev {
-        left: -6rem;
-      }
-
-      &.next {
-        right: -6rem;
+        right: 0;
       }
     }
   }
