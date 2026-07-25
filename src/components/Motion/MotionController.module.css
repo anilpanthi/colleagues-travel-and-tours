@@ -51,8 +51,26 @@
 }
 
 .card.visible {
-  animation: card-reveal 1450ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay)
-    both;
+  animation: card-reveal 1450ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay) both;
+}
+
+[data-motion-speed='fast'] .reveal {
+  --motion-distance: 1.6rem;
+
+  transition-duration: 420ms;
+}
+
+[data-motion-speed='fast'] .media {
+  --motion-distance: 1rem;
+}
+
+[data-motion-speed='fast'] .card {
+  --motion-distance: 1.8rem;
+  --motion-card-scale: 0.995;
+}
+
+[data-motion-speed='fast'] .card.visible {
+  animation-duration: 560ms;
 }
 
 @keyframes card-reveal {

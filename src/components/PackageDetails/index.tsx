@@ -147,7 +147,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
         </div>
       )}
 
-      <Content className={style.packageWrap}>
+      <Content className={style.packageWrap} data-motion-speed="fast">
         <div className={style.singlePackage}>
           <div className={style.singlePackage__left}>
             {pkg.gallery && pkg.gallery.length > 0 && (

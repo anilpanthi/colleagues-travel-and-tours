@@ -18,7 +18,6 @@
   margin-bottom: 2rem;
   background: var(--card-bg, #fff);
   transform: translateZ(0);
-  transition: all 0.3s ease;
   line-height: 1.25;
 
   &[data-state='open'] {
@@ -40,7 +39,6 @@
   font-weight: 600;
   color: #3d3b3b;
   cursor: pointer;
-  transition: all 0.2s;
   border-radius: 8px;
   overflow: hidden; // Ensures .day is clipped to trigger's radius
 
@@ -78,7 +76,6 @@
   .chevron {
     align-self: center;
     margin-left: 1.2rem;
-    transition: transform 0.3s ease;
     flex-shrink: 0;
   }
 
