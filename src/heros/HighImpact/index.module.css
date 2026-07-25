@@ -440,4 +440,14 @@
 	.heroSection {
 		--hero-reveal-distance: 2rem;
 	}
+
+	.heroTagline,
+	.heroTitle,
+	.heroSubtitle,
+	.heroActions,
+	.heroFeatures,
+	.scrollIndicator,
+	.scrollDot {
+		animation: none;
+	}
 }

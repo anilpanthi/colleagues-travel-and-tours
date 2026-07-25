@@ -1,6 +1,5 @@
 import React from 'react'
 import type { Metadata, Viewport } from 'next'
-import Script from 'next/script'
 
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -25,10 +24,12 @@ import { HeaderClient } from '@/globals/Header/Header.client'
 import type { LiveBookingPackage } from '@/components/LiveBookingToast'
 import { DeferredLiveBookingToast } from '@/components/LiveBookingToast/DeferredLiveBookingToast'
 import { ChatSupport } from '@/components/ChatSupport'
-import { MotionController } from '@/components/Motion/MotionController'
+import { DeferredMotionController } from '@/components/Motion/DeferredMotionController'
+import { DeferredGoogleAnalytics } from '@/components/Analytics/DeferredGoogleAnalytics'
 
 const siteURL = getServerSideURL()
 const googleTagID = 'G-0W0BY09GS7'
+const initialHeaderLogoSrc = '/colleagues-white-logo.svg?v=3'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteURL),
@@ -162,19 +163,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html className={cn(inter.variable, jost.variable)} lang="en" suppressHydrationWarning>
       <head>
-        <Script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${googleTagID}`}
-          strategy="lazyOnload"
+        <link
+          as="image"
+          fetchPriority="high"
+          href={initialHeaderLogoSrc}
+          rel="preload"
+          type="image/svg+xml"
         />
-        <Script id="google-tag" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${googleTagID}');
-          `}
-        </Script>
         <InitTheme />
         <script
           dangerouslySetInnerHTML={{
@@ -185,7 +180,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body suppressHydrationWarning>
         <ServiceWorkerRegistration />
-        <MotionController />
+        <DeferredGoogleAnalytics measurementId={googleTagID} />
+        <DeferredMotionController />
         <Providers>
           <div className="layout-wrapper">
             <DeferredProgressBar />
