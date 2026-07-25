@@ -18,6 +18,7 @@ export interface Props {
   poster?: string // for VideoMedia only
   posterOnlyOnMobile?: boolean // for VideoMedia only
   priority?: boolean // for NextImage only
+  quality?: 70 | 75 | 82 | 90 // must match next.config.ts
   ref?: Ref<HTMLImageElement | HTMLVideoElement | null>
   resource?: MediaType | string | number | null // for Payload media
   size?: string // for NextImage only

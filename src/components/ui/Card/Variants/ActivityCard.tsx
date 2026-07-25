@@ -34,6 +34,7 @@ export default function ActivityCard({ data, collection }: ActivityCardProps) {
 								className={styles.activityCard__image}
 								imgClassName={styles.activityCard__image}
 								fill
+								quality={70}
 								size="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 							/>
 						) : (

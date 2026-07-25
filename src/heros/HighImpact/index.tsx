@@ -72,6 +72,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           videoClassName={cssClass.heroVideo}
           priority
           fetchPriority="high"
+          quality={70}
           size="100vw"
           resource={backgroundVideo}
         />

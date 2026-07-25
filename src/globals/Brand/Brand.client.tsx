@@ -51,6 +51,7 @@ export const BrandClient: React.FC<BrandClientProps> = ({ isScrolled }) => {
           alternateSrc={alternateLogoSrc}
           className={cn(styles.brandImage, isLogoVisible && styles.brandImageVisible)}
           fallbackSrc={fallbackLogoSrc}
+          preload
           src={activeLogoSrc}
         />
       </Link>

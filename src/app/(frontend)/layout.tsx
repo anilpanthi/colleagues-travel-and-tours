@@ -22,7 +22,8 @@ import { getCachedSiteSettings } from '@/utilities/getSiteSettings'
 
 import { FooterClient } from '@/globals/Footer/Footer.client'
 import { HeaderClient } from '@/globals/Header/Header.client'
-import { LiveBookingToast, type LiveBookingPackage } from '@/components/LiveBookingToast'
+import type { LiveBookingPackage } from '@/components/LiveBookingToast'
+import { DeferredLiveBookingToast } from '@/components/LiveBookingToast/DeferredLiveBookingToast'
 import { ChatSupport } from '@/components/ChatSupport'
 import { MotionController } from '@/components/Motion/MotionController'
 
@@ -195,7 +196,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
             <main className="main-content">{children}</main>
             <FooterClient {...footerData} />
-            <LiveBookingToast packages={liveBookingPackages} />
+            <DeferredLiveBookingToast packages={liveBookingPackages} />
             <ChatSupport propertyId={tawkChat?.propertyId} widgetId={tawkChat?.widgetId} />
             {/* <DeferredGDPRConsent /> */}
           </div>

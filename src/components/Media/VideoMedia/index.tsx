@@ -16,6 +16,7 @@ export const VideoMedia: React.FC<MediaProps> = ({
   poster,
   posterOnlyOnMobile,
   priority,
+  quality = 75,
   resource,
   size,
   videoClassName,
@@ -124,7 +125,7 @@ export const VideoMedia: React.FC<MediaProps> = ({
             fetchPriority={fetchPriority ?? (priority ? 'high' : undefined)}
             fill
             priority={priority}
-            quality={75}
+            quality={quality}
             sizes={size || '100vw'}
             src={posterUrl}
             style={{

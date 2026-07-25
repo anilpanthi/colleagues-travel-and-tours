@@ -23,6 +23,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     size: sizeFromProps,
     src: srcFromProps,
     loading: loadingFromProps,
+    quality = 75,
   } = props
 
   let width: number | undefined
@@ -49,9 +50,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
-  const sizes = sizeFromProps
-    ? sizeFromProps
-    : '100vw'
+  const sizes = sizeFromProps ? sizeFromProps : '100vw'
 
   return (
     <picture className={cn(pictureClassName)}>
@@ -63,7 +62,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={placeholderBlur}
         priority={priority}
-        quality={75}
+        quality={quality}
         loading={loading}
         sizes={sizes}
         src={src}

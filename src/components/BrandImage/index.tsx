@@ -10,6 +10,7 @@ interface BrandImageProps {
   fallbackSrc: string
   height?: number
   loading?: 'eager' | 'lazy'
+  preload?: boolean
   src: string | null
   width?: number
 }
@@ -21,6 +22,7 @@ export function BrandImage({
   fallbackSrc,
   height = 57,
   loading = 'eager',
+  preload = false,
   src,
   width = 100,
 }: BrandImageProps) {
@@ -49,9 +51,11 @@ export function BrandImage({
     <Image
       alt={alt}
       className={className}
+      fetchPriority={preload ? 'high' : undefined}
       height={height}
       loading={loading}
       onError={() => setImageSrc(fallbackSrc)}
+      preload={preload}
       src={imageSrc}
       unoptimized
       width={width}

@@ -13,6 +13,7 @@ export type LiveBookingPackage = {
 }
 
 type LiveBookingToastProps = {
+  initiallyVisible?: boolean
   packages: LiveBookingPackage[]
 }
 
@@ -199,7 +200,7 @@ const playNotificationSound = () => {
   }
 }
 
-export function LiveBookingToast({ packages }: LiveBookingToastProps) {
+export function LiveBookingToast({ initiallyVisible = false, packages }: LiveBookingToastProps) {
   const [toast, setToast] = useState<BookingToast | null>(null)
   const [isLeaving, setIsLeaving] = useState(false)
 
@@ -232,8 +233,11 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
       playNotificationSound()
     }
 
-    const firstToast = window.setTimeout(showToast, firstToastDelay)
-    const secondToast = window.setTimeout(showToast, firstToastDelay + secondToastDelay)
+    if (initiallyVisible) showToast()
+
+    const initialDelay = initiallyVisible ? 0 : firstToastDelay
+    const firstToast = initiallyVisible ? undefined : window.setTimeout(showToast, firstToastDelay)
+    const secondToast = window.setTimeout(showToast, initialDelay + secondToastDelay)
     let recurringToasts: number | undefined
 
     const recurringStart = window.setTimeout(
@@ -241,11 +245,11 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
         showToast()
         recurringToasts = window.setInterval(showToast, recurringToastDelay)
       },
-      firstToastDelay + secondToastDelay + recurringToastDelay,
+      initialDelay + secondToastDelay + recurringToastDelay,
     )
 
     return () => {
-      window.clearTimeout(firstToast)
+      if (firstToast !== undefined) window.clearTimeout(firstToast)
       window.clearTimeout(secondToast)
       window.clearTimeout(recurringStart)
 
@@ -253,7 +257,7 @@ export function LiveBookingToast({ packages }: LiveBookingToastProps) {
         window.clearInterval(recurringToasts)
       }
     }
-  }, [availablePackages])
+  }, [availablePackages, initiallyVisible])
 
   useEffect(() => {
     if (!toast) {
