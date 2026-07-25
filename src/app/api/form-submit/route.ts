@@ -177,6 +177,8 @@ export async function POST(request: Request) {
       submissionType = 'booking'
     } else if (getRelationshipID(siteSettings.enquiryForm) === form) {
       submissionType = 'enquiry'
+    } else if (getRelationshipID(siteSettings.tripCustomizerForm) === form) {
+      submissionType = 'enquiry'
     } else if (getRelationshipID(siteSettings.flightBookingForm) === form) {
       submissionType = 'flight-booking'
     }

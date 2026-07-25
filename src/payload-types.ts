@@ -3199,6 +3199,10 @@ export interface SiteSetting {
    * Select enquiry form to display in package details page.
    */
   enquiryForm?: (number | null) | Form;
+  /**
+   * Select the form to use for trip customization requests.
+   */
+  tripCustomizerForm?: (number | null) | Form;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3289,6 +3293,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   bookingForm?: T;
   flightBookingForm?: T;
   enquiryForm?: T;
+  tripCustomizerForm?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

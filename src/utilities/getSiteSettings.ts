@@ -28,6 +28,7 @@ const baseSiteSettingsSelect = {
   bookingForm: formSelect,
   flightBookingForm: formSelect,
   enquiryForm: formSelect,
+  tripCustomizerForm: formSelect,
   tawkChat: {
     propertyId: true,
     widgetId: true,

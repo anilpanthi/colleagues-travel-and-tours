@@ -351,6 +351,18 @@ export const SiteSettings: GlobalConfig = {
                 },
               },
             },
+            {
+              name: 'tripCustomizerForm',
+              label: 'Trip Customizer Form',
+              type: 'relationship',
+              relationTo: 'forms',
+              admin: {
+                description: 'Select the form to use for trip customization requests.',
+                style: {
+                  maxWidth: '500px',
+                },
+              },
+            },
           ],
         },
       ],

@@ -17,7 +17,7 @@ const BookingModal = lazy(() =>
   import('./BookingModal').then(({ BookingModal: Component }) => ({ default: Component })),
 )
 
-export type BookingFormType = 'book' | 'enquiry'
+export type BookingFormType = 'book' | 'customizer' | 'enquiry'
 
 type BookingContextValue = {
   activeFormType: BookingFormType | null
@@ -30,6 +30,7 @@ type BookingProviderProps = {
   enquiryForm: SiteSetting['enquiryForm']
   packageId: number
   packageTitle: string
+  tripCustomizerForm: SiteSetting['tripCustomizerForm']
 }
 
 const BookingContext = createContext<BookingContextValue | null>(null)
@@ -40,6 +41,7 @@ export const BookingProvider: React.FC<BookingProviderProps> = ({
   enquiryForm,
   packageId,
   packageTitle,
+  tripCustomizerForm,
 }) => {
   const [activeFormType, setActiveFormType] = useState<BookingFormType | null>(null)
   const openForm = useCallback((type: BookingFormType) => setActiveFormType(type), [])
@@ -50,7 +52,7 @@ export const BookingProvider: React.FC<BookingProviderProps> = ({
     <BookingContext.Provider value={contextValue}>
       {children}
       {activeFormType && (
-        <Suspense fallback={<DeferredDialogStatus label="Loading package booking form" />}>
+        <Suspense fallback={<DeferredDialogStatus label="Loading package form" />}>
           <BookingModal
             activeFormType={activeFormType}
             bookingForm={bookingForm}
@@ -58,6 +60,7 @@ export const BookingProvider: React.FC<BookingProviderProps> = ({
             onClose={closeForm}
             packageId={packageId}
             packageTitle={packageTitle}
+            tripCustomizerForm={tripCustomizerForm}
           />
         </Suspense>
       )}

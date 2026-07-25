@@ -16,6 +16,7 @@ type BookingModalProps = {
   onClose: () => void
   packageId: number
   packageTitle: string
+  tripCustomizerForm: SiteSetting['tripCustomizerForm']
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -25,17 +26,27 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   onClose,
   packageId,
   packageTitle,
+  tripCustomizerForm,
 }) => {
   const [hasSubmitted, setHasSubmitted] = React.useState(false)
-  const activeForm = activeFormType === 'book' ? bookingForm : enquiryForm
+  const activeForm =
+    activeFormType === 'book'
+      ? bookingForm
+      : activeFormType === 'customizer'
+        ? tripCustomizerForm
+        : enquiryForm
   const formToDisplay = activeForm && typeof activeForm === 'object' ? activeForm : null
   const modalTitle = hasSubmitted
     ? activeFormType === 'book'
       ? 'Booking Request Received'
-      : 'Enquiry Received'
+      : activeFormType === 'customizer'
+        ? 'Customization Request Received'
+        : 'Enquiry Received'
     : activeFormType === 'book'
       ? `Book ${packageTitle}`
-      : `Enquire about ${packageTitle}`
+      : activeFormType === 'customizer'
+        ? `Customize ${packageTitle}`
+        : `Enquire about ${packageTitle}`
 
   return (
     <Modal

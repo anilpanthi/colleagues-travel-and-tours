@@ -19,6 +19,7 @@ interface PackageDetailsProps {
   pkg: Package
   bookingForm: SiteSetting['bookingForm']
   enquiryForm: SiteSetting['enquiryForm']
+  tripCustomizerForm: SiteSetting['tripCustomizerForm']
   children?: React.ReactNode
 }
 
@@ -26,6 +27,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
   pkg,
   bookingForm,
   enquiryForm,
+  tripCustomizerForm,
   children,
 }) => {
   const packageHasHeroImage = Boolean(
@@ -132,6 +134,7 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
     <BookingProvider
       bookingForm={bookingForm}
       enquiryForm={enquiryForm}
+      tripCustomizerForm={tripCustomizerForm}
       packageId={pkg.id}
       packageTitle={pkg.title}
     >

@@ -19,6 +19,7 @@ import * as migration_20260709_023343_add_package_to_form_submissions from './20
 import * as migration_20260709_120000_add_form_submission_status from './20260709_120000_add_form_submission_status';
 import * as migration_20260711_054759_add_high_impact_mobile_poster from './20260711_054759_add_high_impact_mobile_poster';
 import * as migration_20260711_061050_add_tawk_chat_settings from './20260711_061050_add_tawk_chat_settings';
+import * as migration_20260725_065352_add_trip_customizer_form_selector from './20260725_065352_add_trip_customizer_form_selector';
 
 export const migrations = [
   {
@@ -125,5 +126,10 @@ export const migrations = [
     up: migration_20260711_061050_add_tawk_chat_settings.up,
     down: migration_20260711_061050_add_tawk_chat_settings.down,
     name: '20260711_061050_add_tawk_chat_settings',
+  },
+  {
+    up: migration_20260725_065352_add_trip_customizer_form_selector.up,
+    down: migration_20260725_065352_add_trip_customizer_form_selector.down,
+    name: '20260725_065352_add_trip_customizer_form_selector',
   },
 ]

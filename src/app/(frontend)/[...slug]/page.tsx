@@ -82,13 +82,12 @@ export default async function Page({ params: paramsPromise }: Args) {
   const url = '/' + decodedSlug
 
   // The homepage is always a Page document, so avoid a guaranteed package miss.
-  const pkg =
-    decodedSlug === 'home' ? null : await queryPackageBySlug({ draft, slug: decodedSlug })
+  const pkg = decodedSlug === 'home' ? null : await queryPackageBySlug({ draft, slug: decodedSlug })
 
   if (pkg) {
     const siteSettings = await getCachedSiteSettings()
 
-    const { bookingForm, enquiryForm } = siteSettings
+    const { bookingForm, enquiryForm, tripCustomizerForm } = siteSettings
 
     // const { mainNavigation, logos, flightBookingForm } = siteSettings
 
@@ -96,7 +95,12 @@ export default async function Page({ params: paramsPromise }: Args) {
       <>
         <PayloadRedirects disableNotFound url={url} />
         {draft && <LivePreviewListener />}
-        <PackageDetails pkg={pkg} bookingForm={bookingForm} enquiryForm={enquiryForm}>
+        <PackageDetails
+          pkg={pkg}
+          bookingForm={bookingForm}
+          enquiryForm={enquiryForm}
+          tripCustomizerForm={tripCustomizerForm}
+        >
           <Suspense fallback={null}>
             <RelatedPackagesLoader pkg={pkg} />
           </Suspense>

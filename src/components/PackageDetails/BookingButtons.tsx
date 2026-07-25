@@ -28,10 +28,10 @@ export const BookingButtons = () => {
         Book this package
       </Button>
       <Button
-        aria-expanded={activeFormType === 'enquiry'}
+        aria-expanded={activeFormType === 'customizer'}
         aria-haspopup="dialog"
         appearance="outlineBlack"
-        onClick={() => openForm('enquiry')}
+        onClick={() => openForm('customizer')}
         onFocus={preloadBookingModal}
         onPointerDown={preloadBookingModal}
         onPointerEnter={preloadBookingModal}
