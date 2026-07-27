@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useState, useCallback, useEffect } from 'react'
 import { RenderHero } from '@/heros/RenderHero'
 import RichText from '@/components/RichText'
 import Content from '@/components/ui/Content/Index'
@@ -9,6 +10,8 @@ import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import { ReadMore } from '@/components/ui/ReadMore'
 import { Media } from '@/components/Media'
 import { LazyEmbed } from '@/components/LazyEmbed'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ZoomIn, ZoomOut, RotateCcw, X } from 'lucide-react'
 
 import style from './index.module.scss'
 import { BookingButtons } from './BookingButtons'
@@ -30,6 +33,49 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
   tripCustomizerForm,
   children,
 }) => {
+  const [isMapLightboxOpen, setIsMapLightboxOpen] = useState(false)
+  const [zoomScale, setZoomScale] = useState(1)
+
+  const handleZoomIn = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setZoomScale((prev) => Math.min(prev + 0.5, 4))
+  }, [])
+
+  const handleZoomOut = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setZoomScale((prev) => Math.max(prev - 0.5, 1))
+  }, [])
+
+  const handleResetZoom = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setZoomScale(1)
+  }, [])
+
+  const closeMapLightbox = useCallback(() => {
+    setIsMapLightboxOpen(false)
+    setZoomScale(1)
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isMapLightboxOpen) return
+      if (e.key === 'Escape') closeMapLightbox()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMapLightboxOpen, closeMapLightbox])
+
+  useEffect(() => {
+    if (isMapLightboxOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMapLightboxOpen])
+
   const packageHasHeroImage = Boolean(
     pkg?.hero?.type && pkg?.hero?.type !== 'none' && pkg?.hero?.type !== 'lowImpact',
   )
@@ -230,9 +276,16 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
                 {pkg.mapType === 'imageUpload' &&
                   pkg.mapImage &&
                   typeof pkg.mapImage === 'object' && (
-                    <div className={style.mapImageWrapper}>
-                      <Media resource={pkg.mapImage} />
-                    </div>
+                    <button
+                      type="button"
+                      className={style.mapImageButton}
+                      onClick={() => setIsMapLightboxOpen(true)}
+                      aria-label={`Open ${pkg.title} map in lightbox`}
+                    >
+                      <div className={style.mapImageWrapper}>
+                        <Media resource={pkg.mapImage} />
+                      </div>
+                    </button>
                   )}
               </div>
             )}
@@ -279,6 +332,89 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
       <div className={`${style.contactGroup} ${style.contactGroupMobile}`} data-mobile-booking-bar>
         <BookingButtons />
       </div>
+
+      <AnimatePresence>
+        {isMapLightboxOpen && typeof pkg.mapImage === 'object' && pkg.mapImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={style.mapLightboxOverlay}
+            onClick={closeMapLightbox}
+          >
+            {/* Control buttons */}
+            <div className={style.mapLightboxControls} onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                onClick={handleZoomIn}
+                disabled={zoomScale >= 4}
+                className={style.mapLightboxBtn}
+                title="Zoom In"
+                aria-label="Zoom In"
+              >
+                <ZoomIn size={24} />
+              </button>
+              <button
+                type="button"
+                onClick={handleZoomOut}
+                disabled={zoomScale <= 1}
+                className={style.mapLightboxBtn}
+                title="Zoom Out"
+                aria-label="Zoom Out"
+              >
+                <ZoomOut size={24} />
+              </button>
+              <button
+                type="button"
+                onClick={handleResetZoom}
+                disabled={zoomScale === 1}
+                className={style.mapLightboxBtn}
+                title="Reset Zoom"
+                aria-label="Reset Zoom"
+              >
+                <RotateCcw size={24} />
+              </button>
+              <div className={style.mapLightboxDivider} />
+              <button
+                type="button"
+                onClick={closeMapLightbox}
+                className={`${style.mapLightboxBtn} ${style.mapLightboxClose}`}
+                title="Close"
+                aria-label="Close"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Container for the zoomable image */}
+            <div className={style.mapLightboxContent} onClick={closeMapLightbox}>
+              <div className={style.mapLightboxImageWrapper} onClick={(e) => e.stopPropagation()}>
+                <motion.div
+                  animate={{
+                    scale: zoomScale,
+                    cursor: zoomScale > 1 ? 'grab' : 'zoom-in',
+                  }}
+                  drag={zoomScale > 1}
+                  dragConstraints={{ left: -600, right: 600, top: -400, bottom: 400 }}
+                  dragElastic={0.15}
+                  whileDrag={{ cursor: 'grabbing' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                  onClick={() => {
+                    if (zoomScale > 1) {
+                      setZoomScale(1)
+                    } else {
+                      setZoomScale(2)
+                    }
+                  }}
+                  className={style.mapLightboxMotion}
+                >
+                  <Media resource={pkg.mapImage} />
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </BookingProvider>
   )
 }
