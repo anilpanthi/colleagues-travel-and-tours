@@ -5,7 +5,6 @@ import { useLayoutEffect } from 'react'
 import styles from './MotionController.module.css'
 
 type MotionKind = 'action' | 'card' | 'copy' | 'media' | 'text'
-type RevealMode = 'animate' | 'catchUp' | 'instant'
 
 type CardRow = {
   count: number
@@ -77,11 +76,10 @@ export function MotionController() {
     const groupCounts = new WeakMap<HTMLElement, number>()
     const cardRows = new WeakMap<HTMLElement, CardRow[]>()
 
-    const reveal = (element: HTMLElement, mode: RevealMode = 'animate') => {
-      if (mode === 'catchUp') element.classList.add(styles.catchUp)
-      if (mode === 'instant') element.classList.add(styles.instant)
+    const reveal = (element: HTMLElement) => {
       element.classList.add(styles.visible)
       observer?.unobserve(element)
+      fastObserver?.unobserve(element)
     }
 
     const observer =
@@ -89,28 +87,27 @@ export function MotionController() {
         ? new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
-                const revealBoundary = entry.rootBounds?.bottom ?? window.innerHeight
-
-                // A fast scroll can move an element beyond the observer's active area
-                // before its callback runs. Content that reached or passed the reveal
-                // boundary must never remain invisible.
-                if (entry.isIntersecting || entry.boundingClientRect.top <= revealBoundary) {
-                  const mode: RevealMode =
-                    entry.boundingClientRect.bottom <= 0
-                      ? 'instant'
-                      : entry.boundingClientRect.top <= window.innerHeight
-                        ? 'catchUp'
-                        : 'animate'
-
-                  reveal(entry.target as HTMLElement, mode)
-                }
+                if (entry.isIntersecting) reveal(entry.target as HTMLElement)
               })
             },
             {
-              // Begin the reveal just before content enters the viewport so a section
-              // is already readable when the user reaches it.
-              rootMargin: '0px 0px 10% 0px',
-              threshold: 0.01,
+              rootMargin: '0px 0px -14% 0px',
+              threshold: 0.08,
+            },
+          )
+        : null
+
+    const fastObserver =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) reveal(entry.target as HTMLElement)
+              })
+            },
+            {
+              rootMargin: '0px 0px -4% 0px',
+              threshold: 0.02,
             },
           )
         : null
@@ -146,8 +143,8 @@ export function MotionController() {
         : kind === 'card'
           ? getCardRowOrder(element)
           : groupCount
-      const delayStep = usesFastMotion ? (kind === 'card' ? 50 : 35) : kind === 'card' ? 90 : 65
-      const maximumOrder = 2
+      const delayStep = usesFastMotion ? (kind === 'card' ? 70 : 50) : kind === 'card' ? 180 : 160
+      const maximumOrder = usesFastMotion ? 2 : kind === 'card' ? 3 : 5
       const delay = Math.min(itemOrder, maximumOrder) * delayStep
 
       groupCounts.set(group, Math.max(groupCount + 1, itemOrder + 1))
@@ -161,8 +158,10 @@ export function MotionController() {
       }
       registered.add(element)
 
-      if (observer) {
-        observer.observe(element)
+      const selectedObserver = usesFastMotion ? fastObserver : observer
+
+      if (selectedObserver) {
+        selectedObserver.observe(element)
       } else {
         reveal(element)
       }
@@ -191,6 +190,7 @@ export function MotionController() {
     return () => {
       mutationObserver.disconnect()
       observer?.disconnect()
+      fastObserver?.disconnect()
 
       registered.forEach((element) => {
         delete element.dataset.motionRegistered
@@ -200,9 +200,7 @@ export function MotionController() {
           styles.visible,
           styles.action,
           styles.card,
-          styles.catchUp,
           styles.copy,
-          styles.instant,
           styles.media,
           styles.text,
         )

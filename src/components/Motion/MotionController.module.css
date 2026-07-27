@@ -1,28 +1,28 @@
 .reveal {
   --motion-delay: 0ms;
-  --motion-distance: 2.8rem;
+  --motion-distance: 5.2rem;
 
   opacity: 0;
   translate: 0 var(--motion-distance);
   transition:
-    opacity 750ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
-    translate 750ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
-    scale 800ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
-    clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay);
+    opacity 1100ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
+    translate 1100ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
+    scale 1250ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay),
+    clip-path 1250ms cubic-bezier(0.16, 1, 0.3, 1) var(--motion-delay);
   will-change: opacity, translate;
 }
 
 .text {
-  --motion-distance: 2.8rem;
+  --motion-distance: 5.2rem;
 }
 
 .copy {
-  --motion-distance: 2.4rem;
+  --motion-distance: 4rem;
 }
 
 .card {
-  --motion-distance: 3rem;
-  --motion-card-scale: 0.99;
+  --motion-distance: 4.8rem;
+  --motion-card-scale: 0.985;
 
   opacity: 0;
   translate: 0 var(--motion-distance);
@@ -51,23 +51,7 @@
 }
 
 .card.visible {
-  animation: card-reveal 850ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay) both;
-}
-
-.reveal.visible.catchUp,
-.card.visible.catchUp {
-  animation: catch-up-reveal 600ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  transition: none;
-}
-
-.reveal.visible.instant,
-.card.visible.instant {
-  opacity: 1;
-  translate: 0 0;
-  scale: 1;
-  clip-path: none;
-  animation: none;
-  transition: none;
+  animation: card-reveal 1450ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--motion-delay) both;
 }
 
 [data-motion-speed='fast'] .reveal {
@@ -86,7 +70,7 @@
 }
 
 [data-motion-speed='fast'] .card.visible {
-  animation-duration: 480ms;
+  animation-duration: 560ms;
 }
 
 @keyframes card-reveal {
@@ -103,40 +87,24 @@
   }
 }
 
-@keyframes catch-up-reveal {
-  from {
-    opacity: 0.25;
-    translate: 0 1.5rem;
-    scale: 0.995;
-    clip-path: inset(1% 0 0);
-  }
-
-  to {
-    opacity: 1;
-    translate: 0 0;
-    scale: 1;
-    clip-path: inset(0);
-  }
-}
-
 @media (max-width: 768px) {
   .reveal {
-    --motion-distance: 2rem;
+    --motion-distance: 2.8rem;
 
-    transition-duration: 550ms;
+    transition-duration: 950ms;
   }
 
   .copy {
-    --motion-distance: 1.8rem;
+    --motion-distance: 2.4rem;
   }
 
   .card {
-    --motion-distance: 2.2rem;
-    --motion-card-scale: 0.995;
+    --motion-distance: 3rem;
+    --motion-card-scale: 0.992;
   }
 
   .card.visible {
-    animation-duration: 650ms;
+    animation-duration: 1150ms;
   }
 
   .action,
