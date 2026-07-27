@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { RenderHero } from '@/heros/RenderHero'
 import RichText from '@/components/RichText'
 import Content from '@/components/ui/Content/Index'
@@ -10,7 +10,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs/Index'
 import { ReadMore } from '@/components/ui/ReadMore'
 import { Media } from '@/components/Media'
 import { LazyEmbed } from '@/components/LazyEmbed'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useAnimation } from 'framer-motion'
 import { ZoomIn, ZoomOut, RotateCcw, X } from 'lucide-react'
 
 import style from './index.module.scss'
@@ -35,26 +35,48 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
 }) => {
   const [isMapLightboxOpen, setIsMapLightboxOpen] = useState(false)
   const [zoomScale, setZoomScale] = useState(1)
+  const controls = useAnimation()
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleZoomIn = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation()
-    setZoomScale((prev) => Math.min(prev + 0.5, 4))
-  }, [])
+    setZoomScale((prev) => {
+      const next = Math.min(prev + 0.5, 4)
+      controls.start({ scale: next, transition: { type: 'spring', damping: 25, stiffness: 220 } })
+      return next
+    })
+  }, [controls])
 
   const handleZoomOut = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation()
-    setZoomScale((prev) => Math.max(prev - 0.5, 1))
-  }, [])
+    setZoomScale((prev) => {
+      const next = Math.max(prev - 0.5, 1)
+      if (next === 1) {
+        controls.start({ scale: 1, x: 0, y: 0, transition: { type: 'spring', damping: 25, stiffness: 220 } })
+      } else {
+        controls.start({ scale: next, transition: { type: 'spring', damping: 25, stiffness: 220 } })
+      }
+      return next
+    })
+  }, [controls])
 
   const handleResetZoom = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation()
     setZoomScale(1)
-  }, [])
+    controls.start({ scale: 1, x: 0, y: 0, transition: { type: 'spring', damping: 25, stiffness: 220 } })
+  }, [controls])
 
   const closeMapLightbox = useCallback(() => {
     setIsMapLightboxOpen(false)
     setZoomScale(1)
-  }, [])
+    controls.set({ scale: 1, x: 0, y: 0 })
+  }, [controls])
+
+  useEffect(() => {
+    if (isMapLightboxOpen) {
+      controls.set({ scale: 1, x: 0, y: 0 })
+    }
+  }, [isMapLightboxOpen, controls])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -388,22 +410,46 @@ export const PackageDetails: React.FC<PackageDetailsProps> = ({
 
             {/* Container for the zoomable image */}
             <div className={style.mapLightboxContent} onClick={closeMapLightbox}>
-              <div className={style.mapLightboxImageWrapper} onClick={(e) => e.stopPropagation()}>
+              <div
+                ref={containerRef}
+                className={style.mapLightboxImageWrapper}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <motion.div
-                  animate={{
-                    scale: zoomScale,
-                    cursor: zoomScale > 1 ? 'grab' : 'zoom-in',
-                  }}
+                  animate={controls}
+                  style={{ cursor: zoomScale > 1 ? 'grab' : 'zoom-in' }}
                   drag={zoomScale > 1}
-                  dragConstraints={{ left: -600, right: 600, top: -400, bottom: 400 }}
+                  dragConstraints={containerRef}
                   dragElastic={0.15}
                   whileDrag={{ cursor: 'grabbing' }}
                   transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-                  onClick={() => {
+                  onClick={(e) => {
+                    const rect = containerRef.current?.getBoundingClientRect()
+                    if (!rect) return
+
+                    const clickX = e.clientX - (rect.left + rect.width / 2)
+                    const clickY = e.clientY - (rect.top + rect.height / 2)
+
                     if (zoomScale > 1) {
                       setZoomScale(1)
+                      controls.start({
+                        scale: 1,
+                        x: 0,
+                        y: 0,
+                        transition: { type: 'spring', damping: 25, stiffness: 220 },
+                      })
                     } else {
-                      setZoomScale(2)
+                      const targetScale = 2
+                      const targetX = -clickX * (targetScale - 1)
+                      const targetY = -clickY * (targetScale - 1)
+
+                      setZoomScale(targetScale)
+                      controls.start({
+                        scale: targetScale,
+                        x: targetX,
+                        y: targetY,
+                        transition: { type: 'spring', damping: 25, stiffness: 220 },
+                      })
                     }
                   }}
                   className={style.mapLightboxMotion}
