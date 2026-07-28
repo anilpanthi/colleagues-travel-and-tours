@@ -12,9 +12,26 @@ const NEXT_PUBLIC_SERVER_URL =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : 'http://localhost:3000')
 
+const AGENT_DISCOVERY_LINK_HEADER = [
+  '</llms.txt>; rel="service-desc describedby"; type="text/markdown"',
+  '</sitemap.xml>; rel="service-meta index"; type="application/xml"',
+  '</about-us>; rel="about"; type="text/html"',
+  '</privacy-policy>; rel="privacy-policy"; type="text/html"',
+  '</terms-and-conditions>; rel="terms-of-service"; type="text/html"',
+].join(', ')
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Link',
+            value: AGENT_DISCOVERY_LINK_HEADER,
+          },
+        ],
+      },
       {
         source: '/media/:path*',
         headers: [
@@ -56,7 +73,7 @@ const nextConfig: NextConfig = {
       },
     ],
     remotePatterns: [
-      ...([NEXT_PUBLIC_SERVER_URL]
+      ...[NEXT_PUBLIC_SERVER_URL]
         .filter(Boolean)
         .map((item) => {
           try {
@@ -69,9 +86,7 @@ const nextConfig: NextConfig = {
             return null
           }
         })
-        .filter((item): item is { hostname: string; protocol: 'http' | 'https' } =>
-          Boolean(item),
-        )),
+        .filter((item): item is { hostname: string; protocol: 'http' | 'https' } => Boolean(item)),
     ],
     minimumCacheTTL: 2_678_400,
     qualities: [70, 75, 82, 90],

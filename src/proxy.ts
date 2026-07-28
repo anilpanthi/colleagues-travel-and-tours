@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
+import { acceptsMarkdown, isHTMLPath } from '@/utilities/markdownNegotiation'
+
 const getCanonicalURL = () => {
   const serverURL = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -59,7 +61,32 @@ const shouldSkipCanonicalRedirect = (request: NextRequest) => {
     return true
   }
 
-  return !accept.includes('text/html')
+  return !accept.toLowerCase().includes('text/html') && !acceptsMarkdown(accept)
+}
+
+const shouldServeMarkdown = (request: NextRequest) => {
+  if (request.headers.get('x-agent-markdown-bypass') === '1') return false
+  if (request.method !== 'GET' && request.method !== 'HEAD') return false
+
+  return isHTMLPath(request.nextUrl.pathname) && acceptsMarkdown(request.headers.get('accept'))
+}
+
+const rewriteToMarkdown = (request: NextRequest) => {
+  const rewriteURL = request.nextUrl.clone()
+  const requestHeaders = new Headers(request.headers)
+
+  requestHeaders.set(
+    'x-agent-markdown-source',
+    `${request.nextUrl.pathname}${request.nextUrl.search}`,
+  )
+  rewriteURL.pathname = '/agent-markdown-internal'
+  rewriteURL.search = ''
+
+  return NextResponse.rewrite(rewriteURL, {
+    request: {
+      headers: requestHeaders,
+    },
+  })
 }
 
 export function proxy(request: NextRequest) {
@@ -74,16 +101,14 @@ export function proxy(request: NextRequest) {
   const redirectURL = new URL(requestURL)
   let shouldRedirect = false
 
-  if (!requestHost) {
-    return NextResponse.next()
-  }
-
-  if (canonicalURL && requestHost !== canonicalURL.host) {
-    redirectURL.host = canonicalURL.host
-    shouldRedirect = true
-  } else if (!canonicalURL && /^www\./i.test(requestHost)) {
-    redirectURL.host = getNonWWWHost(requestHost)
-    shouldRedirect = true
+  if (requestHost) {
+    if (canonicalURL && requestHost !== canonicalURL.host) {
+      redirectURL.host = canonicalURL.host
+      shouldRedirect = true
+    } else if (!canonicalURL && /^www\./i.test(requestHost)) {
+      redirectURL.host = getNonWWWHost(requestHost)
+      shouldRedirect = true
+    }
   }
 
   if (canonicalURL && requestProtocol !== canonicalURL.protocol) {
@@ -96,13 +121,14 @@ export function proxy(request: NextRequest) {
     shouldRedirect = true
   }
 
-  if (!shouldRedirect) {
-    return NextResponse.next()
-  }
+  if (shouldRedirect) return NextResponse.redirect(redirectURL, 308)
+  if (shouldServeMarkdown(request)) return rewriteToMarkdown(request)
 
-  return NextResponse.redirect(redirectURL, 308)
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|site.webmanifest|sw.js|media/|api/).*)'],
+  matcher: [
+    '/((?!agent-markdown-internal|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|site.webmanifest|sw.js|media/|api/).*)',
+  ],
 }
