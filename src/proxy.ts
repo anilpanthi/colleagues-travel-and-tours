@@ -40,6 +40,10 @@ const shouldSkipCanonicalRedirect = (request: NextRequest) => {
   const accept = request.headers.get('accept') || ''
   const secFetchDest = request.headers.get('sec-fetch-dest')
 
+  if (request.headers.get('x-agent-markdown-bypass') === '1') {
+    return true
+  }
+
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return true
   }

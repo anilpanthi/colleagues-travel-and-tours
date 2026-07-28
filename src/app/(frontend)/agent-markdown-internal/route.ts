@@ -23,6 +23,25 @@ const getSourceURL = (request: Request) => {
   return sourceURL.origin === requestURL.origin ? sourceURL : null
 }
 
+const getUpstreamURL = (sourceURL: URL) => {
+  const fallbackOrigin = `http://127.0.0.1:${process.env.PORT || '3000'}`
+  let internalOrigin = fallbackOrigin
+
+  if (process.env.MARKDOWN_INTERNAL_ORIGIN) {
+    try {
+      const configuredOrigin = new URL(process.env.MARKDOWN_INTERNAL_ORIGIN)
+
+      if (configuredOrigin.protocol === 'http:' || configuredOrigin.protocol === 'https:') {
+        internalOrigin = configuredOrigin.origin
+      }
+    } catch {
+      internalOrigin = fallbackOrigin
+    }
+  }
+
+  return new URL(`${sourceURL.pathname}${sourceURL.search}`, internalOrigin)
+}
+
 const createUpstreamHeaders = (request: Request) => {
   const headers = new Headers({
     Accept: 'text/html',
@@ -64,7 +83,7 @@ export async function GET(request: Request) {
   let upstreamResponse: Response
 
   try {
-    upstreamResponse = await fetch(sourceURL, {
+    upstreamResponse = await fetch(getUpstreamURL(sourceURL), {
       cache: 'no-store',
       headers: createUpstreamHeaders(request),
       redirect: 'manual',

@@ -90,7 +90,13 @@ describe('Markdown for Agents', () => {
       }),
     )
 
-    expect(fetchMock).toHaveBeenCalledOnce()
+    expect(fetchMock).toHaveBeenCalledWith(
+      new URL('http://127.0.0.1:3000/about-us'),
+      expect.objectContaining({
+        cache: 'no-store',
+        redirect: 'manual',
+      }),
+    )
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toBe('text/markdown; charset=utf-8')
     expect(response.headers.get('vary')).toBe('Accept-Encoding, Accept')
